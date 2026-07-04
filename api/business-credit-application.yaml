@@ -1,0 +1,365 @@
+openapi: 3.0.3
+info:
+  title: Business Credit Application API
+  version: 0.1.0
+  description: >
+    Illustrative API contract for a Business Credit System enhancement case study.
+    This contract is for BA and technology discussion only.
+servers:
+  - url: https://api.example-bank.local/bcs
+    description: Example non-production endpoint
+paths:
+  /applications:
+    post:
+      summary: Create a business credit application
+      operationId: createCreditApplication
+      tags:
+        - Applications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApplicationRequest'
+      responses:
+        '201':
+          description: Application created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /applications/{applicationId}:
+    get:
+      summary: Get application summary
+      operationId: getCreditApplication
+      tags:
+        - Applications
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: Application found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+        '404':
+          description: Application not found
+  /applications/{applicationId}/facilities:
+    post:
+      summary: Add facility to application
+      operationId: addFacility
+      tags:
+        - Facilities
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Facility'
+      responses:
+        '201':
+          description: Facility added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facility'
+        '400':
+          description: Validation error
+  /applications/{applicationId}/documents/checklist:
+    get:
+      summary: Get generated document checklist
+      operationId: getDocumentChecklist
+      tags:
+        - Documents
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: Checklist returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChecklistItem'
+  /applications/{applicationId}/submit:
+    post:
+      summary: Submit application for credit review
+      operationId: submitApplication
+      tags:
+        - Workflow
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: Application submitted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowResponse'
+        '409':
+          description: Submission blocked by business validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationBlockResponse'
+  /applications/{applicationId}/exceptions:
+    post:
+      summary: Create policy exception
+      operationId: createException
+      tags:
+        - Exceptions
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyException'
+      responses:
+        '201':
+          description: Exception created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PolicyException'
+  /applications/{applicationId}/approval-route:
+    post:
+      summary: Calculate recommended approval route
+      operationId: calculateApprovalRoute
+      tags:
+        - Approval
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      responses:
+        '200':
+          description: Recommended route returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApprovalRoute'
+  /applications/{applicationId}/decision:
+    post:
+      summary: Record credit decision
+      operationId: recordDecision
+      tags:
+        - Approval
+      parameters:
+        - $ref: '#/components/parameters/ApplicationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditDecision'
+      responses:
+        '200':
+          description: Decision recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowResponse'
+components:
+  parameters:
+    ApplicationId:
+      name: applicationId
+      in: path
+      required: true
+      schema:
+        type: string
+        example: BCS-2026-000184
+  schemas:
+    CreateApplicationRequest:
+      type: object
+      required:
+        - customerId
+        - customerName
+        - customerType
+        - segment
+        - applicationType
+        - rmOwner
+      properties:
+        customerId:
+          type: string
+          example: CUST-10492
+        customerName:
+          type: string
+          example: Suria Components Sdn Bhd
+        customerType:
+          type: string
+          enum: [Company, Partnership, Sole Proprietor, Other]
+        segment:
+          type: string
+          enum: [SME, Commercial, Corporate]
+        applicationType:
+          type: string
+          enum: [New, Renewal, Enhancement, Restructure]
+        rmOwner:
+          type: string
+          example: RM-017
+    ApplicationResponse:
+      type: object
+      properties:
+        applicationId:
+          type: string
+          example: BCS-2026-000184
+        status:
+          type: string
+          example: Draft
+        currentOwnerGroup:
+          type: string
+          example: RM
+        createdDate:
+          type: string
+          format: date
+        facilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Facility'
+    Facility:
+      type: object
+      required:
+        - facilityType
+        - requestedAmountMyr
+        - purpose
+        - securedFlag
+      properties:
+        facilityId:
+          type: string
+          example: FAC-0001
+        facilityType:
+          type: string
+          enum: [Term Loan, Overdraft, Trade Line, Bank Guarantee]
+        requestedAmountMyr:
+          type: number
+          minimum: 1
+          example: 750000
+        existingLimitMyr:
+          type: number
+          minimum: 0
+          example: 500000
+        tenorMonths:
+          type: integer
+          minimum: 1
+          example: 60
+        purpose:
+          type: string
+          example: Working capital
+        securedFlag:
+          type: boolean
+          example: true
+        repaymentSource:
+          type: string
+          example: Operating cash flow
+    ChecklistItem:
+      type: object
+      properties:
+        checklistItemId:
+          type: string
+          example: DOC-018
+        documentName:
+          type: string
+          example: Latest audited financial statements
+        mandatoryFlag:
+          type: boolean
+        documentStatus:
+          type: string
+          enum: [Not Uploaded, Uploaded, Verified, Waived, Not Applicable]
+        waiverReason:
+          type: string
+          nullable: true
+    PolicyException:
+      type: object
+      required:
+        - exceptionType
+        - severity
+        - reason
+        - mitigatingFactor
+      properties:
+        exceptionId:
+          type: string
+          example: EXC-0021
+        exceptionType:
+          type: string
+          enum: [Financial Ratio, Documentation, Collateral, Conduct, Policy Eligibility, Pricing]
+        severity:
+          type: string
+          enum: [Low, Medium, High]
+        reason:
+          type: string
+          example: Latest audited financials pending finalization.
+        mitigatingFactor:
+          type: string
+          example: Interim management accounts and recent bank statements reviewed.
+        approvalStatus:
+          type: string
+          enum: [Pending, Approved, Rejected]
+    ApprovalRoute:
+      type: object
+      properties:
+        recommendedApprovalLevel:
+          type: string
+          enum: [Level 1 Approver, Level 2 Approver, Level 3 Approver, Credit Committee]
+        routeReason:
+          type: string
+          example: Total exposure MYR 1.2m with risk grade B.
+        exceptionApprovalRequired:
+          type: boolean
+    CreditDecision:
+      type: object
+      required:
+        - decision
+      properties:
+        decision:
+          type: string
+          enum: [Approved, Rejected, Deferred, Withdrawn]
+        reason:
+          type: string
+          example: Approved subject to completion of security documentation.
+        conditions:
+          type: array
+          items:
+            type: string
+          example:
+            - Execute facility agreement
+            - Complete property security perfection
+    WorkflowResponse:
+      type: object
+      properties:
+        applicationId:
+          type: string
+        previousStatus:
+          type: string
+        newStatus:
+          type: string
+        nextOwnerGroup:
+          type: string
+    ValidationBlockResponse:
+      type: object
+      properties:
+        applicationId:
+          type: string
+        blockedReason:
+          type: string
+        missingItems:
+          type: array
+          items:
+            type: string
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
