@@ -10,3 +10,23 @@ Thumbs.db
 *.tmp
 *.log
 
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build outputs
+.next/
+dist/
+build/
+coverage/
+
+# Local caches
+.cache/
+.turbo/
+.vercel/
+.netlify/
+

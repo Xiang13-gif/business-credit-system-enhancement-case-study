@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Business Credit System">
+  <rect width="64" height="64" rx="12" fill="#133c55"/>
+  <path d="M14 42h36v6H14z" fill="#f5f0e6"/>
+  <path d="M18 20h28v18H18z" fill="#d9b44a"/>
+  <path d="M22 24h20v3H22zm0 7h14v3H22z" fill="#133c55"/>
+</svg>

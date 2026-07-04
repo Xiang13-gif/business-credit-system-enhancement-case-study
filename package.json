@@ -1,0 +1,30 @@
+{
+  "name": "business-credit-system-enhancement-case-study",
+  "version": "1.0.0",
+  "description": "An anonymized Business Analyst portfolio project for a commercial banking credit platform.",
+  "private": false,
+  "packageManager": "pnpm@11.7.0",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-site.mjs",
+    "check": "pnpm run lint && pnpm run format:check && pnpm run typecheck && pnpm run build",
+    "check:security": "node scripts/check-security.mjs",
+    "check:structure": "node scripts/check-structure.mjs",
+    "dev": "pnpm run build && node scripts/serve-dist.mjs",
+    "format:check": "node scripts/format-check.mjs",
+    "lint": "pnpm run check:structure && pnpm run check:security && node scripts/check-links.mjs",
+    "start": "node scripts/serve-dist.mjs",
+    "typecheck": "node scripts/typecheck.mjs"
+  },
+  "keywords": [
+    "business-analyst",
+    "banking",
+    "credit-risk",
+    "commercial-lending",
+    "portfolio"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
