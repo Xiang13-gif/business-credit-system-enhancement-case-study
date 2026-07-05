@@ -1,16 +1,26 @@
 import {
   ArrowRight,
+  BarChart3,
   ClipboardCheck,
   FileCheck2,
   GitPullRequestArrow,
+  History,
   Network,
-  ShieldCheck
+  ShieldCheck,
+  Users
 } from "lucide-react";
 import Link from "next/link";
 import { Badge, Button, Card, PageHeader, StatCard } from "@/components/ui";
 import { changeRequests, traceabilityMatrix, uatTestCases } from "@/lib/mock-data";
 
 const modules = [
+  {
+    title: "Dashboard Charts",
+    description: "Executive overview of UAT health, CR priority, document distribution, and traceability status.",
+    href: "/dashboard",
+    icon: BarChart3,
+    badge: "Charts"
+  },
   {
     title: "Document Checklist Generator",
     description: "Rule-driven document requirements for application type, facility type, collateral, risk level, and waiver status.",
@@ -38,6 +48,20 @@ const modules = [
     href: "/traceability",
     icon: Network,
     badge: "BA Artifact"
+  },
+  {
+    title: "Role-Based View",
+    description: "Switch RM, Credit Analyst, Approver, Credit Admin, and System Admin lenses to see role-specific impact.",
+    href: "/roles",
+    icon: Users,
+    badge: "Stakeholders"
+  },
+  {
+    title: "Audit Trail",
+    description: "Local activity log showing UAT changes, CR review, exports, and role switching as control evidence.",
+    href: "/audit",
+    icon: History,
+    badge: "Controls"
   }
 ];
 
@@ -50,7 +74,7 @@ export default function HomePage() {
       <PageHeader
         actions={
           <>
-            <Button href="/checklist">
+            <Button href="/dashboard">
               Open Toolkit
               <ArrowRight className="h-4 w-4" />
             </Button>
@@ -72,7 +96,7 @@ export default function HomePage() {
           <StatCard label="Open High Priority" value={highPriorityOpen} tone={highPriorityOpen > 0 ? "warning" : "success"} helper={`${failedCases} failed cases`} />
         </div>
 
-        <div className="grid gap-4 xl:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {modules.map((module) => {
             const Icon = module.icon;
             return (

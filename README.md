@@ -11,9 +11,12 @@ This project models a generalized commercial banking credit enhancement scenario
 Core modules:
 
 - Document Checklist Generator
+- Portfolio Analytics Dashboard
 - UAT Test Case Tracker
 - Change Request Impact Analyzer
+- Role-Based Workflow View
 - Traceability Matrix
+- Audit Trail
 - Project Case Study page
 
 ## Why I Built This
@@ -38,11 +41,21 @@ The project is designed for recruiter, hiring manager, and interviewer review.
 - Realistic banking UAT cases
 - Filters by priority, status, role, and keyword
 - Editable UAT status dropdown
+- Editable retest status for failed and blocked cases
 - Summary metrics and pass-rate progress bar
 - Failed case highlighting
 - Linked defect ID display
+- Defect severity, root cause, and retest monitoring
 - CSV export
-- Local browser persistence for status changes
+- Local browser persistence for status and retest changes
+
+### Portfolio Analytics Dashboard
+
+- UAT status mix chart
+- Document category distribution chart
+- Change request priority chart
+- Traceability status chart
+- BA-ready metrics for pass rate, open defects, pending retest, high-priority CRs, and checklist coverage
 
 ### Change Request Impact Analyzer
 
@@ -55,11 +68,25 @@ The project is designed for recruiter, hiring manager, and interviewer review.
 - Suggested test scope
 - CSV export
 
+### Role-Based Workflow View
+
+- Role selector for RM, Credit Analyst, Approver, Credit Admin, and System Admin
+- Role-specific responsibilities, control focus, and open UAT queue
+- Impacted change request view by user role
+- Local audit event recorded when the reviewer changes role perspective
+
 ### Traceability Matrix
 
 - Requirement-to-business-rule-to-test-case-to-change-request mapping
 - Searchable matrix
 - Status badges for Active, Updated, and Pending Review items
+
+### Audit Trail
+
+- Local activity log for checklist export, reset, UAT status update, retest update, CR selection, CR export, and role review
+- Seeded sample events to show how BA/system activity is monitored
+- Reset action for demo cleanup
+- Designed as a frontend MVP pattern that can later move to API routes and database persistence
 
 ## Skills Demonstrated
 
@@ -68,10 +95,14 @@ The project is designed for recruiter, hiring manager, and interviewer review.
 - Business requirement analysis
 - Business rule design
 - UAT planning and delivery tracking
+- Defect and retest workflow thinking
 - Change request impact analysis
 - Risk and control thinking
 - BA recommendation writing
 - Requirement traceability
+- Operational audit and activity tracking
+- Role-based stakeholder analysis
+- Dashboard storytelling for delivery progress
 - Frontend development with Next.js and TypeScript
 - GitHub-ready project documentation
 
@@ -83,17 +114,35 @@ The project is designed for recruiter, hiring manager, and interviewer review.
 - Tailwind CSS
 - shadcn-style reusable UI components
 - Lucide React icons
+- Recharts
 - Mock data and local state
+
+## Main Routes
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Portfolio overview and module entry points |
+| `/dashboard` | Analytics dashboard for delivery, UAT, CR, and checklist metrics |
+| `/checklist` | Rule-based document checklist generator |
+| `/uat` | UAT tracker with status, defect, and retest workflow |
+| `/change-requests` | Change request impact analyzer |
+| `/roles` | Role-based workflow and stakeholder view |
+| `/traceability` | Requirement-to-test-to-CR matrix |
+| `/audit` | Local activity log and audit trail |
+| `/about` | Project case study and BA positioning |
 
 ## Screenshots
 
 Screenshots can be added after deployment:
 
 - `screenshots/home.png`
+- `screenshots/dashboard.png`
 - `screenshots/checklist-generator.png`
 - `screenshots/uat-tracker.png`
 - `screenshots/change-impact-analyzer.png`
+- `screenshots/role-view.png`
 - `screenshots/traceability-matrix.png`
+- `screenshots/audit-trail.png`
 
 ## How to Run
 
@@ -146,10 +195,10 @@ Recommended settings:
 - Prisma ORM
 - Excel / PDF export
 - Approval workflow
-- Audit trail persistence
-- Dashboard charts by role, module, defect severity, and release cycle
+- Server-side audit trail persistence
+- Release cycle planning and defect aging
+- Reviewer comments and sign-off workflow
 
 ## Disclaimer
 
 This is a portfolio project using mock data. It is not connected to any real bank system and does not contain confidential information, production data, internal policy wording, customer information, employee information, or vendor details.
-

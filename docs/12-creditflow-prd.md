@@ -25,12 +25,16 @@ Banking BA work is often difficult to show in a portfolio because real project a
 In scope:
 
 - Document Checklist Generator
+- Portfolio Analytics Dashboard
 - UAT Test Case Tracker
+- UAT defect and retest workflow
 - Change Request Impact Analyzer
+- Role-Based Workflow View
 - Traceability Matrix
+- Audit Trail
 - Project Case Study page
 - Mock data
-- Local browser state for UAT status updates
+- Local browser state for UAT status, retest status, and activity events
 
 Out of scope:
 
@@ -54,12 +58,20 @@ Out of scope:
 | REQ007 | Generate BG Application Form and Counter Indemnity for Bank Guarantee. |
 | REQ008 | Track UAT test case status and delivery metrics. |
 | REQ009 | Show change request impact across requirements, UAT, controls, and roles. |
+| REQ010 | Show portfolio analytics for checklist, UAT, CR, and traceability coverage. |
+| REQ011 | Track defect severity, root cause, and retest status for failed UAT cases. |
+| REQ012 | Show role-based responsibilities, controls, open UAT cases, and impacted CRs. |
+| REQ013 | Record local audit events for key BA workflow actions. |
 
 ## Success Criteria
 
 - User can generate checklist from business inputs.
 - User can filter and update UAT case status.
+- User can update retest status and review failed case details.
 - User can analyze CR impact and BA recommendation.
+- User can review delivery metrics on the dashboard.
+- User can review role-based workflow impact.
+- User can review local audit events.
 - User can view traceability matrix.
 - App builds successfully with TypeScript.
 - Repository contains no confidential data or secrets.

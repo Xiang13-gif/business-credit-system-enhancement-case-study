@@ -1,11 +1,14 @@
 import {
+  BarChart3,
   ClipboardCheck,
   FileCheck2,
   GitPullRequestArrow,
+  History,
   Home,
   Info,
   Network,
-  ShieldCheck
+  ShieldCheck,
+  Users
 } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -13,10 +16,13 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
+  { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
   { href: "/checklist", label: "Checklist Generator", icon: FileCheck2 },
   { href: "/uat", label: "UAT Tracker", icon: ClipboardCheck },
   { href: "/change-requests", label: "CR Impact", icon: GitPullRequestArrow },
   { href: "/traceability", label: "Traceability", icon: Network },
+  { href: "/roles", label: "Role View", icon: Users },
+  { href: "/audit", label: "Audit Trail", icon: History },
   { href: "/about", label: "About Project", icon: Info }
 ];
 

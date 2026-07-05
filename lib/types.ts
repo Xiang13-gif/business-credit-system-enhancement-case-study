@@ -65,6 +65,8 @@ export interface BusinessRule {
 export type UatPriority = "High" | "Medium" | "Low";
 export type UatStatus = "Not Started" | "In Progress" | "Passed" | "Failed" | "Blocked";
 export type UatRole = "RM" | "Credit Analyst" | "Approver" | "Credit Admin" | "System Admin";
+export type DefectSeverity = "Critical" | "High" | "Medium" | "Low";
+export type RetestStatus = "Not Required" | "Pending Retest" | "Retest Passed" | "Retest Failed";
 
 export interface UatTestCase {
   id: string;
@@ -79,6 +81,9 @@ export interface UatTestCase {
   assignedTester: string;
   executionDate: string;
   defectId?: string;
+  defectSeverity?: DefectSeverity;
+  rootCause?: string;
+  retestStatus: RetestStatus;
   remarks: string;
 }
 
@@ -104,4 +109,15 @@ export interface TraceabilityItem {
   relatedTestCaseId: string;
   relatedChangeRequest: string;
   status: "Active" | "Updated" | "Pending Review";
+}
+
+export interface AuditEvent {
+  id: string;
+  timestamp: string;
+  actor: string;
+  action: string;
+  module: string;
+  referenceId: string;
+  details: string;
+  controlImpact: "Low" | "Medium" | "High";
 }

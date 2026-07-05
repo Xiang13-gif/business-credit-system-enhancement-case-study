@@ -3,6 +3,7 @@
 import { Download, GitPullRequestArrow } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Badge, Button, Card, StatCard } from "@/components/ui";
+import { recordAuditEvent } from "@/lib/audit-log";
 import { changeRequests } from "@/lib/mock-data";
 import { downloadCsv, toCsv } from "@/lib/utils";
 
@@ -37,6 +38,29 @@ export function ChangeRequestAnalyzer() {
         { area: "BA Recommendation", value: selected.baRecommendation }
       ])
     );
+    recordAuditEvent({
+      actor: "BA Reviewer",
+      action: "CR impact exported",
+      module: "Change Request",
+      referenceId: selected.id,
+      details: `Exported impact analysis for ${selected.id}: ${selected.title}.`,
+      controlImpact: selected.implementationPriority === "High" ? "High" : "Medium"
+    });
+  };
+
+  const selectChangeRequest = (id: string) => {
+    const next = changeRequests.find((item) => item.id === id);
+    setSelectedId(id);
+    if (next) {
+      recordAuditEvent({
+        actor: "BA Reviewer",
+        action: "CR impact reviewed",
+        module: "Change Request",
+        referenceId: next.id,
+        details: `Reviewed ${next.title} with ${next.impactedUatCases.length} impacted UAT cases and ${next.impactedBusinessRules.length} impacted rules.`,
+        controlImpact: next.implementationPriority === "High" ? "High" : "Medium"
+      });
+    }
   };
 
   return (
@@ -59,7 +83,7 @@ export function ChangeRequestAnalyzer() {
             </div>
           </div>
           <div className="flex flex-col gap-2 md:flex-row">
-            <select className="control min-w-72" value={selectedId} onChange={(event) => setSelectedId(event.target.value)}>
+            <select className="control min-w-72" value={selectedId} onChange={(event) => selectChangeRequest(event.target.value)}>
               {changeRequests.map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.id}: {item.title}

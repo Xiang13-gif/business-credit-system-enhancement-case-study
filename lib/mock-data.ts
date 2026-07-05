@@ -13,6 +13,7 @@ export const uatTestCases: UatTestCase[] = [
     role: "RM",
     assignedTester: "BA Tester 01",
     executionDate: "2026-02-03",
+    retestStatus: "Not Required",
     remarks: "Checklist generated as expected."
   },
   {
@@ -28,6 +29,9 @@ export const uatTestCases: UatTestCase[] = [
     assignedTester: "BA Tester 02",
     executionDate: "2026-02-04",
     defectId: "DEF-014",
+    defectSeverity: "High",
+    rootCause: "Rule engine mapping did not add exception memo when financial statement was unavailable.",
+    retestStatus: "Pending Retest",
     remarks: "Exception memo was missing in first test run."
   },
   {
@@ -42,6 +46,7 @@ export const uatTestCases: UatTestCase[] = [
     role: "Credit Analyst",
     assignedTester: "BA Tester 03",
     executionDate: "2026-02-05",
+    retestStatus: "Not Required",
     remarks: "Pending regression check for trade facility."
   },
   {
@@ -56,6 +61,7 @@ export const uatTestCases: UatTestCase[] = [
     role: "Approver",
     assignedTester: "BA Tester 04",
     executionDate: "2026-02-05",
+    retestStatus: "Not Required",
     remarks: "EDD generated and warning displayed."
   },
   {
@@ -70,6 +76,7 @@ export const uatTestCases: UatTestCase[] = [
     role: "Credit Admin",
     assignedTester: "BA Tester 05",
     executionDate: "2026-02-06",
+    retestStatus: "Not Required",
     remarks: "Security documents generated correctly."
   },
   {
@@ -84,6 +91,7 @@ export const uatTestCases: UatTestCase[] = [
     role: "RM",
     assignedTester: "BA Tester 01",
     executionDate: "",
+    retestStatus: "Not Required",
     remarks: "Planned for next UAT cycle."
   },
   {
@@ -99,6 +107,9 @@ export const uatTestCases: UatTestCase[] = [
     assignedTester: "BA Tester 02",
     executionDate: "2026-02-07",
     defectId: "DEF-021",
+    defectSeverity: "Medium",
+    rootCause: "Product document mapping is awaiting confirmation from business product owner.",
+    retestStatus: "Pending Retest",
     remarks: "Blocked pending product document mapping confirmation."
   },
   {
@@ -113,6 +124,7 @@ export const uatTestCases: UatTestCase[] = [
     role: "Credit Admin",
     assignedTester: "BA Tester 03",
     executionDate: "2026-02-08",
+    retestStatus: "Not Required",
     remarks: "Local state update works."
   },
   {
@@ -127,6 +139,7 @@ export const uatTestCases: UatTestCase[] = [
     role: "Approver",
     assignedTester: "BA Tester 04",
     executionDate: "2026-02-09",
+    retestStatus: "Not Required",
     remarks: "Recommendation copy under review."
   },
   {
@@ -142,6 +155,9 @@ export const uatTestCases: UatTestCase[] = [
     assignedTester: "BA Tester 05",
     executionDate: "2026-02-10",
     defectId: "DEF-027",
+    defectSeverity: "Critical",
+    rootCause: "Submission control message did not clearly state waiver approval prerequisite.",
+    retestStatus: "Retest Failed",
     remarks: "Submission block wording requires refinement."
   }
 ];

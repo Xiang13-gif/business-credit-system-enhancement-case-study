@@ -3,6 +3,7 @@
 import { AlertTriangle, Download, RotateCcw } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Badge, Button, Card, StatCard } from "@/components/ui";
+import { recordAuditEvent } from "@/lib/audit-log";
 import { defaultChecklistInput, generateChecklist } from "@/lib/checklist-rules";
 import type {
   ApplicationType,
@@ -103,6 +104,27 @@ export function DocumentChecklistGenerator() {
         }))
       )
     );
+    recordAuditEvent({
+      actor: "RM / BA Reviewer",
+      action: "Checklist exported",
+      module: "Document Checklist",
+      referenceId: `${input.applicationType} ${input.facilityType}`,
+      details: `Exported ${result.documents.length} documents for ${input.applicationType}, ${input.facilityType}, ${input.collateralType}, ${input.riskLevel} risk.`,
+      controlImpact: result.warnings.length > 0 ? "High" : "Medium"
+    });
+  };
+
+  const resetChecklist = () => {
+    setInput(defaultChecklistInput);
+    setCategory("All");
+    recordAuditEvent({
+      actor: "RM / BA Reviewer",
+      action: "Checklist inputs reset",
+      module: "Document Checklist",
+      referenceId: "DEFAULT",
+      details: "Checklist inputs were reset to the default New Term Loan with Property collateral scenario.",
+      controlImpact: "Low"
+    });
   };
 
   return (
@@ -121,7 +143,7 @@ export function DocumentChecklistGenerator() {
               <h2 className="text-lg font-semibold">Application Inputs</h2>
               <p className="mt-1 text-sm text-muted-foreground">The output changes when business context changes.</p>
             </div>
-            <Button onClick={() => setInput(defaultChecklistInput)} variant="ghost">
+            <Button onClick={resetChecklist} variant="ghost">
               <RotateCcw className="h-4 w-4" />
               Reset
             </Button>
