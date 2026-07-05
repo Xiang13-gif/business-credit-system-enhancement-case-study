@@ -1,30 +1,49 @@
 {
-  "name": "business-credit-system-enhancement-case-study",
-  "version": "1.0.0",
-  "description": "An anonymized Business Analyst portfolio project for a commercial banking credit platform.",
+  "name": "creditflow-ba-toolkit",
+  "version": "2.0.0",
+  "description": "A Banking BA portfolio toolkit for credit operations requirements, UAT tracking, and change impact analysis.",
   "private": false,
   "packageManager": "pnpm@11.7.0",
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-site.mjs",
-    "check": "pnpm run lint && pnpm run format:check && pnpm run typecheck && pnpm run build",
+    "build": "next build",
+    "check": "pnpm run check:security && pnpm run lint && pnpm run typecheck && pnpm run build",
     "check:security": "node scripts/check-security.mjs",
-    "check:structure": "node scripts/check-structure.mjs",
-    "dev": "pnpm run build && node scripts/serve-dist.mjs",
-    "format:check": "node scripts/format-check.mjs",
-    "lint": "pnpm run check:structure && pnpm run check:security && node scripts/check-links.mjs",
-    "start": "node scripts/serve-dist.mjs",
-    "typecheck": "node scripts/typecheck.mjs"
+    "dev": "next dev --hostname 127.0.0.1",
+    "lint": "eslint . --max-warnings=0",
+    "start": "next start --hostname 127.0.0.1",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "business-analyst",
     "banking",
     "credit-risk",
     "commercial-lending",
-    "portfolio"
+    "uat",
+    "portfolio",
+    "nextjs"
   ],
   "author": "",
   "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "clsx": "latest",
+    "lucide-react": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "recharts": "latest",
+    "tailwind-merge": "latest"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "autoprefixer": "latest",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "latest",
+    "postcss": "latest",
+    "tailwindcss": "3.4.17",
+    "typescript": "latest"
+  }
 }

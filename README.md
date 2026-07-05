@@ -1,93 +1,155 @@
-# Business Credit System Enhancement Case Study
+# CreditFlow BA Toolkit
 
-An anonymized Business Analyst portfolio project for a commercial banking credit platform.
+CreditFlow BA Toolkit is a Banking Business Analyst portfolio web app for a simulated Credit Operations / Loan Origination enhancement project.
 
-This repository documents how a Business Credit System can be enhanced to improve SME and commercial credit application handling, approval routing, document completeness, and operational visibility. It is written as a realistic BA delivery pack, not as a production system.
+It demonstrates how a BA can translate banking process knowledge into requirements, business rules, UAT tracking, change request impact analysis, control risk review, and traceability.
 
-## Case Context
+## Overview
 
-A commercial bank uses a Business Credit System to support business financing applications submitted by Relationship Managers. The system supports facilities such as term loan, overdraft, trade line, and bank guarantee.
+This project models a generalized commercial banking credit enhancement scenario. It is not a real banking system. The MVP uses mock data and local browser state to make the portfolio safe to publish on GitHub.
 
-The enhancement focuses on a practical problem: credit applications often move between Relationship Managers, Credit Analysts, Approvers, Credit Administration, and Compliance with repeated follow-up, manual checklist tracking, and unclear case ownership. This causes rework, slower turnaround time, and weak visibility over pending cases.
+Core modules:
 
-The proposed enhancement introduces structured intake, validation rules, approval routing, credit documentation checklist logic, exception handling, and management reporting.
+- Document Checklist Generator
+- UAT Test Case Tracker
+- Change Request Impact Analyzer
+- Traceability Matrix
+- Project Case Study page
 
-## Project Objective
+## Why I Built This
 
-Improve the credit application journey without pretending that commercial credit can be fully automated.
+I built this project to demonstrate Business Analyst capability beyond writing generic requirements. The app shows how banking credit workflows can be broken down into rules, test scenarios, control risks, change impacts, and delivery tracking.
 
-The target is to reduce rework, improve auditability, and make case status transparent from application creation to credit decision and disbursement readiness.
+The project is designed for recruiter, hiring manager, and interviewer review.
 
-## Scope
+## Key Features
 
-In scope:
+### Document Checklist Generator
 
-- Business credit application intake
-- Facility and collateral capture
-- Credit approval routing
-- Policy exception handling
-- Document checklist and condition precedent tracking
-- Maker-checker control points
-- Case status dashboard
-- UAT scenarios and sample SQL analysis
-- API contract for discussion with technology teams
+- Rule-based document checklist generation
+- Inputs for application type, facility type, collateral type, customer type, risk level, and financial statement availability
+- Required / Conditional / Optional document tagging
+- Business rule rationale for every generated document
+- Risk warning panel for waiver, unsecured exposure, and high-risk customer scenarios
+- CSV export
 
-Out of scope:
+### UAT Test Case Tracker
 
-- Real credit scoring model
-- Core banking posting
-- Pricing engine
-- Live customer data
-- Production integration design
+- Realistic banking UAT cases
+- Filters by priority, status, role, and keyword
+- Editable UAT status dropdown
+- Summary metrics and pass-rate progress bar
+- Failed case highlighting
+- Linked defect ID display
+- CSV export
+- Local browser persistence for status changes
 
-## Repository Guide
+### Change Request Impact Analyzer
 
-| Area | File | Purpose |
-| --- | --- | --- |
-| Business case | [docs/01-business-problem.md](docs/01-business-problem.md) | Explains the problem, goals, assumptions, and success measures. |
-| Process | [docs/02-as-is-to-be-process.md](docs/02-as-is-to-be-process.md) | Shows the current and proposed credit workflow using Mermaid diagrams. |
-| Stakeholders | [docs/03-stakeholders-and-raci.md](docs/03-stakeholders-and-raci.md) | Defines user groups, responsibilities, and RACI. |
-| Requirements | [docs/04-business-requirements.md](docs/04-business-requirements.md) | Functional and non-functional requirements with rationale. |
-| Agile delivery | [docs/05-user-stories.md](docs/05-user-stories.md) | Epics, user stories, and acceptance criteria. |
-| Rules | [docs/06-business-rules-and-approval-matrix.md](docs/06-business-rules-and-approval-matrix.md) | Business rules, routing logic, exception types, and approval matrix. |
-| Data | [docs/07-data-dictionary.md](docs/07-data-dictionary.md) | Data entities, fields, validations, and ownership. |
-| Testing | [docs/08-uat-test-cases.md](docs/08-uat-test-cases.md) | UAT test cases for key business scenarios. |
-| Governance | [docs/09-change-request-log.md](docs/09-change-request-log.md) | Change request examples and impact assessment. |
-| Reporting | [docs/10-dashboard-mockup.md](docs/10-dashboard-mockup.md) | Dashboard layout, KPIs, and sample metrics. |
-| Boundaries | [docs/11-references-and-boundaries.md](docs/11-references-and-boundaries.md) | Research basis, confidentiality note, and portfolio boundaries. |
-| Sample data | [samples/sample-credit-applications.md](samples/sample-credit-applications.md) | Small synthetic data set for analysis examples. |
-| SQL | [sql/credit_pipeline_analysis.sql](sql/credit_pipeline_analysis.sql) | Sample SQL queries for pipeline, SLA, and exception analysis. |
-| API | [api/business-credit-application.yaml](api/business-credit-application.yaml) | OpenAPI-style contract for technical discussion. |
+- Preloaded banking-style change requests
+- Impacted requirements
+- Impacted UAT test cases
+- Impacted roles and business rules
+- Control risk and operational risk
+- BA recommendation
+- Suggested test scope
+- CSV export
 
-## What This Demonstrates
+### Traceability Matrix
 
-This case study is designed to show practical BA capability in banking:
+- Requirement-to-business-rule-to-test-case-to-change-request mapping
+- Searchable matrix
+- Status badges for Active, Updated, and Pending Review items
 
-- Translating an operational credit problem into structured requirements
-- Writing requirements with business rationale, not generic feature lists
-- Understanding credit application roles and approval controls
-- Defining data fields, validations, and ownership
-- Preparing UAT cases that test business outcomes
-- Using SQL to support operational analysis
-- Communicating with developers through an API contract
-- Keeping confidentiality boundaries clear
+## Skills Demonstrated
 
-## Evidence Basis
+- Banking domain knowledge
+- Credit operations / loan origination understanding
+- Business requirement analysis
+- Business rule design
+- UAT planning and delivery tracking
+- Change request impact analysis
+- Risk and control thinking
+- BA recommendation writing
+- Requirement traceability
+- Frontend development with Next.js and TypeScript
+- GitHub-ready project documentation
 
-The design is informed by public banking and risk-management references, including:
+## Tech Stack
 
-- Bank Negara Malaysia Credit Risk policy document: https://www.bnm.gov.my/documents/20124/938039/pd_Credit_Risk_2023.pdf
-- Bank Negara Malaysia Risk Management in Technology policy document: https://www.bnm.gov.my/documents/20124/938039/pd-rmit-nov25.pdf
-- Basel Committee principles for credit risk management: https://www.bis.org/bcbs/publ/d595.htm
-- Bank Negara Malaysia CCRIS overview: https://www.bnm.gov.my/ccris
+- Next.js App Router
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn-style reusable UI components
+- Lucide React icons
+- Mock data and local state
 
-The repository does not copy any bank's internal process, system screen, data, configuration, or policy wording.
+## Screenshots
 
-## Confidentiality Note
+Screenshots can be added after deployment:
 
-This is a portfolio case study based on a generalized commercial banking scenario. All names, amounts, rules, workflows, data, and examples are synthetic. It is not affiliated with any bank and does not disclose client, employee, vendor, system, or production information.
+- `screenshots/home.png`
+- `screenshots/checklist-generator.png`
+- `screenshots/uat-tracker.png`
+- `screenshots/change-impact-analyzer.png`
+- `screenshots/traceability-matrix.png`
 
-## Suggested LinkedIn Summary
+## How to Run
 
-Business Credit System Enhancement case study covering commercial credit workflow, approval routing, document checklist controls, exception handling, data dictionary, UAT scenarios, SQL analysis, dashboard mockup, and API contract.
+```bash
+pnpm install
+pnpm run dev
+```
+
+Open:
+
+```text
+http://127.0.0.1:3000
+```
+
+## Quality Checks
+
+```bash
+pnpm run check
+```
+
+This runs:
+
+- sensitive file and token scan
+- ESLint
+- TypeScript typecheck
+- production build
+
+## Build
+
+```bash
+pnpm run build
+pnpm run start
+```
+
+## Deploy to Vercel
+
+Recommended settings:
+
+- Framework preset: Next.js
+- Install command: `pnpm install`
+- Build command: `pnpm run build`
+- Output: Next.js default
+
+## Future Enhancement
+
+- User login
+- Role-based access control
+- Next.js API routes
+- PostgreSQL / Supabase database
+- Prisma ORM
+- Excel / PDF export
+- Approval workflow
+- Audit trail persistence
+- Dashboard charts by role, module, defect severity, and release cycle
+
+## Disclaimer
+
+This is a portfolio project using mock data. It is not connected to any real bank system and does not contain confidential information, production data, internal policy wording, customer information, employee information, or vendor details.
 

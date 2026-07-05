@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 210 33% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --muted: 214 32% 93%;
+  --muted-foreground: 215 16% 42%;
+  --border: 214 32% 88%;
+  --primary: 186 88% 24%;
+  --primary-foreground: 0 0% 100%;
+  --warning: 42 89% 56%;
+  --warning-foreground: 35 92% 12%;
+  --success: 161 94% 30%;
+  --success-foreground: 0 0% 100%;
+  --danger: 0 72% 51%;
+  --danger-foreground: 0 0% 100%;
+}
+
+.dark {
+  --background: 222 47% 8%;
+  --foreground: 210 40% 96%;
+  --card: 222 47% 11%;
+  --card-foreground: 210 40% 96%;
+  --muted: 217 33% 18%;
+  --muted-foreground: 215 20% 72%;
+  --border: 217 33% 22%;
+  --primary: 174 72% 42%;
+  --primary-foreground: 222 47% 8%;
+  --warning: 45 93% 58%;
+  --warning-foreground: 35 92% 12%;
+  --success: 160 84% 39%;
+  --success-foreground: 0 0% 100%;
+  --danger: 0 72% 58%;
+  --danger-foreground: 0 0% 100%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+@layer components {
+  .panel {
+    @apply rounded-lg border bg-card text-card-foreground shadow-soft;
+  }
+
+  .control {
+    @apply h-10 rounded-md border bg-background px-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20;
+  }
+
+  .table-head {
+    @apply bg-muted/70 text-xs font-semibold uppercase tracking-normal text-muted-foreground;
+  }
+}

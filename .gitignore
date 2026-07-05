@@ -23,10 +23,10 @@ node_modules/
 dist/
 build/
 coverage/
+*.tsbuildinfo
 
 # Local caches
 .cache/
 .turbo/
 .vercel/
 .netlify/
-

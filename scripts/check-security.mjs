@@ -44,6 +44,8 @@ const textExtensions = new Set([
   ".mjs",
   ".sql",
   ".svg",
+  ".ts",
+  ".tsx",
   ".txt",
   ".yaml",
   ".yml"
