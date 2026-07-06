@@ -1,4 +1,10 @@
-import type { ChangeRequest, TraceabilityItem, UatTestCase } from "@/lib/types";
+import type {
+  ChangeRequest,
+  CreditPipelineCase,
+  PolicyException,
+  TraceabilityItem,
+  UatTestCase
+} from "@/lib/types";
 
 export const uatTestCases: UatTestCase[] = [
   {
@@ -159,6 +165,69 @@ export const uatTestCases: UatTestCase[] = [
     rootCause: "Submission control message did not clearly state waiver approval prerequisite.",
     retestStatus: "Retest Failed",
     remarks: "Submission block wording requires refinement."
+  },
+  {
+    id: "TC011",
+    module: "Approval Routing Simulator",
+    requirementId: "REQ017",
+    scenario: "Verify approval route escalates when exposure, risk level, and exception severity increase.",
+    testSteps: "Enter USD 12,000,000 exposure, High risk, Unsecured collateral, and Critical exception.",
+    expectedResult: "System recommends Group Credit Committee with maker-checker controls and escalation triggers.",
+    priority: "High",
+    status: "Passed",
+    role: "Approver",
+    assignedTester: "BA Tester 04",
+    executionDate: "2026-02-11",
+    retestStatus: "Not Required",
+    remarks: "Route escalated to committee as expected."
+  },
+  {
+    id: "TC012",
+    module: "Approval Routing Simulator",
+    requirementId: "REQ018",
+    scenario: "Verify approval override requires reason and audit evidence.",
+    testSteps: "Generate Regional Credit Manager route and attempt override without reason.",
+    expectedResult: "Override is blocked until authorized role and reason are captured.",
+    priority: "High",
+    status: "In Progress",
+    role: "System Admin",
+    assignedTester: "BA Tester 02",
+    executionDate: "2026-02-12",
+    retestStatus: "Not Required",
+    remarks: "Awaiting final copy for override reason code validation."
+  },
+  {
+    id: "TC013",
+    module: "Policy Exception Register",
+    requirementId: "REQ019",
+    scenario: "Verify pending policy exceptions appear with severity, owner, mitigation, and aging.",
+    testSteps: "Open exception register and filter for Pending Approval exceptions.",
+    expectedResult: "System displays exception owner, mitigation, approval tier, aging, and control evidence.",
+    priority: "Medium",
+    status: "Passed",
+    role: "Credit Analyst",
+    assignedTester: "BA Tester 03",
+    executionDate: "2026-02-12",
+    retestStatus: "Not Required",
+    remarks: "Exception register shows required governance fields."
+  },
+  {
+    id: "TC014",
+    module: "Executive Dashboard",
+    requirementId: "REQ020",
+    scenario: "Verify pipeline dashboard highlights bottlenecks and overdue cases.",
+    testSteps: "Review executive dashboard and confirm aging by stage and owner role is visible.",
+    expectedResult: "Dashboard displays aged cases, pending owner, exception volume, and document readiness.",
+    priority: "High",
+    status: "Blocked",
+    role: "Credit Admin",
+    assignedTester: "BA Tester 05",
+    executionDate: "2026-02-13",
+    defectId: "DEF-034",
+    defectSeverity: "Medium",
+    rootCause: "Business team requested updated SLA aging threshold before sign-off.",
+    retestStatus: "Pending Retest",
+    remarks: "Blocked pending SLA threshold confirmation."
   }
 ];
 
@@ -291,6 +360,200 @@ export const changeRequests: ChangeRequest[] = [
       "Export UAT report"
     ],
     implementationPriority: "Medium"
+  },
+  {
+    id: "CR005",
+    title: "Introduce risk-based approval routing",
+    description:
+      "Generate approval authority based on total exposure, risk level, collateral coverage, customer segment, application type, and exception severity.",
+    impactedRequirements: [
+      "REQ017 - Recommend approval route before Credit Review submission",
+      "REQ018 - Require controlled override for approval route changes",
+      "REQ020 - Refresh pipeline dashboard when route or owner changes"
+    ],
+    impactedUatCases: ["TC011", "TC012", "TC014"],
+    impactedRoles: ["RM", "Credit Analyst", "Approver", "System Admin"],
+    impactedBusinessRules: ["BR013", "BR014", "BR015"],
+    controlRisk: [
+      "Incorrect routing may lead to approval outside delegated authority.",
+      "Manual route overrides may weaken audit evidence if reason and owner are not captured.",
+      "High-risk or unsecured cases may be approved without sufficient committee visibility."
+    ],
+    operationalRisk: [
+      "Credit Analyst may spend extra time clarifying authority level.",
+      "Approver workload may increase if routing thresholds are not calibrated.",
+      "Dashboard aging may be misleading if owner changes are not reflected."
+    ],
+    baRecommendation:
+      "Adopt transparent risk-based routing with threshold rules, override reason codes, maker-checker validation, and traceability to UAT regression scenarios.",
+    suggestedTestScope: [
+      "Low exposure fully secured route",
+      "High exposure unsecured route",
+      "Critical exception escalation",
+      "Override reason validation",
+      "Audit trail and dashboard owner refresh"
+    ],
+    implementationPriority: "High"
+  }
+];
+
+export const policyExceptions: PolicyException[] = [
+  {
+    id: "EXC001",
+    type: "Missing latest audited financial statement",
+    severity: "Major",
+    facilityType: "Term Loan",
+    status: "Pending Approval",
+    ownerRole: "Credit Analyst",
+    agingDays: 6,
+    mitigation: "Management accounts, bank statements, and tax return required as alternate evidence.",
+    approvalTier: "Country Credit Committee",
+    linkedRequirement: "REQ002",
+    linkedTestCase: "TC002",
+    controlEvidence: "Waiver form, exception memo, approver decision, and audit timestamp."
+  },
+  {
+    id: "EXC002",
+    type: "Unsecured exposure above standard threshold",
+    severity: "Critical",
+    facilityType: "Overdraft",
+    status: "Pending Approval",
+    ownerRole: "Approver",
+    agingDays: 9,
+    mitigation: "Additional repayment capacity analysis and monthly conduct monitoring.",
+    approvalTier: "Group Credit Committee",
+    linkedRequirement: "REQ017",
+    linkedTestCase: "TC011",
+    controlEvidence: "Exception register, committee approval note, and route override history."
+  },
+  {
+    id: "EXC003",
+    type: "High risk customer EDD pending",
+    severity: "Major",
+    facilityType: "Trade Line",
+    status: "Draft",
+    ownerRole: "RM",
+    agingDays: 3,
+    mitigation: "EDD checklist to be completed before submission to Credit Review.",
+    approvalTier: "Country Credit Committee",
+    linkedRequirement: "REQ004",
+    linkedTestCase: "TC004",
+    controlEvidence: "EDD checklist, screening result, and compliance review note."
+  },
+  {
+    id: "EXC004",
+    type: "Corporate guarantee authority evidence incomplete",
+    severity: "Minor",
+    facilityType: "Bank Guarantee",
+    status: "Approved",
+    ownerRole: "Credit Admin",
+    agingDays: 2,
+    mitigation: "Board resolution obtained with authorized signatory verification.",
+    approvalTier: "Regional Credit Manager",
+    linkedRequirement: "REQ005",
+    linkedTestCase: "TC005",
+    controlEvidence: "Board resolution, signatory evidence, and guarantee agreement."
+  },
+  {
+    id: "EXC005",
+    type: "Trade facility product document mapping pending",
+    severity: "Minor",
+    facilityType: "Trade Line",
+    status: "Expired",
+    ownerRole: "System Admin",
+    agingDays: 14,
+    mitigation: "Product owner to confirm final document mapping before next UAT cycle.",
+    approvalTier: "Regional Credit Manager",
+    linkedRequirement: "REQ006",
+    linkedTestCase: "TC006",
+    controlEvidence: "Product owner sign-off and updated checklist rule mapping."
+  }
+];
+
+export const creditPipelineCases: CreditPipelineCase[] = [
+  {
+    id: "CASE-1001",
+    customerSegment: "SME",
+    facilityType: "Term Loan",
+    exposure: 750000,
+    riskLevel: "Medium",
+    stage: "Pending RM Action",
+    ownerRole: "RM",
+    agingDays: 5,
+    exceptionCount: 1,
+    documentReadiness: 68
+  },
+  {
+    id: "CASE-1002",
+    customerSegment: "Mid-Market",
+    facilityType: "Overdraft",
+    exposure: 2500000,
+    riskLevel: "High",
+    stage: "Credit Analysis",
+    ownerRole: "Credit Analyst",
+    agingDays: 8,
+    exceptionCount: 2,
+    documentReadiness: 76
+  },
+  {
+    id: "CASE-1003",
+    customerSegment: "Large Corporate",
+    facilityType: "Trade Line",
+    exposure: 12000000,
+    riskLevel: "Medium",
+    stage: "Approval Review",
+    ownerRole: "Approver",
+    agingDays: 11,
+    exceptionCount: 1,
+    documentReadiness: 91
+  },
+  {
+    id: "CASE-1004",
+    customerSegment: "SME",
+    facilityType: "Bank Guarantee",
+    exposure: 430000,
+    riskLevel: "Low",
+    stage: "Documentation",
+    ownerRole: "Credit Admin",
+    agingDays: 4,
+    exceptionCount: 0,
+    documentReadiness: 88
+  },
+  {
+    id: "CASE-1005",
+    customerSegment: "Mid-Market",
+    facilityType: "Term Loan",
+    exposure: 5600000,
+    riskLevel: "High",
+    stage: "Approval Review",
+    ownerRole: "Approver",
+    agingDays: 13,
+    exceptionCount: 2,
+    documentReadiness: 82
+  },
+  {
+    id: "CASE-1006",
+    customerSegment: "SME",
+    facilityType: "Trade Line",
+    exposure: 980000,
+    riskLevel: "Medium",
+    stage: "Ready for Facility Setup",
+    ownerRole: "Credit Admin",
+    agingDays: 1,
+    exceptionCount: 0,
+    documentReadiness: 100
+  },
+  {
+    id: "CASE-1007",
+    customerSegment: "Large Corporate",
+    facilityType: "Overdraft",
+    exposure: 18500000,
+    riskLevel: "High",
+    stage: "Credit Analysis",
+    ownerRole: "Credit Analyst",
+    agingDays: 15,
+    exceptionCount: 3,
+    documentReadiness: 64
   }
 ];
 
@@ -366,5 +629,37 @@ export const traceabilityMatrix: TraceabilityItem[] = [
     relatedTestCaseId: "TC009",
     relatedChangeRequest: "CR001",
     status: "Active"
+  },
+  {
+    requirementId: "REQ017",
+    requirementDescription: "Recommend approval route based on exposure, risk, collateral, segment, and exception severity.",
+    relatedBusinessRule: "BR013, BR014",
+    relatedTestCaseId: "TC011",
+    relatedChangeRequest: "CR005",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ018",
+    requirementDescription: "Require reason, authorized role, and audit evidence when approval route is overridden.",
+    relatedBusinessRule: "BR014",
+    relatedTestCaseId: "TC012",
+    relatedChangeRequest: "CR005",
+    status: "Pending Review"
+  },
+  {
+    requirementId: "REQ019",
+    requirementDescription: "Track policy exceptions by severity, owner, mitigation, aging, approval tier, and evidence.",
+    relatedBusinessRule: "BR005, BR006, BR015",
+    relatedTestCaseId: "TC013",
+    relatedChangeRequest: "CR001, CR003, CR005",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ020",
+    requirementDescription: "Show pipeline aging, bottlenecks, owner role, exception volume, and document readiness.",
+    relatedBusinessRule: "BR015",
+    relatedTestCaseId: "TC014",
+    relatedChangeRequest: "CR005",
+    status: "Updated"
   }
 ];

@@ -24,6 +24,9 @@ This page contains synthetic rules for portfolio demonstration. They are not cop
 | BR-008 | Waiver reason is mandatory for waived documents or conditions. | User selects Waived. | Require reason and approver. | Supports auditability. |
 | BR-009 | Maker cannot approve own waiver or route override. | Waiver or override submitted. | Hide or block approval action for maker. | Maintains segregation of duties. |
 | BR-010 | Case cannot be marked Ready for Facility Setup with open mandatory conditions. | Credit Admin clicks Ready. | Block action and show open condition list. | Prevents premature downstream processing. |
+| BR-013 | Approval authority is recommended from exposure, risk level, collateral coverage, segment, application type, and exception severity. | Credit case inputs are saved or changed. | Generate recommended approval tier with rationale. | Reduces manual routing error and supports delegated authority control. |
+| BR-014 | Approval route override must be controlled. | Authorized user changes recommended route. | Require reason, authorized role, maker-checker check, and audit event. | Prevents undocumented approval authority changes. |
+| BR-015 | Policy exceptions and owner changes must refresh management visibility. | Exception status, route, or owner changes. | Update dashboard indicators and traceability references. | Ensures governance review sees current risk and bottleneck position. |
 
 ## Facility Types
 
@@ -38,12 +41,12 @@ This page contains synthetic rules for portfolio demonstration. They are not cop
 
 The approval matrix below is simplified for portfolio use.
 
-| Total Exposure | Risk Grade A-B | Risk Grade C | Risk Grade D or High Exception |
+| Total Exposure | Low Risk / Fully Secured | Medium Risk or Partial Security | High Risk, Unsecured, or Major Exception |
 | ---: | --- | --- | --- |
-| Up to MYR 500,000 | Level 1 Approver | Level 2 Approver | Level 3 Approver |
-| MYR 500,001 to MYR 2,000,000 | Level 2 Approver | Level 3 Approver | Credit Committee |
-| MYR 2,000,001 to MYR 5,000,000 | Level 3 Approver | Credit Committee | Credit Committee |
-| Above MYR 5,000,000 | Credit Committee | Credit Committee | Credit Committee plus exception approval |
+| Up to USD 250,000 | Credit Analyst Review | Regional Credit Manager | Country Credit Committee |
+| USD 250,001 to USD 1,000,000 | Regional Credit Manager | Regional Credit Manager | Country Credit Committee |
+| USD 1,000,001 to USD 5,000,000 | Regional Credit Manager | Country Credit Committee | Group Credit Committee |
+| Above USD 5,000,000 | Country Credit Committee | Group Credit Committee | Group Credit Committee plus exception approval |
 
 ## Approval Routing Logic
 
@@ -62,6 +65,17 @@ flowchart TD
     I -- No --> K[Submit to approver queue]
     J --> K
 ```
+
+## Approval Routing Score Factors
+
+| Factor | Example Impact |
+| --- | --- |
+| Total exposure | Higher exposure increases approval authority. |
+| Risk level | High risk increases routing score and control review. |
+| Collateral coverage | Unsecured exposure requires stronger rationale and maker-checker control. |
+| Exception severity | Major or critical exceptions trigger escalation and approval evidence. |
+| Customer segment | Large corporate cases may require higher governance visibility. |
+| Application type | New and enhancement cases require additional package review. |
 
 ## Exception Categories
 
@@ -83,4 +97,3 @@ flowchart TD
 | Property collateral | Valuation report, title details, insurance requirement, security perfection status. |
 | Corporate guarantor | Guarantor profile, authorization document, financial summary where applicable. |
 | Trade facility | Trade transaction profile, buyer/supplier information, facility purpose notes. |
-

@@ -12,6 +12,8 @@ const statuses: Array<UatStatus | "All"> = ["All", "Not Started", "In Progress",
 const priorities: Array<UatPriority | "All"> = ["All", "High", "Medium", "Low"];
 const roles: Array<UatRole | "All"> = ["All", "RM", "Credit Analyst", "Approver", "Credit Admin", "System Admin"];
 const retestStatuses: RetestStatus[] = ["Not Required", "Pending Retest", "Retest Passed", "Retest Failed"];
+const UAT_STATUS_STORAGE_KEY = "gccm-uat-status";
+const UAT_RETEST_STORAGE_KEY = "gccm-uat-retest";
 
 function statusTone(status: UatStatus) {
   if (status === "Passed") {
@@ -74,8 +76,8 @@ export function UatTracker() {
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      const storedStatuses = readStoredMap<UatStatus>("creditflow-uat-status");
-      const storedRetests = readStoredMap<RetestStatus>("creditflow-uat-retest");
+      const storedStatuses = readStoredMap<UatStatus>(UAT_STATUS_STORAGE_KEY);
+      const storedRetests = readStoredMap<RetestStatus>(UAT_RETEST_STORAGE_KEY);
 
       setCases(
         uatTestCases.map((item) => ({
@@ -95,12 +97,12 @@ export function UatTracker() {
 
   const persistStatus = (updated: UatTestCase[]) => {
     const storedStatuses = Object.fromEntries(updated.map((item) => [item.id, item.status]));
-    window.localStorage.setItem("creditflow-uat-status", JSON.stringify(storedStatuses));
+    window.localStorage.setItem(UAT_STATUS_STORAGE_KEY, JSON.stringify(storedStatuses));
   };
 
   const persistRetest = (updated: UatTestCase[]) => {
     const storedRetests = Object.fromEntries(updated.map((item) => [item.id, item.retestStatus]));
-    window.localStorage.setItem("creditflow-uat-retest", JSON.stringify(storedRetests));
+    window.localStorage.setItem(UAT_RETEST_STORAGE_KEY, JSON.stringify(storedRetests));
   };
 
   const updateStatus = (id: string, nextStatus: UatStatus) => {
@@ -175,7 +177,7 @@ export function UatTracker() {
 
   const exportReport = () => {
     downloadCsv(
-      "creditflow-uat-report.csv",
+      "gccm-uat-report.csv",
       toCsv(
         filteredCases.map((item) => ({
           id: item.id,

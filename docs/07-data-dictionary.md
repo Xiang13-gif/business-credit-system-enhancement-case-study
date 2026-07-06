@@ -8,7 +8,7 @@ The data dictionary focuses on fields required for business workflow, reporting,
 | --- | --- | --- | --- | --- | --- |
 | application_id | Text | Yes | BCS-2026-000184 | System generated unique ID. | System |
 | customer_id | Text | Yes | CUST-10492 | Links to customer profile. | RM |
-| customer_name | Text | Yes | Suria Components Sdn Bhd | Display field from customer profile. | RM |
+| customer_name | Text | Yes | Northstar Components Ltd | Display field from customer profile. | RM |
 | customer_type | List | Yes | Company | Company, Partnership, Sole Proprietor, Other. | RM |
 | segment | List | Yes | SME | SME, Commercial, Corporate. | RM |
 | rm_owner | Text | Yes | RM-017 | Must be active user. | RM Team |
@@ -87,4 +87,3 @@ The data dictionary focuses on fields required for business workflow, reporting,
 | DQ-004 | Decision date cannot be earlier than submitted date. |
 | DQ-005 | Ready for Facility Setup requires all mandatory conditions to be completed or waived. |
 | DQ-006 | Route override requires authorized user, reason, and audit trail entry. |
-

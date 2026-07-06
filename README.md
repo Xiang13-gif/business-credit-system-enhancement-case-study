@@ -1,110 +1,72 @@
-# CreditFlow BA Toolkit
+# Global Commercial Credit Modernization Platform
 
-CreditFlow BA Toolkit is a Banking Business Analyst portfolio web app for a simulated Credit Operations / Loan Origination enhancement project.
+A flagship Banking Business Analyst / Product Analyst portfolio project for commercial lending workflow modernization.
 
-It demonstrates how a BA can translate banking process knowledge into requirements, business rules, UAT tracking, change request impact analysis, control risk review, and traceability.
+The project simulates how a global bank could modernize commercial credit operations through document automation, risk-based approval routing, policy exception governance, UAT traceability, audit evidence, and executive dashboards.
 
-## Overview
+## Portfolio Positioning
 
-This project models a generalized commercial banking credit enhancement scenario. It is not a real banking system. The MVP uses mock data and local browser state to make the portfolio safe to publish on GitHub.
+This is not a generic dashboard demo. It is a banking transformation case study designed to show how a BA can translate commercial lending pain points into requirements, business rules, controls, UAT scope, change impact analysis, traceability, and management reporting.
 
-Core modules:
+Target review audience:
 
-- Document Checklist Generator
-- Portfolio Analytics Dashboard
-- UAT Test Case Tracker
-- Change Request Impact Analyzer
-- Role-Based Workflow View
-- Traceability Matrix
-- Audit Trail
-- Project Case Study page
+- Banking Business Analyst hiring managers
+- Product Analyst and Product Owner teams
+- Credit Operations and Lending Services teams
+- Risk, Controls, and Transformation teams
+- Recruiters screening for financial services domain capability
 
-## Why I Built This
+## Business Problem
 
-I built this project to demonstrate Business Analyst capability beyond writing generic requirements. The app shows how banking credit workflows can be broken down into rules, test scenarios, control risks, change impacts, and delivery tracking.
+Commercial credit workflows often involve multiple facilities, documents, collateral items, policy exceptions, approval authorities, UAT cycles, and operational handoffs.
 
-The project is designed for recruiter, hiring manager, and interviewer review.
+Common pain points modeled in this project:
 
-## Key Features
+- RM submissions with missing documents or unclear waiver status
+- Manual approval routing and delegated authority interpretation
+- Policy exceptions captured in notes instead of structured registers
+- Credit pipeline bottlenecks tracked outside the system
+- UAT defects and retests disconnected from requirements
+- Weak visibility across control evidence, audit trail, and change impact
 
-### Document Checklist Generator
+## Core Modules
 
-- Rule-based document checklist generation
-- Inputs for application type, facility type, collateral type, customer type, risk level, and financial statement availability
-- Required / Conditional / Optional document tagging
-- Business rule rationale for every generated document
-- Risk warning panel for waiver, unsecured exposure, and high-risk customer scenarios
-- CSV export
+| Module | Purpose |
+| --- | --- |
+| Executive Dashboard | Pipeline exposure, aging, bottlenecks, owner role, exception severity, document readiness, UAT health, CR priority, and traceability status. |
+| Approval Routing Simulator | Risk-based delegated authority using exposure, risk level, collateral coverage, customer segment, facility type, and exception severity. |
+| Policy Exception Register | Exception governance with severity, mitigation, owner, aging, approval tier, control evidence, requirement linkage, and UAT coverage. |
+| Document Checklist Generator | Rule-based document checklist generation for commercial credit applications. |
+| UAT Test Case Tracker | UAT execution, defect linkage, retest tracking, pass rate, filters, and export. |
+| Change Request Impact Analyzer | CR impact across requirements, UAT scope, roles, business rules, controls, operational risk, and BA recommendation. |
+| Role-Based Workflow View | RM, Credit Analyst, Approver, Credit Admin, and System Admin lenses for role-specific impact. |
+| Traceability Matrix | Requirement-to-business-rule-to-test-case-to-change-request linkage. |
+| Audit Trail | Local activity log for exports, UAT updates, role review, route simulation, and CR review. |
+| Case Study Page | Project story, scope, risk controls, future enhancements, and confidentiality boundary. |
 
-### UAT Test Case Tracker
+## Key Capabilities Demonstrated
 
-- Realistic banking UAT cases
-- Filters by priority, status, role, and keyword
-- Editable UAT status dropdown
-- Editable retest status for failed and blocked cases
-- Summary metrics and pass-rate progress bar
-- Failed case highlighting
-- Linked defect ID display
-- Defect severity, root cause, and retest monitoring
-- CSV export
-- Local browser persistence for status and retest changes
+- Commercial banking and loan origination domain knowledge
+- Business requirement analysis and acceptance criteria thinking
+- Approval matrix and delegated authority rule design
+- Policy exception governance and maker-checker control
+- Document checklist logic and waiver handling
+- UAT planning, defect tracking, retest workflow, and release readiness
+- Change request impact analysis and scope control
+- Requirement traceability and audit evidence
+- Executive dashboard storytelling for credit operations
+- Frontend implementation with Next.js, TypeScript, Tailwind CSS, and Recharts
 
-### Portfolio Analytics Dashboard
+## Sample Portfolio Metrics
 
-- UAT status mix chart
-- Document category distribution chart
-- Change request priority chart
-- Traceability status chart
-- BA-ready metrics for pass rate, open defects, pending retest, high-priority CRs, and checklist coverage
+The application uses mock data only. Metrics are portfolio assumptions for demonstration:
 
-### Change Request Impact Analyzer
-
-- Preloaded banking-style change requests
-- Impacted requirements
-- Impacted UAT test cases
-- Impacted roles and business rules
-- Control risk and operational risk
-- BA recommendation
-- Suggested test scope
-- CSV export
-
-### Role-Based Workflow View
-
-- Role selector for RM, Credit Analyst, Approver, Credit Admin, and System Admin
-- Role-specific responsibilities, control focus, and open UAT queue
-- Impacted change request view by user role
-- Local audit event recorded when the reviewer changes role perspective
-
-### Traceability Matrix
-
-- Requirement-to-business-rule-to-test-case-to-change-request mapping
-- Searchable matrix
-- Status badges for Active, Updated, and Pending Review items
-
-### Audit Trail
-
-- Local activity log for checklist export, reset, UAT status update, retest update, CR selection, CR export, and role review
-- Seeded sample events to show how BA/system activity is monitored
-- Reset action for demo cleanup
-- Designed as a frontend MVP pattern that can later move to API routes and database persistence
-
-## Skills Demonstrated
-
-- Banking domain knowledge
-- Credit operations / loan origination understanding
-- Business requirement analysis
-- Business rule design
-- UAT planning and delivery tracking
-- Defect and retest workflow thinking
-- Change request impact analysis
-- Risk and control thinking
-- BA recommendation writing
-- Requirement traceability
-- Operational audit and activity tracking
-- Role-based stakeholder analysis
-- Dashboard storytelling for delivery progress
-- Frontend development with Next.js and TypeScript
-- GitHub-ready project documentation
+- Pipeline exposure and case aging by owner role
+- Document readiness percentage
+- Policy exception severity and aging
+- UAT pass rate, failed cases, blocked cases, and pending retest
+- High-priority change request count
+- Requirement traceability coverage
 
 ## Tech Stack
 
@@ -112,37 +74,26 @@ The project is designed for recruiter, hiring manager, and interviewer review.
 - React
 - TypeScript
 - Tailwind CSS
-- shadcn-style reusable UI components
+- shadcn-style reusable UI primitives
 - Lucide React icons
 - Recharts
-- Mock data and local state
+- Mock data and local browser state
 
 ## Main Routes
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Portfolio overview and module entry points |
-| `/dashboard` | Analytics dashboard for delivery, UAT, CR, and checklist metrics |
+| `/` | Executive portfolio overview and module entry points |
+| `/dashboard` | Credit operations control room |
+| `/approval-routing` | Risk-based approval routing simulator |
+| `/exceptions` | Policy exception register |
 | `/checklist` | Rule-based document checklist generator |
-| `/uat` | UAT tracker with status, defect, and retest workflow |
+| `/uat` | UAT tracker with defect and retest workflow |
 | `/change-requests` | Change request impact analyzer |
 | `/roles` | Role-based workflow and stakeholder view |
 | `/traceability` | Requirement-to-test-to-CR matrix |
 | `/audit` | Local activity log and audit trail |
 | `/about` | Project case study and BA positioning |
-
-## Screenshots
-
-Screenshots can be added after deployment:
-
-- `screenshots/home.png`
-- `screenshots/dashboard.png`
-- `screenshots/checklist-generator.png`
-- `screenshots/uat-tracker.png`
-- `screenshots/change-impact-analyzer.png`
-- `screenshots/role-view.png`
-- `screenshots/traceability-matrix.png`
-- `screenshots/audit-trail.png`
 
 ## How to Run
 
@@ -170,13 +121,6 @@ This runs:
 - TypeScript typecheck
 - production build
 
-## Build
-
-```bash
-pnpm run build
-pnpm run start
-```
-
 ## Deploy to Vercel
 
 Recommended settings:
@@ -186,19 +130,29 @@ Recommended settings:
 - Build command: `pnpm run build`
 - Output: Next.js default
 
-## Future Enhancement
+## LinkedIn Project Summary
 
-- User login
-- Role-based access control
-- Next.js API routes
+Built a Global Commercial Credit Modernization Platform simulator to demonstrate how a Banking Business Analyst can modernize commercial lending workflows through document automation, approval routing, policy exception governance, UAT traceability, audit controls, and operational dashboards.
+
+Suggested highlights:
+
+- Designed risk-based approval routing logic using exposure, risk level, collateral coverage, customer segment, and exception severity.
+- Built a policy exception register with severity, mitigation, aging, approval authority, control evidence, and UAT linkage.
+- Created executive dashboard views for pipeline aging, bottlenecks, document readiness, UAT health, change requests, and traceability.
+- Modeled BA artifacts including requirements, business rules, UAT cases, change impact analysis, traceability, and audit trail.
+
+## Future Enhancements
+
+- User login and role-based access control
+- API routes and database persistence
 - PostgreSQL / Supabase database
 - Prisma ORM
 - Excel / PDF export
-- Approval workflow
+- Workflow approval state machine
 - Server-side audit trail persistence
 - Release cycle planning and defect aging
 - Reviewer comments and sign-off workflow
 
 ## Disclaimer
 
-This is a portfolio project using mock data. It is not connected to any real bank system and does not contain confidential information, production data, internal policy wording, customer information, employee information, or vendor details.
+This is a portfolio project using mock data and generalized banking logic. It is not connected to any real bank system and does not contain confidential information, production data, internal policy wording, customer information, employee information, or vendor details.

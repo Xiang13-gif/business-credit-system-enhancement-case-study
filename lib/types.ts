@@ -20,6 +20,25 @@ export type CustomerType =
 
 export type RiskLevel = "Low" | "Medium" | "High";
 
+export type CustomerSegment = "SME" | "Mid-Market" | "Large Corporate";
+
+export type CollateralCoverage = "Fully Secured" | "Partially Secured" | "Unsecured";
+
+export type ExceptionSeverity = "None" | "Minor" | "Major" | "Critical";
+
+export type ApprovalTier =
+  | "Credit Analyst Review"
+  | "Regional Credit Manager"
+  | "Country Credit Committee"
+  | "Group Credit Committee";
+
+export type PipelineStage =
+  | "Pending RM Action"
+  | "Credit Analysis"
+  | "Approval Review"
+  | "Documentation"
+  | "Ready for Facility Setup";
+
 export type FinancialStatementStatus = "Available" | "Not Available" | "Waiver Requested";
 
 export type RequirementLevel = "Required" | "Conditional" | "Optional";
@@ -38,6 +57,26 @@ export interface ChecklistInput {
   customerType: CustomerType;
   riskLevel: RiskLevel;
   financialStatementStatus: FinancialStatementStatus;
+}
+
+export interface ApprovalRoutingInput {
+  applicationType: ApplicationType;
+  facilityType: FacilityType;
+  customerSegment: CustomerSegment;
+  totalExposure: number;
+  riskLevel: RiskLevel;
+  collateralCoverage: CollateralCoverage;
+  exceptionSeverity: ExceptionSeverity;
+}
+
+export interface ApprovalRouteResult {
+  tier: ApprovalTier;
+  score: number;
+  slaDays: number;
+  makerCheckerRequired: boolean;
+  rationale: string[];
+  requiredControls: string[];
+  escalationTriggers: string[];
 }
 
 export interface ChecklistDocument {
@@ -100,6 +139,34 @@ export interface ChangeRequest {
   baRecommendation: string;
   suggestedTestScope: string[];
   implementationPriority: "High" | "Medium" | "Low";
+}
+
+export interface PolicyException {
+  id: string;
+  type: string;
+  severity: Exclude<ExceptionSeverity, "None">;
+  facilityType: FacilityType;
+  status: "Draft" | "Pending Approval" | "Approved" | "Rejected" | "Expired";
+  ownerRole: UatRole;
+  agingDays: number;
+  mitigation: string;
+  approvalTier: ApprovalTier;
+  linkedRequirement: string;
+  linkedTestCase: string;
+  controlEvidence: string;
+}
+
+export interface CreditPipelineCase {
+  id: string;
+  customerSegment: CustomerSegment;
+  facilityType: FacilityType;
+  exposure: number;
+  riskLevel: RiskLevel;
+  stage: PipelineStage;
+  ownerRole: UatRole;
+  agingDays: number;
+  exceptionCount: number;
+  documentReadiness: number;
 }
 
 export interface TraceabilityItem {
