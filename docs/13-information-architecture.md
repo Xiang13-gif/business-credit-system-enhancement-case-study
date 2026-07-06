@@ -5,7 +5,9 @@
 | Page | Purpose |
 | --- | --- |
 | Home | Portfolio introduction, quick stats, module entry points. |
-| Dashboard | Portfolio analytics for UAT, checklist, CR, and traceability metrics. |
+| Dashboard | Credit operations control room for pipeline aging, owner bottlenecks, exceptions, UAT, CR, and traceability metrics. |
+| Approval Routing | Risk-based delegated authority simulation for exposure, risk, collateral, segment, and exception severity. |
+| Exception Register | Policy exception governance with severity, owner, mitigation, aging, approval tier, and evidence. |
 | Checklist Generator | Rule-driven document requirement generation. |
 | UAT Tracker | UAT test case management and delivery monitoring. |
 | CR Impact | Change request impact analysis and BA recommendation. |
@@ -19,8 +21,12 @@
 | Model | Description |
 | --- | --- |
 | ChecklistInput | User-selected application, facility, collateral, customer, risk, and financial statement values. |
+| ApprovalRoutingInput | Application, facility, segment, exposure, risk, collateral coverage, and exception severity. |
+| ApprovalRouteResult | Recommended approval tier, routing score, SLA, maker-checker requirement, rationale, controls, and escalation triggers. |
 | ChecklistDocument | Generated document with category, requirement level, reason, and business rule. |
 | BusinessRule | Rule ID, description, and control point. |
+| PolicyException | Exception ID, type, severity, status, owner, mitigation, approval tier, linked requirement, linked UAT case, and evidence. |
+| CreditPipelineCase | Case ID, segment, facility, exposure, risk, stage, owner role, aging, exception count, and document readiness. |
 | UatTestCase | Test case ID, requirement, scenario, steps, expected result, priority, status, role, tester, defect, retest status, root cause, and remarks. |
 | ChangeRequest | CR impact across requirements, UAT, roles, rules, risks, recommendation, and test scope. |
 | TraceabilityItem | Requirement mapping to business rule, UAT case, CR, and status. |

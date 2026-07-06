@@ -7,6 +7,8 @@ import {
   Home,
   Info,
   Network,
+  Route,
+  ShieldAlert,
   ShieldCheck,
   Users
 } from "lucide-react";
@@ -16,8 +18,10 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const navItems = [
   { href: "/", label: "Home", icon: Home },
-  { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
-  { href: "/checklist", label: "Checklist Generator", icon: FileCheck2 },
+  { href: "/dashboard", label: "Executive Dashboard", icon: BarChart3 },
+  { href: "/approval-routing", label: "Approval Routing", icon: Route },
+  { href: "/exceptions", label: "Exception Register", icon: ShieldAlert },
+  { href: "/checklist", label: "Document Checklist", icon: FileCheck2 },
   { href: "/uat", label: "UAT Tracker", icon: ClipboardCheck },
   { href: "/change-requests", label: "CR Impact", icon: GitPullRequestArrow },
   { href: "/traceability", label: "Traceability", icon: Network },
@@ -37,8 +41,8 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-base font-semibold">CreditFlow BA Toolkit</p>
-                <p className="text-xs text-muted-foreground">Banking BA Portfolio</p>
+                <p className="text-base font-semibold">Credit Modernization</p>
+                <p className="text-xs text-muted-foreground">Global Banking Portfolio</p>
               </div>
             </div>
           </div>
@@ -65,10 +69,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="lg:pl-72">
         <header className="sticky top-0 z-10 flex min-h-16 items-center justify-between border-b bg-card/95 px-4 backdrop-blur md:px-8">
           <Link className="font-semibold lg:hidden" href="/">
-            CreditFlow BA Toolkit
+            Credit Modernization
           </Link>
           <div className="hidden text-sm text-muted-foreground lg:block">
-            Requirement analysis, UAT tracking, and change impact review
+            Commercial lending workflow, controls, UAT, and executive visibility
           </div>
           <ThemeToggle />
         </header>

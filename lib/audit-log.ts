@@ -1,6 +1,6 @@
 import type { AuditEvent } from "@/lib/types";
 
-const STORAGE_KEY = "creditflow-audit-events";
+const STORAGE_KEY = "gccm-audit-events";
 
 export const defaultAuditEvents: AuditEvent[] = [
   {

@@ -1,7 +1,7 @@
 {
-  "name": "creditflow-ba-toolkit",
+  "name": "global-commercial-credit-modernization-platform",
   "version": "2.0.0",
-  "description": "A Banking BA portfolio toolkit for credit operations requirements, UAT tracking, and change impact analysis.",
+  "description": "A global banking portfolio case study for commercial credit workflow modernization, approval routing, policy exception governance, UAT, controls, and dashboards.",
   "private": false,
   "packageManager": "pnpm@11.7.0",
   "type": "module",
@@ -19,6 +19,9 @@
     "banking",
     "credit-risk",
     "commercial-lending",
+    "loan-origination",
+    "approval-routing",
+    "policy-exceptions",
     "uat",
     "portfolio",
     "nextjs"

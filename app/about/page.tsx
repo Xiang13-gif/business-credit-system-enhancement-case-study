@@ -4,27 +4,29 @@ const sections = [
   {
     title: "Problem Statement",
     items: [
-      "Credit application teams often rely on manual document follow-up, separate UAT trackers, and scattered change request impact notes.",
-      "A BA needs a structured way to explain requirements, controls, test coverage, and change impact to business and technology stakeholders."
+      "Large commercial lending teams often manage document gaps, approval authority, exception reviews, UAT evidence, and management reporting across fragmented tools.",
+      "A strong BA must translate those workflow pain points into clear requirements, controls, business rules, test coverage, and stakeholder-ready reporting."
     ]
   },
   {
     title: "Business Context",
     items: [
-      "The scenario is based on a generalized commercial credit / loan origination enhancement.",
+      "The scenario is based on a generalized global commercial credit / loan origination modernization program.",
       "User groups include RM, Credit Analyst, Approver, Credit Admin, and System Admin."
     ]
   },
   {
     title: "Proposed Solution",
     items: [
-      "A lightweight BA toolkit that simulates checklist generation, UAT monitoring, CR impact analysis, and traceability.",
-      "The MVP uses mock data and local state so it can be safely published as a portfolio project."
+      "A portfolio platform that simulates document checklist automation, approval routing, policy exception governance, UAT monitoring, CR impact analysis, audit evidence, and traceability.",
+      "This portfolio version uses mock data and local state so it can be safely published without confidential information."
     ]
   },
   {
     title: "Functional Scope",
     items: [
+      "Approval Routing Simulator with exposure, risk, collateral, segment, exception severity, maker-checker, and escalation logic.",
+      "Policy Exception Register with severity, owner, mitigation, aging, approval authority, evidence, requirement linkage, and UAT coverage.",
       "Document Checklist Generator with rule-based output and risk warnings.",
       "UAT Test Case Tracker with filters, status updates, metrics, and export.",
       "Change Request Impact Analyzer with control risk and BA recommendation.",
@@ -34,6 +36,7 @@ const sections = [
   {
     title: "Risk Control Consideration",
     items: [
+      "Approval route overrides require reason, authorized role, and audit trail.",
       "Missing financial statements require waiver approval and audit trail.",
       "High risk customers require enhanced due diligence.",
       "Failed high-priority UAT cases should block release sign-off until retested."
@@ -52,16 +55,18 @@ export default function AboutPage() {
   return (
     <>
       <PageHeader
-        description="A project case study page that explains the BA thinking behind the toolkit, not only the UI."
+        description="A case study page explaining the banking transformation story, BA decisions, risk controls, delivery artifacts, and confidentiality boundary behind the platform."
         eyebrow="Project Case Study"
-        title="Why This Project Exists"
+        title="Global Credit Modernization Case Study"
       />
       <div className="space-y-6 p-5 md:p-8">
         <Card>
           <div className="flex flex-wrap gap-2">
             {[
-              "Banking BA",
-              "Credit Operations",
+              "Global Banking BA",
+              "Commercial Credit",
+              "Approval Routing",
+              "Policy Exceptions",
               "Requirement Analysis",
               "UAT Planning",
               "Control Risk",
@@ -73,7 +78,7 @@ export default function AboutPage() {
             ))}
           </div>
           <p className="mt-5 max-w-4xl text-sm leading-6 text-muted-foreground">
-            CreditFlow BA Toolkit was built as a GitHub portfolio project to demonstrate practical Business Analyst capability in banking system enhancement work. The project focuses on how a BA structures requirements, business rules, UAT coverage, change request impact, risk controls, and traceability.
+            Global Commercial Credit Modernization Platform was built as a GitHub portfolio project to demonstrate practical Business Analyst and Product Analyst capability in banking transformation work. The project focuses on how a BA structures requirements, delegated authority rules, policy exception governance, UAT coverage, change request impact, operational dashboards, risk controls, and traceability.
           </p>
         </Card>
 

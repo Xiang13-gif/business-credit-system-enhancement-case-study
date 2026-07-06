@@ -63,8 +63,9 @@ As a Credit Analyst, I want to record policy exceptions in structured fields so 
 Acceptance criteria:
 
 - Given an exception is identified, when I create an exception, then exception type, severity, reason, and mitigating factor are mandatory.
-- Given exception severity is High, when the case is routed, then exception approval is required before final credit approval.
+- Given exception severity is Major or Critical, when the case is routed, then exception approval is required before final credit approval.
 - Given an exception is rejected, when the case returns to RM or Analyst, then the rejection reason is visible.
+- Given an exception remains open beyond SLA, when I open the exception register, then aging and owner role are highlighted.
 
 ## Epic 4: Approval Routing
 
@@ -74,8 +75,9 @@ As a Credit Approver, I want the system to recommend the approval route based on
 
 Acceptance criteria:
 
-- Given total exposure is within Level 1 limit and risk grade is acceptable, when the route is calculated, then Level 1 approval is recommended.
-- Given a high-risk grade or high-severity exception exists, when the route is calculated, then the route is escalated.
+- Given total exposure is low, collateral is fully secured, and no exception exists, when the route is calculated, then a lower authority route is recommended.
+- Given high exposure, unsecured collateral, high risk, or critical exception exists, when the route is calculated, then the route is escalated.
+- Given the route is calculated, when the result is displayed, then rationale, SLA, maker-checker requirement, and escalation triggers are visible.
 - Given an authorized user overrides the route, when the override is saved, then reason and audit trail are mandatory.
 
 ### US-008: Record Credit Decision
@@ -109,4 +111,3 @@ Acceptance criteria:
 - Given I create an action, when I assign an owner and due date, then it appears in the case action list.
 - Given an action is overdue, when the case summary is opened, then the overdue action is highlighted.
 - Given all required actions are closed, when the case moves forward, then the system allows the next status.
-

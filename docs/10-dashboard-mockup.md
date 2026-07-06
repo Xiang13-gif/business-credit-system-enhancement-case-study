@@ -9,7 +9,7 @@ This dashboard is intended for business monitoring, not financial reporting. It 
 | Date range | Current month, previous month, custom range |
 | Segment | SME, Commercial, Corporate |
 | Facility type | Term Loan, Overdraft, Trade Line, Bank Guarantee |
-| RM team | North, Central, South, East Malaysia |
+| RM team | Region A, Region B, Region C, Region D |
 | Analyst queue | SME Credit, Commercial Credit, Trade Credit |
 | Application type | New, Renewal, Enhancement, Restructure |
 
@@ -18,15 +18,17 @@ This dashboard is intended for business monitoring, not financial reporting. It 
 | KPI | Definition | Sample Value |
 | --- | --- | ---: |
 | Applications submitted | Count of cases submitted during selected period. | 148 |
-| Total requested exposure | Sum of proposed facility amount. | MYR 86.4m |
+| Total requested exposure | Sum of proposed facility amount. | USD 86.4m |
 | Average submission-to-decision TAT | Average working days from submitted date to decision date. | 6.2 days |
 | Cases pending RM action | Open cases waiting for RM clarification or document upload. | 23 |
 | Cases beyond SLA | Cases pending beyond configured status-level threshold. | 17 |
 | Exception approval rate | Approved exceptions divided by total exception requests. | 74% |
+| Document readiness | Completed or waived mandatory documents divided by expected mandatory documents. | 84% |
+| Open high priority UAT | High-priority test cases not yet passed. | 6 |
 
 ## Pipeline by Status
 
-| Status | Case Count | Requested Exposure MYR | Aging Concern |
+| Status | Case Count | Requested Exposure USD | Aging Concern |
 | --- | ---: | ---: | --- |
 | Draft | 31 | 12,800,000 | Low |
 | Pending RM Action | 23 | 9,600,000 | Medium |
@@ -61,12 +63,14 @@ This dashboard is intended for business monitoring, not financial reporting. It 
 ```mermaid
 flowchart TD
     A[Filter Bar] --> B[KPI Cards]
-    B --> C[Pipeline by Status]
+    B --> C[Pipeline by Stage]
     B --> D[Aging by Owner]
-    B --> E[Exception Register]
+    B --> E[Exception Severity]
+    B --> G[UAT Health]
     C --> F[Case Drilldown]
     D --> F
     E --> F
+    G --> F
 ```
 
 ## Drilldown Columns
@@ -89,6 +93,5 @@ flowchart TD
 | --- | --- |
 | Role-based access | Users should see only authorized portfolio or management-level data. |
 | Export control | Case-level export should be limited to authorized roles. |
-| Daily refresh | Operational dashboard does not require real-time refresh for MVP. |
+| Daily refresh | Operational dashboard does not require real-time refresh for the portfolio simulation. |
 | Data reconciliation | Dashboard totals should reconcile to case records for selected date range. |
-

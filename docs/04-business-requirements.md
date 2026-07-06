@@ -24,6 +24,10 @@ The requirements below are written to be testable and explainable. Each requirem
 | FR-014 | The system shall provide a dashboard showing case volume, aging, status distribution, and bottlenecks. | Management needs operational visibility without offline trackers. | Dashboard can be filtered by segment, RM team, analyst queue, facility type, and date range. |
 | FR-015 | The system shall allow case comments with tagged owners and due dates. | Reduces status chasing and keeps clarification in the case record. | Comment can assign an action owner and due date; open actions are visible in the case summary. |
 | FR-016 | The system shall restrict access by role and portfolio. | Credit data is sensitive and should be available only to authorized users. | RM can access assigned portfolio cases; Credit users can access assigned queues; admin rights are restricted. |
+| FR-017 | The system shall recommend an approval route using exposure, risk level, collateral coverage, customer segment, application type, facility type, and exception severity. | Reduces delegated authority interpretation errors. | Route recommendation shows approval tier, score, rationale, SLA, controls, and escalation triggers. |
+| FR-018 | The system shall require authorized role, reason, maker-checker validation, and audit trail for approval route overrides. | Approval routing changes are control-sensitive. | Override cannot be completed without reason, authority, and audit evidence. |
+| FR-019 | The system shall maintain a policy exception register with severity, owner, mitigation, approval tier, aging, evidence, linked requirement, and linked test case. | Exceptions should be visible and reportable, not hidden in notes. | Register can be filtered by status and severity and exported for review. |
+| FR-020 | The system shall show credit pipeline aging, bottlenecks, owner role, exception count, and document readiness in the executive dashboard. | Management needs visibility into operational credit blockers. | Dashboard highlights aged cases, owner role, risk level, exposure, document readiness, and exception count. |
 
 ## Non-Functional Requirements
 
@@ -44,4 +48,3 @@ The requirements below are written to be testable and explainable. Each requirem
 | RPT-003 | Exception Register | Track exception category, severity, approval status, and aging. |
 | RPT-004 | Document Readiness | Show missing, waived, and verified documents by case. |
 | RPT-005 | Turnaround Time | Measure time from submission to credit decision and from approval to readiness. |
-

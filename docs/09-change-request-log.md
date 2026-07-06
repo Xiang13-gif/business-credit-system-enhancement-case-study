@@ -10,7 +10,7 @@ The examples below show how change requests can be assessed during delivery. The
 | CR-002 | Allow RM to submit case without latest financial statements if waiver is requested. | RM Team | Checklist, exception, approval | Acceptable only if waiver reason and approver are mandatory. Requires maker-checker control. | Approved with control |
 | CR-003 | Add SMS notification to customer after approval. | Business | Customer communication | Outside current system scope and requires customer communication approval. | Deferred |
 | CR-004 | Allow route override by Credit Analyst. | Credit Team | Approval routing | Control risk if too broad. Recommend restricted override permission with mandatory reason. | Partially approved |
-| CR-005 | Include existing facility exposure from core banking in approval route. | Credit Risk | Integration, routing | Strong business value but depends on interface readiness. Manual input retained for MVP. | Deferred to Phase 2 |
+| CR-005 | Include existing facility exposure from core banking in approval route. | Credit Risk | Integration, routing | Strong business value but depends on interface readiness. Manual input retained for portfolio version. | Deferred to Phase 2 |
 | CR-006 | Add dashboard view by industry sector. | Product Owner | Reporting | Low implementation risk if industry sector is available in customer profile. | Approved |
 
 ## Change Request Assessment Template
@@ -58,4 +58,3 @@ Affected artifacts:
 ### Decision
 
 Approved with control requirements.
-

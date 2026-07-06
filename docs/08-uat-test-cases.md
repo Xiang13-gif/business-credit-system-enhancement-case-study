@@ -11,8 +11,8 @@ These UAT cases focus on business outcomes and control points. They are written 
 | Level 1 Approver | AP-L1-002 |
 | Level 2 Approver | AP-L2-004 |
 | Credit Admin | CAD-004 |
-| Sample customer | Suria Components Sdn Bhd |
-| Sample application | BCS-2026-UAT-001 |
+| Sample customer | Northstar Components Ltd |
+| Sample application | GCCM-2026-UAT-001 |
 
 ## UAT Scenarios
 
@@ -27,7 +27,7 @@ These UAT cases focus on business outcomes and control points. They are written 
 | UAT-007 | Complete structured credit assessment | Case is assigned to Credit Analyst. | Fill assessment sections and submit recommendation. | Recommendation is saved and case proceeds to routing. | High |
 | UAT-008 | Capture medium-severity exception | Analyst identifies documentation exception. | Add exception type, severity, reason, and mitigating factor. | Exception record is created with Pending status. | High |
 | UAT-009 | Route high-severity exception for approval | Exception severity is High. | Submit case for routing. | Case goes to Pending Exception Approval before final credit approval. | High |
-| UAT-010 | Calculate Level 2 approval route | Total exposure is MYR 1.2m and risk grade is A-B. | Run approval route calculation. | Level 2 Approver is recommended. | High |
+| UAT-010 | Calculate approval route | Total exposure is USD 1.2m, risk level is Medium, and collateral is partially secured. | Run approval route calculation. | Regional Credit Manager or Country Credit Committee route is recommended based on configured rule score. | High |
 | UAT-011 | Require reason for route override | Authorized user changes recommended route. | Override route and save without reason. | Save is blocked until reason is entered. | Medium |
 | UAT-012 | Prevent maker from approving own waiver | User created a document waiver. | Same user attempts to approve waiver. | System blocks approval due to maker-checker rule. | High |
 | UAT-013 | Record approved decision | Case is pending approver action. | Approver selects Approved and submits. | Case moves to Pending Conditions. | High |
@@ -60,4 +60,3 @@ These UAT cases focus on business outcomes and control points. They are written 
 | Owner | Technology, Business, Data, or Access Management. |
 | Target Fix Date | Expected resolution date. |
 | Retest Status | Not Retested, Passed, Failed. |
-

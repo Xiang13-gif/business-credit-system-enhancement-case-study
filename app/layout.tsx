@@ -3,9 +3,9 @@ import "./globals.css";
 import { AppShell } from "@/components/app-shell";
 
 export const metadata: Metadata = {
-  title: "CreditFlow BA Toolkit",
+  title: "Global Commercial Credit Modernization Platform",
   description:
-    "A Banking Business Analyst portfolio toolkit for credit operations, document checklist logic, UAT tracking, change request analysis, and traceability."
+    "A global banking portfolio case study for commercial credit workflow modernization, approval routing, policy exception governance, UAT, controls, and operational dashboards."
 };
 
 export default function RootLayout({

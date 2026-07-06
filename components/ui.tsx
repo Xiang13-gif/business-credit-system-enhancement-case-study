@@ -59,7 +59,7 @@ export function StatCard({
   return (
     <Card className="min-h-28">
       <p className="text-xs font-semibold uppercase tracking-normal text-muted-foreground">{label}</p>
-      <p className={cn("mt-3 text-3xl font-semibold tracking-normal", toneClass)}>{value}</p>
+      <p className={cn("mt-3 break-words text-2xl font-semibold tracking-normal md:text-3xl", toneClass)}>{value}</p>
       {helper ? <p className="mt-2 text-sm text-muted-foreground">{helper}</p> : null}
     </Card>
   );

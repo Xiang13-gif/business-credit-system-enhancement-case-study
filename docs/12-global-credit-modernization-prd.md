@@ -1,31 +1,35 @@
-# CreditFlow BA Toolkit PRD
+# Global Commercial Credit Modernization Platform PRD
 
 ## Product Name
 
-CreditFlow BA Toolkit
+Global Commercial Credit Modernization Platform
 
 ## Product Objective
 
-Create a GitHub-ready Banking Business Analyst portfolio app that demonstrates credit operations domain knowledge, requirement analysis, document checklist logic, UAT tracking, change request impact analysis, control risk thinking, and traceability.
+Create a GitHub-ready Banking Business Analyst / Product Analyst portfolio app that demonstrates commercial credit workflow modernization, approval routing, policy exception governance, document controls, UAT tracking, change impact analysis, traceability, audit evidence, and executive dashboard storytelling.
 
 ## Target Audience
 
 - Recruiters
 - Hiring managers
-- Interviewers
 - Banking BA leads
-- Product owners reviewing BA capability
+- Product owners
+- Credit operations leaders
+- Risk and control reviewers
+- Interviewers reviewing financial services project capability
 
 ## Problem Statement
 
-Banking BA work is often difficult to show in a portfolio because real project artifacts are confidential. This MVP provides a safe, anonymized simulation of common BA deliverables in a commercial credit enhancement project.
+Commercial lending workflows are difficult to demonstrate in a public portfolio because real bank artifacts are confidential. This project provides a safe, anonymized simulation of how a BA would modernize a credit workflow while preserving risk, control, and audit thinking.
 
 ## Scope
 
 In scope:
 
+- Executive Dashboard
+- Approval Routing Simulator
+- Policy Exception Register
 - Document Checklist Generator
-- Portfolio Analytics Dashboard
 - UAT Test Case Tracker
 - UAT defect and retest workflow
 - Change Request Impact Analyzer
@@ -44,6 +48,8 @@ Out of scope:
 - Database persistence
 - Production workflow approval
 - Core banking integration
+- Credit scoring model
+- Regulatory reporting submission
 
 ## Functional Requirements
 
@@ -62,14 +68,20 @@ Out of scope:
 | REQ011 | Track defect severity, root cause, and retest status for failed UAT cases. |
 | REQ012 | Show role-based responsibilities, controls, open UAT cases, and impacted CRs. |
 | REQ013 | Record local audit events for key BA workflow actions. |
+| REQ017 | Recommend approval route based on exposure, risk, collateral, segment, application type, facility type, and exception severity. |
+| REQ018 | Require reason, authorized role, and audit evidence when approval route is overridden. |
+| REQ019 | Track policy exceptions by severity, owner, mitigation, aging, approval tier, evidence, requirement linkage, and UAT coverage. |
+| REQ020 | Show pipeline aging, bottlenecks, owner role, exception volume, and document readiness in the dashboard. |
 
 ## Success Criteria
 
 - User can generate checklist from business inputs.
+- User can simulate approval route and see rationale, controls, SLA, and escalation triggers.
+- User can review policy exceptions by status and severity.
 - User can filter and update UAT case status.
 - User can update retest status and review failed case details.
 - User can analyze CR impact and BA recommendation.
-- User can review delivery metrics on the dashboard.
+- User can review delivery and credit pipeline metrics on the dashboard.
 - User can review role-based workflow impact.
 - User can review local audit events.
 - User can view traceability matrix.

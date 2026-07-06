@@ -87,6 +87,24 @@ export const businessRules: BusinessRule[] = [
     title: "Guarantee enforceability",
     description: "Corporate or personal guarantee collateral requires guarantee agreement and guarantor verification.",
     controlPoint: "Legal enforceability"
+  },
+  {
+    id: "BR013",
+    title: "Risk-based approval authority",
+    description: "Approval route should consider total exposure, risk level, customer segment, collateral coverage, and application type.",
+    controlPoint: "Delegated authority control"
+  },
+  {
+    id: "BR014",
+    title: "Controlled route override",
+    description: "Approval route overrides require authorized role, reason code, maker-checker validation, and audit trail.",
+    controlPoint: "Approval override governance"
+  },
+  {
+    id: "BR015",
+    title: "Exception and pipeline visibility",
+    description: "Policy exceptions and pipeline owner changes should refresh dashboards and remain linked to requirements and UAT evidence.",
+    controlPoint: "Management reporting and traceability"
   }
 ];
 

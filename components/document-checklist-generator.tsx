@@ -92,7 +92,7 @@ export function DocumentChecklistGenerator() {
 
   const exportChecklist = () => {
     downloadCsv(
-      "creditflow-document-checklist.csv",
+      "gccm-document-checklist.csv",
       toCsv(
         result.documents.map((document) => ({
           id: document.id,

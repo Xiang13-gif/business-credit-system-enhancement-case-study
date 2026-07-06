@@ -2,7 +2,7 @@
 
 ## Public References Used
 
-This project is informed by public references only.
+This project is informed by public references only. Jurisdiction-specific sources are used as examples of banking risk and technology control expectations, not as real project policy.
 
 | Source | URL | How It Informs the Case Study |
 | --- | --- | --- |
@@ -39,7 +39,7 @@ All examples are synthetic and designed for portfolio demonstration.
 
 This case study can be described in an interview as:
 
-"I prepared an anonymized Business Credit System enhancement case study based on commercial banking BA work. It covers business problem framing, As-Is and To-Be process, stakeholder mapping, approval matrix, business rules, data dictionary, UAT scenarios, change request assessment, dashboard requirements, SQL analysis, and an API contract. I avoided confidential information and used public banking risk references to keep the case grounded."
+"I prepared an anonymized global commercial credit modernization case study based on banking BA work. It covers business problem framing, As-Is and To-Be process, stakeholder mapping, approval routing, policy exception governance, business rules, data dictionary, UAT scenarios, change request assessment, dashboard requirements, SQL analysis, and an API contract. I avoided confidential information and used public banking risk references to keep the case grounded."
 
 ## Suggested Interview Talking Points
 
@@ -49,4 +49,3 @@ This case study can be described in an interview as:
 - How approval routing and exception handling improve auditability
 - How UAT should follow end-to-end business journeys
 - How BA artifacts help business and technology teams agree on scope
-
