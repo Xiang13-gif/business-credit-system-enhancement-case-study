@@ -1,6 +1,7 @@
 import {
   BarChart3,
   ClipboardCheck,
+  FileSearch,
   FileCheck2,
   GitPullRequestArrow,
   History,
@@ -19,6 +20,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 const navItems = [
   { href: "/", label: "Home", icon: Home },
   { href: "/dashboard", label: "Executive Dashboard", icon: BarChart3 },
+  { href: "/case-360", label: "Case 360", icon: FileSearch },
   { href: "/approval-routing", label: "Approval Routing", icon: Route },
   { href: "/exceptions", label: "Exception Register", icon: ShieldAlert },
   { href: "/checklist", label: "Document Checklist", icon: FileCheck2 },

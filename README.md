@@ -4,7 +4,7 @@ A flagship Banking Business Analyst / Product Analyst portfolio project for comm
 
 Live site: [https://xiang13-gif.github.io/business-credit-system-enhancement-case-study/](https://xiang13-gif.github.io/business-credit-system-enhancement-case-study/)
 
-The project simulates how a global bank could modernize commercial credit operations through document automation, risk-based approval routing, policy exception governance, UAT traceability, audit evidence, and executive dashboards.
+The project simulates how a global bank could modernize commercial credit operations through case lifecycle visibility, document automation, risk-based approval routing, policy exception governance, UAT traceability, audit evidence, and executive dashboards.
 
 ## Portfolio Positioning
 
@@ -28,6 +28,7 @@ Common pain points modeled in this project:
 - Manual approval routing and delegated authority interpretation
 - Policy exceptions captured in notes instead of structured registers
 - Credit pipeline bottlenecks tracked outside the system
+- Case-level lifecycle evidence spread across disconnected modules
 - UAT defects and retests disconnected from requirements
 - Weak visibility across control evidence, audit trail, and change impact
 
@@ -36,6 +37,7 @@ Common pain points modeled in this project:
 | Module | Purpose |
 | --- | --- |
 | Executive Dashboard | Pipeline exposure, aging, bottlenecks, owner role, exception severity, document readiness, UAT health, CR priority, and traceability status. |
+| Credit Case 360 | End-to-end case lifecycle view linking RM intake, documents, credit analysis, approval route, exceptions, UAT evidence, audit controls, readiness gates, BA recommendation, and next best actions. |
 | Approval Routing Simulator | Risk-based delegated authority using exposure, risk level, collateral coverage, customer segment, facility type, and exception severity. |
 | Policy Exception Register | Exception governance with severity, mitigation, owner, aging, approval tier, control evidence, requirement linkage, and UAT coverage. |
 | Document Checklist Generator | Rule-based document checklist generation for commercial credit applications. |
@@ -49,6 +51,7 @@ Common pain points modeled in this project:
 ## Key Capabilities Demonstrated
 
 - Commercial banking and loan origination domain knowledge
+- End-to-end case lifecycle and workflow control thinking
 - Business requirement analysis and acceptance criteria thinking
 - Approval matrix and delegated authority rule design
 - Policy exception governance and maker-checker control
@@ -64,6 +67,7 @@ Common pain points modeled in this project:
 The application uses mock data only. Metrics are portfolio assumptions for demonstration:
 
 - Pipeline exposure and case aging by owner role
+- Case lifecycle release posture and readiness gates
 - Document readiness percentage
 - Policy exception severity and aging
 - UAT pass rate, failed cases, blocked cases, and pending retest
@@ -87,6 +91,7 @@ The application uses mock data only. Metrics are portfolio assumptions for demon
 | --- | --- |
 | `/` | Executive portfolio overview and module entry points |
 | `/dashboard` | Credit operations control room |
+| `/case-360` | End-to-end credit case lifecycle and readiness gate view |
 | `/approval-routing` | Risk-based approval routing simulator |
 | `/exceptions` | Policy exception register |
 | `/checklist` | Rule-based document checklist generator |
@@ -123,22 +128,27 @@ This runs:
 - TypeScript typecheck
 - production build
 
-## Deploy to Vercel
+## Deploy to GitHub Pages
 
-Recommended settings:
+This repository deploys the public portfolio site through GitHub Pages using `.github/workflows/deploy-pages.yml`.
 
-- Framework preset: Next.js
-- Install command: `pnpm install`
-- Build command: `pnpm run build`
-- Output: Next.js default
+The workflow:
+
+- installs dependencies with pnpm
+- runs `pnpm run check`
+- exports the static Next.js site to `out/`
+- publishes the artifact to GitHub Pages
+
+Vercel can also host the project, but it is not required for this portfolio.
 
 ## LinkedIn Project Summary
 
-Built a Global Commercial Credit Modernization Platform simulator to demonstrate how a Banking Business Analyst can modernize commercial lending workflows through document automation, approval routing, policy exception governance, UAT traceability, audit controls, and operational dashboards.
+Built a Global Commercial Credit Modernization Platform simulator to demonstrate how a Banking Business Analyst can modernize commercial lending workflows through case lifecycle visibility, document automation, approval routing, policy exception governance, UAT traceability, audit controls, and operational dashboards.
 
 Suggested highlights:
 
 - Designed risk-based approval routing logic using exposure, risk level, collateral coverage, customer segment, and exception severity.
+- Built a Credit Case 360 view that links case profile, lifecycle status, readiness gates, policy exceptions, UAT evidence, change requests, audit controls, and BA recommendations.
 - Built a policy exception register with severity, mitigation, aging, approval authority, control evidence, and UAT linkage.
 - Created executive dashboard views for pipeline aging, bottlenecks, document readiness, UAT health, change requests, and traceability.
 - Modeled BA artifacts including requirements, business rules, UAT cases, change impact analysis, traceability, and audit trail.

@@ -6,6 +6,7 @@
 | --- | --- |
 | Home | Portfolio introduction, quick stats, module entry points. |
 | Dashboard | Credit operations control room for pipeline aging, owner bottlenecks, exceptions, UAT, CR, and traceability metrics. |
+| Case 360 | End-to-end case lifecycle evidence across case profile, documents, analysis, approval route, exceptions, UAT, audit, readiness gates, BA recommendation, and next actions. |
 | Approval Routing | Risk-based delegated authority simulation for exposure, risk, collateral, segment, and exception severity. |
 | Exception Register | Policy exception governance with severity, owner, mitigation, aging, approval tier, and evidence. |
 | Checklist Generator | Rule-driven document requirement generation. |
@@ -27,6 +28,9 @@
 | BusinessRule | Rule ID, description, and control point. |
 | PolicyException | Exception ID, type, severity, status, owner, mitigation, approval tier, linked requirement, linked UAT case, and evidence. |
 | CreditPipelineCase | Case ID, segment, facility, exposure, risk, stage, owner role, aging, exception count, and document readiness. |
+| CreditCase360 | Case-level lifecycle record with profile, current stage, owner, approval tier, linked exception IDs, linked UAT IDs, readiness gates, BA recommendation, and next best actions. |
+| CaseLifecycleStep | Workflow step status, owner, aging, control objective, evidence, and risk signal. |
+| CaseReadinessGate | Gate status, owner, evidence, linked requirement, and linked UAT case. |
 | UatTestCase | Test case ID, requirement, scenario, steps, expected result, priority, status, role, tester, defect, retest status, root cause, and remarks. |
 | ChangeRequest | CR impact across requirements, UAT, roles, rules, risks, recommendation, and test scope. |
 | TraceabilityItem | Requirement mapping to business rule, UAT case, CR, and status. |

@@ -111,3 +111,26 @@ Acceptance criteria:
 - Given I create an action, when I assign an owner and due date, then it appears in the case action list.
 - Given an action is overdue, when the case summary is opened, then the overdue action is highlighted.
 - Given all required actions are closed, when the case moves forward, then the system allows the next status.
+
+## Epic 6: Case Lifecycle Visibility
+
+### US-011: Review Credit Case 360
+
+As a Credit Operations lead, I want to inspect a single commercial credit case from intake to readiness so that I can understand the case status without switching across multiple trackers.
+
+Acceptance criteria:
+
+- Given I open Case 360, when I select a case, then the system displays customer profile, facility, exposure, current stage, owner, document readiness, approval tier, release posture, and BA recommendation.
+- Given the case has linked policy exceptions, UAT cases, or change requests, when I review the evidence sections, then each linked item is visible with status and control context.
+- Given the case is not ready, when I review next best actions, then each action identifies the practical owner or control follow-up needed.
+
+### US-012: Calculate Readiness From Gates
+
+As an Approver, I want release posture to be calculated from readiness gates so that blocked evidence cannot be hidden by a manually selected status.
+
+Acceptance criteria:
+
+- Given any readiness gate is Block, when the case is reviewed, then release posture is Not Ready.
+- Given no readiness gate is Block but at least one gate is Watch, when the case is reviewed, then release posture is Controlled Watch.
+- Given all readiness gates are Pass, when the case is reviewed, then release posture is Ready.
+- Given a readiness gate is displayed, when I review the gate details, then owner role, evidence, linked requirement, and linked UAT case are visible.

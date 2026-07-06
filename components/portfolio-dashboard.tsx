@@ -18,6 +18,7 @@ import { formatCurrency } from "@/lib/approval-routing";
 import { defaultChecklistInput, generateChecklist } from "@/lib/checklist-rules";
 import {
   changeRequests,
+  creditCase360Records,
   creditPipelineCases,
   policyExceptions,
   traceabilityMatrix,
@@ -56,6 +57,20 @@ function averageAgingByOwner() {
   }));
 }
 
+function caseReleasePostureRows() {
+  const counts = creditCase360Records.reduce<Record<string, number>>((accumulator, item) => {
+    const posture = item.readinessGates.some((gate) => gate.status === "Block")
+      ? "Not Ready"
+      : item.readinessGates.some((gate) => gate.status === "Watch")
+        ? "Controlled Watch"
+        : "Ready";
+    accumulator[posture] = (accumulator[posture] ?? 0) + 1;
+    return accumulator;
+  }, {});
+
+  return toChartRows(counts);
+}
+
 export function PortfolioDashboard() {
   const checklist = generateChecklist(defaultChecklistInput);
   const uatByStatus = toChartRows(countBy(uatTestCases.map((item) => item.status)));
@@ -64,6 +79,7 @@ export function PortfolioDashboard() {
   const traceabilityByStatus = toChartRows(countBy(traceabilityMatrix.map((item) => item.status)));
   const pipelineByStage = toChartRows(countBy(creditPipelineCases.map((item) => item.stage)));
   const exceptionsBySeverity = toChartRows(countBy(policyExceptions.map((item) => item.severity)));
+  const casePosture = caseReleasePostureRows();
   const agingByOwner = averageAgingByOwner();
 
   const totalCases = uatTestCases.length;
@@ -143,6 +159,19 @@ export function PortfolioDashboard() {
               <Pie cx="50%" cy="50%" data={exceptionsBySeverity} dataKey="value" innerRadius={60} nameKey="name" outerRadius={100} paddingAngle={2}>
                 {exceptionsBySeverity.map((entry, index) => (
                   <Cell fill={entry.name === "Critical" ? "#dc2626" : chartColors[index % chartColors.length]} key={entry.name} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </ChartCard>
+
+        <ChartCard title="Case 360 Release Posture" description="Summarizes whether selected cases are ready, on watch, or blocked by readiness gates.">
+          <ResponsiveContainer height={280} width="100%">
+            <PieChart>
+              <Pie cx="50%" cy="50%" data={casePosture} dataKey="value" innerRadius={60} nameKey="name" outerRadius={100} paddingAngle={2}>
+                {casePosture.map((entry, index) => (
+                  <Cell fill={entry.name === "Not Ready" ? "#dc2626" : entry.name === "Controlled Watch" ? "#c99a2e" : chartColors[index % chartColors.length]} key={entry.name} />
                 ))}
               </Pie>
               <Tooltip />

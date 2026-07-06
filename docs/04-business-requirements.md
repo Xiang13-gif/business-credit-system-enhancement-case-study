@@ -28,6 +28,8 @@ The requirements below are written to be testable and explainable. Each requirem
 | FR-018 | The system shall require authorized role, reason, maker-checker validation, and audit trail for approval route overrides. | Approval routing changes are control-sensitive. | Override cannot be completed without reason, authority, and audit evidence. |
 | FR-019 | The system shall maintain a policy exception register with severity, owner, mitigation, approval tier, aging, evidence, linked requirement, and linked test case. | Exceptions should be visible and reportable, not hidden in notes. | Register can be filtered by status and severity and exported for review. |
 | FR-020 | The system shall show credit pipeline aging, bottlenecks, owner role, exception count, and document readiness in the executive dashboard. | Management needs visibility into operational credit blockers. | Dashboard highlights aged cases, owner role, risk level, exposure, document readiness, and exception count. |
+| FR-021 | The system shall provide a Case 360 view showing case profile, lifecycle steps, readiness gates, linked exceptions, UAT evidence, change requests, BA recommendation, and next best actions. | Stakeholders need one evidence-led case view instead of switching across disconnected trackers. | User can select a case and see lifecycle status, owners, blockers, evidence, and linked artifacts. |
+| FR-022 | The system shall derive release posture from readiness gate statuses. | A case should not appear ready while required evidence is blocked. | Case posture is Not Ready when any gate is Block, Controlled Watch when gates are Watch only, and Ready when all gates Pass. |
 
 ## Non-Functional Requirements
 
@@ -48,3 +50,4 @@ The requirements below are written to be testable and explainable. Each requirem
 | RPT-003 | Exception Register | Track exception category, severity, approval status, and aging. |
 | RPT-004 | Document Readiness | Show missing, waived, and verified documents by case. |
 | RPT-005 | Turnaround Time | Measure time from submission to credit decision and from approval to readiness. |
+| RPT-006 | Case Readiness Summary | Show release posture, blocked gates, watch gates, linked exceptions, UAT evidence, and next action owner for selected cases. |
