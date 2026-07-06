@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 export function PageHeader({
@@ -109,9 +110,9 @@ export function Button({
 
   if (href) {
     return (
-      <a className={className} href={href}>
+      <Link className={className} href={href}>
         {children}
-      </a>
+      </Link>
     );
   }
 

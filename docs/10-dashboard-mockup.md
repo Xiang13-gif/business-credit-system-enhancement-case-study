@@ -25,6 +25,7 @@ This dashboard is intended for business monitoring, not financial reporting. It 
 | Exception approval rate | Approved exceptions divided by total exception requests. | 74% |
 | Document readiness | Completed or waived mandatory documents divided by expected mandatory documents. | 84% |
 | Open high priority UAT | High-priority test cases not yet passed. | 6 |
+| Case release posture | Count of selected cases marked Ready, Controlled Watch, or Not Ready based on readiness gates. | 3 cases |
 
 ## Pipeline by Status
 
@@ -67,10 +68,12 @@ flowchart TD
     B --> D[Aging by Owner]
     B --> E[Exception Severity]
     B --> G[UAT Health]
+    B --> H[Case 360 Release Posture]
     C --> F[Case Drilldown]
     D --> F
     E --> F
     G --> F
+    H --> F
 ```
 
 ## Drilldown Columns

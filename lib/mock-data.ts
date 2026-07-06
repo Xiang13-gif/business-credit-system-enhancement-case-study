@@ -1,5 +1,6 @@
 import type {
   ChangeRequest,
+  CreditCase360,
   CreditPipelineCase,
   PolicyException,
   TraceabilityItem,
@@ -228,6 +229,36 @@ export const uatTestCases: UatTestCase[] = [
     rootCause: "Business team requested updated SLA aging threshold before sign-off.",
     retestStatus: "Pending Retest",
     remarks: "Blocked pending SLA threshold confirmation."
+  },
+  {
+    id: "TC015",
+    module: "Credit Case 360",
+    requirementId: "REQ021",
+    scenario: "Verify Case 360 consolidates case profile, lifecycle status, readiness gates, exceptions, UAT evidence, and BA recommendation.",
+    testSteps: "Open Case 360, select CASE-1007, and review linked lifecycle evidence.",
+    expectedResult: "System displays customer, facility, exposure, owner, stage, lifecycle steps, readiness gates, linked exceptions, UAT evidence, CRs, and next best actions.",
+    priority: "High",
+    status: "Passed",
+    role: "Credit Analyst",
+    assignedTester: "BA Tester 01",
+    executionDate: "2026-02-14",
+    retestStatus: "Not Required",
+    remarks: "Case 360 shows end-to-end evidence for the selected credit case."
+  },
+  {
+    id: "TC016",
+    module: "Credit Case 360",
+    requirementId: "REQ022",
+    scenario: "Verify release posture becomes Not Ready when any readiness gate is blocked.",
+    testSteps: "Open CASE-1001 or CASE-1007 and review release posture calculation.",
+    expectedResult: "System displays Not Ready when any readiness gate has Block status, and shows Controlled Watch when only Watch gates remain.",
+    priority: "High",
+    status: "Passed",
+    role: "Approver",
+    assignedTester: "BA Tester 04",
+    executionDate: "2026-02-14",
+    retestStatus: "Not Required",
+    remarks: "Readiness posture follows gate logic correctly."
   }
 ];
 
@@ -394,6 +425,39 @@ export const changeRequests: ChangeRequest[] = [
       "Audit trail and dashboard owner refresh"
     ],
     implementationPriority: "High"
+  },
+  {
+    id: "CR006",
+    title: "Add Credit Case 360 lifecycle view",
+    description:
+      "Add a case-level view that consolidates credit case profile, lifecycle status, document readiness, approval route, policy exceptions, UAT evidence, audit controls, BA recommendation, and next best actions.",
+    impactedRequirements: [
+      "REQ021 - Show end-to-end case lifecycle evidence",
+      "REQ022 - Calculate release posture from readiness gates",
+      "REQ020 - Align dashboard bottleneck metrics to case-level evidence"
+    ],
+    impactedUatCases: ["TC015", "TC016"],
+    impactedRoles: ["RM", "Credit Analyst", "Approver", "Credit Admin", "System Admin"],
+    impactedBusinessRules: ["BR013", "BR014", "BR015"],
+    controlRisk: [
+      "Case view may create false confidence if readiness gates are not tied to evidence.",
+      "Release posture may be misleading if blocked gates are not prioritized.",
+      "Stakeholders may miss exception or UAT blockers if evidence is spread across modules."
+    ],
+    operationalRisk: [
+      "Users may continue switching between offline trackers if case-level evidence is not consolidated.",
+      "Owner follow-up may be delayed if lifecycle stage and next action are unclear."
+    ],
+    baRecommendation:
+      "Introduce Case 360 as an evidence-led view. Release posture should be derived from readiness gates, not manually selected, and every blocker should map to owner, requirement, UAT case, and evidence.",
+    suggestedTestScope: [
+      "Case selector and profile summary",
+      "Lifecycle step status display",
+      "Readiness posture calculation",
+      "Exception, UAT, and CR linkage",
+      "CSV export and audit event"
+    ],
+    implementationPriority: "High"
   }
 ];
 
@@ -557,6 +621,398 @@ export const creditPipelineCases: CreditPipelineCase[] = [
   }
 ];
 
+export const creditCase360Records: CreditCase360[] = [
+  {
+    id: "CASE-1007",
+    customerName: "Apex Global Trading Ltd",
+    relationshipManager: "RM-017",
+    creditAnalyst: "CA-006",
+    applicationType: "New",
+    customerSegment: "Large Corporate",
+    facilityType: "Overdraft",
+    exposure: 18500000,
+    riskLevel: "High",
+    collateralCoverage: "Unsecured",
+    currentStage: "Credit Analysis",
+    ownerRole: "Credit Analyst",
+    agingDays: 15,
+    documentReadiness: 64,
+    approvalTier: "Group Credit Committee",
+    approvalRouteConfirmed: false,
+    policyExceptionIds: ["EXC002", "EXC003", "EXC005"],
+    uatCaseIds: ["TC011", "TC012", "TC014", "TC015", "TC016"],
+    changeRequestIds: ["CR003", "CR005", "CR006"],
+    executiveSummary:
+      "High-value unsecured credit request is still in Credit Analysis because exception mitigation, EDD evidence, and approval route confirmation are not complete.",
+    baRecommendation:
+      "Do not move this case to approval review until exception mitigation, EDD evidence, and approval route confirmation are evidenced. Treat it as a control-sensitive case for committee visibility.",
+    nextBestActions: [
+      "Credit Analyst to complete repayment capacity analysis and exception mitigation evidence.",
+      "RM to provide missing EDD and supporting financial conduct documents.",
+      "Approver to validate whether Group Credit Committee route remains appropriate after mitigation is updated.",
+      "UAT Coordinator to keep TC012 and TC014 open until override and aging dashboard rules are signed off."
+    ],
+    lifecycleSteps: [
+      {
+        id: "LC-001",
+        title: "RM Intake And Document Validation",
+        ownerRole: "RM",
+        status: "Blocked",
+        agingDays: 5,
+        controlObjective: "Prevent incomplete submissions from entering credit review.",
+        evidence: "Document readiness is 64%; EDD and unsecured credit support remain incomplete.",
+        riskSignal: "Incomplete intake can create rework and weak audit evidence."
+      },
+      {
+        id: "LC-002",
+        title: "Credit Analysis",
+        ownerRole: "Credit Analyst",
+        status: "In Progress",
+        agingDays: 15,
+        controlObjective: "Assess repayment capacity, risk rationale, exception mitigation, and recommendation quality.",
+        evidence: "High-risk unsecured exposure requires additional repayment and conduct analysis.",
+        riskSignal: "Case has exceeded the 7-day aging threshold for analysis."
+      },
+      {
+        id: "LC-003",
+        title: "Approval Routing",
+        ownerRole: "Approver",
+        status: "Pending",
+        agingDays: 0,
+        controlObjective: "Ensure approval authority matches exposure, risk, collateral, and exception severity.",
+        evidence: "Indicative route is Group Credit Committee, but final confirmation is pending.",
+        riskSignal: "Incorrect routing could lead to approval outside delegated authority."
+      },
+      {
+        id: "LC-004",
+        title: "Policy Exception Review",
+        ownerRole: "Approver",
+        status: "Blocked",
+        agingDays: 9,
+        controlObjective: "Make exception severity, mitigation, owner, approval tier, and evidence visible.",
+        evidence: "Critical unsecured exposure exception is pending approval.",
+        riskSignal: "Critical exception is open and should block release readiness."
+      },
+      {
+        id: "LC-005",
+        title: "Credit Admin Readiness",
+        ownerRole: "Credit Admin",
+        status: "Pending",
+        agingDays: 0,
+        controlObjective: "Confirm conditions and evidence before downstream facility setup.",
+        evidence: "Not ready for facility setup until approval and exception gates pass.",
+        riskSignal: "Premature setup would weaken documentation control."
+      }
+    ],
+    readinessGates: [
+      {
+        id: "GATE-001",
+        title: "Mandatory Document Readiness",
+        status: "Block",
+        ownerRole: "RM",
+        evidence: "Document readiness is below 80% and EDD evidence remains incomplete.",
+        linkedRequirement: "REQ004",
+        linkedTestCase: "TC004"
+      },
+      {
+        id: "GATE-002",
+        title: "Approval Authority Confirmed",
+        status: "Watch",
+        ownerRole: "Approver",
+        evidence: "Route points to Group Credit Committee but override validation remains under UAT.",
+        linkedRequirement: "REQ017",
+        linkedTestCase: "TC011"
+      },
+      {
+        id: "GATE-003",
+        title: "Policy Exception Governance",
+        status: "Block",
+        ownerRole: "Approver",
+        evidence: "Critical unsecured exposure exception is pending approval.",
+        linkedRequirement: "REQ019",
+        linkedTestCase: "TC013"
+      },
+      {
+        id: "GATE-004",
+        title: "UAT And Release Evidence",
+        status: "Watch",
+        ownerRole: "System Admin",
+        evidence: "TC012 and TC014 are not fully passed.",
+        linkedRequirement: "REQ018",
+        linkedTestCase: "TC012"
+      },
+      {
+        id: "GATE-005",
+        title: "Audit Evidence Complete",
+        status: "Watch",
+        ownerRole: "Credit Admin",
+        evidence: "Audit evidence exists for route simulation but final approval and exception decisions are pending.",
+        linkedRequirement: "REQ013",
+        linkedTestCase: "TC014"
+      }
+    ]
+  },
+  {
+    id: "CASE-1001",
+    customerName: "Northstar Components Ltd",
+    relationshipManager: "RM-021",
+    creditAnalyst: "CA-011",
+    applicationType: "Renewal",
+    customerSegment: "SME",
+    facilityType: "Term Loan",
+    exposure: 750000,
+    riskLevel: "Medium",
+    collateralCoverage: "Partially Secured",
+    currentStage: "Pending RM Action",
+    ownerRole: "RM",
+    agingDays: 5,
+    documentReadiness: 68,
+    approvalTier: "Regional Credit Manager",
+    approvalRouteConfirmed: true,
+    policyExceptionIds: ["EXC001"],
+    uatCaseIds: ["TC001", "TC002", "TC010", "TC015", "TC016"],
+    changeRequestIds: ["CR001", "CR006"],
+    executiveSummary:
+      "SME renewal is waiting for RM action because latest financial evidence is incomplete and waiver governance must be evidenced before submission.",
+    baRecommendation:
+      "Keep the case in Pending RM Action until alternate financial evidence and waiver approval are available. This is a document completeness and waiver-control scenario, not a credit decision issue yet.",
+    nextBestActions: [
+      "RM to upload management accounts and bank statements as alternate financial evidence.",
+      "Credit Analyst to validate waiver rationale before analysis starts.",
+      "Approver to confirm waiver only after mitigation evidence is attached.",
+      "UAT Coordinator to retest TC002 and TC010 before release sign-off."
+    ],
+    lifecycleSteps: [
+      {
+        id: "LC-001",
+        title: "RM Intake And Document Validation",
+        ownerRole: "RM",
+        status: "In Progress",
+        agingDays: 5,
+        controlObjective: "Ensure renewal case is complete before credit analysis.",
+        evidence: "Document readiness is 68%; waiver approval is required for missing financial statement.",
+        riskSignal: "Missing financial evidence can cause rework and weak assessment input."
+      },
+      {
+        id: "LC-002",
+        title: "Credit Analysis",
+        ownerRole: "Credit Analyst",
+        status: "Pending",
+        agingDays: 0,
+        controlObjective: "Start financial and conduct review only after minimum intake evidence is complete.",
+        evidence: "Credit Analyst is waiting for waiver package and alternate financial evidence.",
+        riskSignal: "Analysis should not start from incomplete financial evidence."
+      },
+      {
+        id: "LC-003",
+        title: "Approval Routing",
+        ownerRole: "Approver",
+        status: "Pending",
+        agingDays: 0,
+        controlObjective: "Confirm route after exposure and waiver position are final.",
+        evidence: "Indicative route is Regional Credit Manager.",
+        riskSignal: "Route can change if exception severity increases."
+      },
+      {
+        id: "LC-004",
+        title: "Policy Exception Review",
+        ownerRole: "Credit Analyst",
+        status: "In Progress",
+        agingDays: 6,
+        controlObjective: "Make financial statement waiver visible and reportable.",
+        evidence: "EXC001 is pending approval.",
+        riskSignal: "Waiver is not yet approved."
+      },
+      {
+        id: "LC-005",
+        title: "Credit Admin Readiness",
+        ownerRole: "Credit Admin",
+        status: "Pending",
+        agingDays: 0,
+        controlObjective: "Prevent downstream setup until waiver and mandatory conditions are resolved.",
+        evidence: "Credit Admin readiness has not started.",
+        riskSignal: "No facility setup action should begin at this stage."
+      }
+    ],
+    readinessGates: [
+      {
+        id: "GATE-001",
+        title: "Mandatory Document Readiness",
+        status: "Block",
+        ownerRole: "RM",
+        evidence: "Document readiness is below threshold and financial statement waiver is pending.",
+        linkedRequirement: "REQ002",
+        linkedTestCase: "TC002"
+      },
+      {
+        id: "GATE-002",
+        title: "Approval Authority Confirmed",
+        status: "Pass",
+        ownerRole: "Approver",
+        evidence: "Indicative route is within Regional Credit Manager level for current exposure.",
+        linkedRequirement: "REQ017",
+        linkedTestCase: "TC011"
+      },
+      {
+        id: "GATE-003",
+        title: "Policy Exception Governance",
+        status: "Watch",
+        ownerRole: "Credit Analyst",
+        evidence: "Financial statement waiver exists but approval is pending.",
+        linkedRequirement: "REQ019",
+        linkedTestCase: "TC013"
+      },
+      {
+        id: "GATE-004",
+        title: "UAT And Release Evidence",
+        status: "Block",
+        ownerRole: "System Admin",
+        evidence: "TC002 and TC010 are failed or pending retest.",
+        linkedRequirement: "REQ002",
+        linkedTestCase: "TC010"
+      },
+      {
+        id: "GATE-005",
+        title: "Audit Evidence Complete",
+        status: "Watch",
+        ownerRole: "Credit Analyst",
+        evidence: "Waiver maker-checker evidence is required before submission.",
+        linkedRequirement: "REQ013",
+        linkedTestCase: "TC010"
+      }
+    ]
+  },
+  {
+    id: "CASE-1006",
+    customerName: "Meridian Trade Services Ltd",
+    relationshipManager: "RM-034",
+    creditAnalyst: "CA-014",
+    applicationType: "Enhancement",
+    customerSegment: "SME",
+    facilityType: "Trade Line",
+    exposure: 980000,
+    riskLevel: "Medium",
+    collateralCoverage: "Fully Secured",
+    currentStage: "Ready for Facility Setup",
+    ownerRole: "Credit Admin",
+    agingDays: 1,
+    documentReadiness: 100,
+    approvalTier: "Regional Credit Manager",
+    approvalRouteConfirmed: true,
+    policyExceptionIds: [],
+    uatCaseIds: ["TC003", "TC006", "TC008", "TC015", "TC016"],
+    changeRequestIds: ["CR002", "CR006"],
+    executiveSummary:
+      "Trade line enhancement is ready for facility setup because documents, route, controls, and UAT evidence are complete for this sample scenario.",
+    baRecommendation:
+      "Proceed to facility setup. Keep product document mapping under regression monitoring because trade facility document rules can affect future enhancements.",
+    nextBestActions: [
+      "Credit Admin to complete final facility setup checklist.",
+      "System Admin to retain audit event for readiness decision.",
+      "Product owner to monitor trade facility document mapping in the next regression cycle."
+    ],
+    lifecycleSteps: [
+      {
+        id: "LC-001",
+        title: "RM Intake And Document Validation",
+        ownerRole: "RM",
+        status: "Completed",
+        agingDays: 0,
+        controlObjective: "Validate enhancement package and trade facility documents.",
+        evidence: "Document readiness is 100%.",
+        riskSignal: "No current document blocker."
+      },
+      {
+        id: "LC-002",
+        title: "Credit Analysis",
+        ownerRole: "Credit Analyst",
+        status: "Completed",
+        agingDays: 0,
+        controlObjective: "Confirm enhancement rationale, conduct, and repayment source.",
+        evidence: "Credit analysis package is complete for the sample case.",
+        riskSignal: "No open analysis blocker."
+      },
+      {
+        id: "LC-003",
+        title: "Approval Routing",
+        ownerRole: "Approver",
+        status: "Completed",
+        agingDays: 0,
+        controlObjective: "Confirm approval authority and enhancement approval memo.",
+        evidence: "Regional Credit Manager route confirmed.",
+        riskSignal: "No route override required."
+      },
+      {
+        id: "LC-004",
+        title: "Policy Exception Review",
+        ownerRole: "Approver",
+        status: "Completed",
+        agingDays: 0,
+        controlObjective: "Confirm no open policy exception blocks facility setup.",
+        evidence: "No policy exceptions linked to this case.",
+        riskSignal: "No current exception blocker."
+      },
+      {
+        id: "LC-005",
+        title: "Credit Admin Readiness",
+        ownerRole: "Credit Admin",
+        status: "Completed",
+        agingDays: 1,
+        controlObjective: "Confirm conditions and setup readiness before downstream processing.",
+        evidence: "Case is ready for facility setup.",
+        riskSignal: "Proceed with standard readiness evidence."
+      }
+    ],
+    readinessGates: [
+      {
+        id: "GATE-001",
+        title: "Mandatory Document Readiness",
+        status: "Pass",
+        ownerRole: "Credit Admin",
+        evidence: "All mandatory documents are complete or not applicable.",
+        linkedRequirement: "REQ006",
+        linkedTestCase: "TC006"
+      },
+      {
+        id: "GATE-002",
+        title: "Approval Authority Confirmed",
+        status: "Pass",
+        ownerRole: "Approver",
+        evidence: "Regional Credit Manager route is confirmed.",
+        linkedRequirement: "REQ017",
+        linkedTestCase: "TC011"
+      },
+      {
+        id: "GATE-003",
+        title: "Policy Exception Governance",
+        status: "Pass",
+        ownerRole: "Approver",
+        evidence: "No open policy exceptions.",
+        linkedRequirement: "REQ019",
+        linkedTestCase: "TC013"
+      },
+      {
+        id: "GATE-004",
+        title: "UAT And Release Evidence",
+        status: "Pass",
+        ownerRole: "System Admin",
+        evidence: "Relevant UAT evidence is passed or monitored as low-risk regression.",
+        linkedRequirement: "REQ008",
+        linkedTestCase: "TC008"
+      },
+      {
+        id: "GATE-005",
+        title: "Audit Evidence Complete",
+        status: "Pass",
+        ownerRole: "Credit Admin",
+        evidence: "Readiness decision can be evidenced through audit trail.",
+        linkedRequirement: "REQ013",
+        linkedTestCase: "TC008"
+      }
+    ]
+  }
+];
+
 export const traceabilityMatrix: TraceabilityItem[] = [
   {
     requirementId: "REQ001",
@@ -661,5 +1117,21 @@ export const traceabilityMatrix: TraceabilityItem[] = [
     relatedTestCaseId: "TC014",
     relatedChangeRequest: "CR005",
     status: "Updated"
+  },
+  {
+    requirementId: "REQ021",
+    requirementDescription: "Show end-to-end case lifecycle evidence across profile, documents, analysis, route, exceptions, UAT, audit, and next actions.",
+    relatedBusinessRule: "BR013, BR014, BR015",
+    relatedTestCaseId: "TC015",
+    relatedChangeRequest: "CR006",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ022",
+    requirementDescription: "Calculate release posture from readiness gates so blocked evidence prevents a case from appearing ready.",
+    relatedBusinessRule: "BR015",
+    relatedTestCaseId: "TC016",
+    relatedChangeRequest: "CR006",
+    status: "Active"
   }
 ];

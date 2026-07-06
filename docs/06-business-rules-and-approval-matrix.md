@@ -27,6 +27,7 @@ This page contains synthetic rules for portfolio demonstration. They are not cop
 | BR-013 | Approval authority is recommended from exposure, risk level, collateral coverage, segment, application type, and exception severity. | Credit case inputs are saved or changed. | Generate recommended approval tier with rationale. | Reduces manual routing error and supports delegated authority control. |
 | BR-014 | Approval route override must be controlled. | Authorized user changes recommended route. | Require reason, authorized role, maker-checker check, and audit event. | Prevents undocumented approval authority changes. |
 | BR-015 | Policy exceptions and owner changes must refresh management visibility. | Exception status, route, or owner changes. | Update dashboard indicators and traceability references. | Ensures governance review sees current risk and bottleneck position. |
+| BR-016 | Case release posture is derived from readiness gates. | Case 360 view is opened or gate status changes. | Display Not Ready if any gate is Block, Controlled Watch if any gate is Watch, and Ready only when all gates Pass. | Prevents a case from appearing ready when control evidence is incomplete. |
 
 ## Facility Types
 

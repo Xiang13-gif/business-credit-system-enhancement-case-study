@@ -18,13 +18,14 @@ const sections = [
   {
     title: "Proposed Solution",
     items: [
-      "A portfolio platform that simulates document checklist automation, approval routing, policy exception governance, UAT monitoring, CR impact analysis, audit evidence, and traceability.",
+      "A portfolio platform that simulates case lifecycle visibility, document checklist automation, approval routing, policy exception governance, UAT monitoring, CR impact analysis, audit evidence, and traceability.",
       "This portfolio version uses mock data and local state so it can be safely published without confidential information."
     ]
   },
   {
     title: "Functional Scope",
     items: [
+      "Credit Case 360 with lifecycle status, readiness gates, linked evidence, BA recommendation, and next best actions.",
       "Approval Routing Simulator with exposure, risk, collateral, segment, exception severity, maker-checker, and escalation logic.",
       "Policy Exception Register with severity, owner, mitigation, aging, approval authority, evidence, requirement linkage, and UAT coverage.",
       "Document Checklist Generator with rule-based output and risk warnings.",

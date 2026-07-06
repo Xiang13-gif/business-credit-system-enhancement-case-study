@@ -21,6 +21,7 @@ As a result:
 - Credit Administration may receive approved cases before all conditions are clearly marked.
 - Management cannot easily see where applications are stuck.
 - UAT evidence and change request impact may be disconnected from the requirements they validate.
+- Stakeholders may need to switch across multiple views to understand one case's lifecycle, blockers, evidence, and next owner.
 
 ## Business Impact
 
@@ -46,6 +47,7 @@ Target outcomes:
 - Better visibility of pending cases and aging
 - UAT coverage aligned to real business scenarios
 - Traceable control evidence for waiver, override, exception, and release sign-off decisions
+- A case-level lifecycle view that explains readiness posture, blockers, owner actions, and linked evidence
 
 ## Success Measures
 

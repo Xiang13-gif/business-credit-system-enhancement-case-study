@@ -6,7 +6,7 @@ Global Commercial Credit Modernization Platform
 
 ## Product Objective
 
-Create a GitHub-ready Banking Business Analyst / Product Analyst portfolio app that demonstrates commercial credit workflow modernization, approval routing, policy exception governance, document controls, UAT tracking, change impact analysis, traceability, audit evidence, and executive dashboard storytelling.
+Create a GitHub-ready Banking Business Analyst / Product Analyst portfolio app that demonstrates commercial credit workflow modernization, case lifecycle visibility, approval routing, policy exception governance, document controls, UAT tracking, change impact analysis, traceability, audit evidence, and executive dashboard storytelling.
 
 ## Target Audience
 
@@ -27,6 +27,7 @@ Commercial lending workflows are difficult to demonstrate in a public portfolio 
 In scope:
 
 - Executive Dashboard
+- Credit Case 360
 - Approval Routing Simulator
 - Policy Exception Register
 - Document Checklist Generator
@@ -72,6 +73,8 @@ Out of scope:
 | REQ018 | Require reason, authorized role, and audit evidence when approval route is overridden. |
 | REQ019 | Track policy exceptions by severity, owner, mitigation, aging, approval tier, evidence, requirement linkage, and UAT coverage. |
 | REQ020 | Show pipeline aging, bottlenecks, owner role, exception volume, and document readiness in the dashboard. |
+| REQ021 | Show end-to-end case lifecycle evidence across profile, documents, analysis, route, exceptions, UAT, audit, and next actions. |
+| REQ022 | Calculate release posture from readiness gates so blocked evidence prevents a case from appearing ready. |
 
 ## Success Criteria
 
@@ -82,6 +85,8 @@ Out of scope:
 - User can update retest status and review failed case details.
 - User can analyze CR impact and BA recommendation.
 - User can review delivery and credit pipeline metrics on the dashboard.
+- User can inspect a single credit case lifecycle and understand blockers, readiness gates, linked evidence, and next actions.
+- User can see release posture derived from readiness gate statuses.
 - User can review role-based workflow impact.
 - User can review local audit events.
 - User can view traceability matrix.

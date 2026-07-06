@@ -39,6 +39,10 @@ export type PipelineStage =
   | "Documentation"
   | "Ready for Facility Setup";
 
+export type LifecycleStepStatus = "Completed" | "In Progress" | "Blocked" | "Pending";
+
+export type ReadinessGateStatus = "Pass" | "Watch" | "Block";
+
 export type FinancialStatementStatus = "Available" | "Not Available" | "Waiver Requested";
 
 export type RequirementLevel = "Required" | "Conditional" | "Optional";
@@ -167,6 +171,54 @@ export interface CreditPipelineCase {
   agingDays: number;
   exceptionCount: number;
   documentReadiness: number;
+}
+
+export interface CaseLifecycleStep {
+  id: string;
+  title: string;
+  ownerRole: UatRole;
+  status: LifecycleStepStatus;
+  agingDays: number;
+  controlObjective: string;
+  evidence: string;
+  riskSignal: string;
+}
+
+export interface CaseReadinessGate {
+  id: string;
+  title: string;
+  status: ReadinessGateStatus;
+  ownerRole: UatRole;
+  evidence: string;
+  linkedRequirement: string;
+  linkedTestCase: string;
+}
+
+export interface CreditCase360 {
+  id: string;
+  customerName: string;
+  relationshipManager: string;
+  creditAnalyst: string;
+  applicationType: ApplicationType;
+  customerSegment: CustomerSegment;
+  facilityType: FacilityType;
+  exposure: number;
+  riskLevel: RiskLevel;
+  collateralCoverage: CollateralCoverage;
+  currentStage: PipelineStage;
+  ownerRole: UatRole;
+  agingDays: number;
+  documentReadiness: number;
+  approvalTier: ApprovalTier;
+  approvalRouteConfirmed: boolean;
+  policyExceptionIds: string[];
+  uatCaseIds: string[];
+  changeRequestIds: string[];
+  lifecycleSteps: CaseLifecycleStep[];
+  readinessGates: CaseReadinessGate[];
+  executiveSummary: string;
+  baRecommendation: string;
+  nextBestActions: string[];
 }
 
 export interface TraceabilityItem {

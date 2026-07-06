@@ -4,6 +4,7 @@ import {
   Building2,
   ClipboardCheck,
   FileCheck2,
+  FileSearch,
   Gauge,
   GitPullRequestArrow,
   History,
@@ -22,6 +23,13 @@ import {
 } from "@/lib/mock-data";
 
 const modules = [
+  {
+    title: "Credit Case 360",
+    description: "End-to-end case view linking RM intake, documents, credit analysis, approval route, exceptions, UAT evidence, audit controls, and readiness.",
+    href: "/case-360",
+    icon: FileSearch,
+    badge: "Case Lifecycle"
+  },
   {
     title: "Executive Dashboard",
     description: "Pipeline aging, bottlenecks, exception volume, document readiness, UAT health, and CR priority.",
@@ -102,8 +110,8 @@ export default function HomePage() {
       <PageHeader
         actions={
           <>
-            <Button href="/approval-routing">
-              Simulate Route
+            <Button href="/case-360">
+              Open Case 360
               <ArrowRight className="h-4 w-4" />
             </Button>
             <Button href="/about" variant="secondary">

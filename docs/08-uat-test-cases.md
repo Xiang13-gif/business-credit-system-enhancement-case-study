@@ -38,6 +38,8 @@ These UAT cases focus on business outcomes and control points. They are written 
 | UAT-018 | Dashboard shows overdue cases | Cases exceed SLA threshold. | Open dashboard and filter by current month. | Overdue cases are highlighted in aging view. | Medium |
 | UAT-019 | Audit trail records waiver | Waiver is created and approved. | Open audit trail. | Maker, checker, timestamp, reason, and status changes are visible. | High |
 | UAT-020 | Role access restriction | RM tries to open non-portfolio case. | Search and open case outside portfolio. | Access is denied or record is not visible. | High |
+| UAT-021 | Review Credit Case 360 | Case lifecycle data exists for selected case. | Open Case 360 and select a case. | Case profile, lifecycle steps, readiness gates, linked exceptions, UAT evidence, CRs, recommendation, and next actions are visible. | High |
+| UAT-022 | Calculate release posture from gates | Case has readiness gates with Pass, Watch, or Block. | Review selected case posture. | Any Block gate results in Not Ready, Watch-only gates result in Controlled Watch, and all Pass gates result in Ready. | High |
 
 ## UAT Exit Criteria
 
