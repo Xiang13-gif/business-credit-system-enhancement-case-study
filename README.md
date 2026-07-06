@@ -2,6 +2,8 @@
 
 A flagship Banking Business Analyst / Product Analyst portfolio project for commercial lending workflow modernization.
 
+Live site: [https://xiang13-gif.github.io/business-credit-system-enhancement-case-study/](https://xiang13-gif.github.io/business-credit-system-enhancement-case-study/)
+
 The project simulates how a global bank could modernize commercial credit operations through document automation, risk-based approval routing, policy exception governance, UAT traceability, audit evidence, and executive dashboards.
 
 ## Portfolio Positioning
