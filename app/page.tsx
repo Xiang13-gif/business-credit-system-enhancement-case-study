@@ -17,7 +17,8 @@ import {
   Route,
   ShieldAlert,
   ShieldCheck,
-  Users
+  Users,
+  Workflow
 } from "lucide-react";
 import Link from "next/link";
 import { Badge, Button, Card, PageHeader, StatCard } from "@/components/ui";
@@ -32,6 +33,13 @@ import {
 } from "@/lib/transformation-data";
 
 const modules = [
+  {
+    title: "Unified Case Workflow",
+    description: "Create and save a credit case, complete rule-driven documents, route approvals, manage role tasks, record decisions, and control stage transitions.",
+    href: "/workflow",
+    icon: Workflow,
+    badge: "Operational Workflow"
+  },
   {
     title: "Smart Credit Memo Studio",
     description: "Evidence-grounded commercial credit memo generation with source lineage, confidence, review, versioning, approval gates, and responsible AI controls.",
@@ -155,8 +163,8 @@ export default function HomePage() {
       <PageHeader
         actions={
           <>
-            <Button href="/memo">
-              Generate Credit Memo
+            <Button href="/workflow">
+              Run Unified Workflow
               <ArrowRight className="h-4 w-4" />
             </Button>
             <Button href="/rules" variant="secondary">

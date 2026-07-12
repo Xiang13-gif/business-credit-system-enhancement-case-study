@@ -17,7 +17,8 @@ import {
   Route,
   ShieldAlert,
   ShieldCheck,
-  Users
+  Users,
+  Workflow
 } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -28,6 +29,7 @@ const navGroups = [
     label: "Workspace",
     items: [
       { href: "/", label: "Home", icon: Home },
+      { href: "/workflow", label: "Unified Workflow", icon: Workflow },
       { href: "/case-360", label: "Case 360", icon: FileSearch },
       { href: "/memo", label: "Credit Memo Studio", icon: FilePenLine }
     ]

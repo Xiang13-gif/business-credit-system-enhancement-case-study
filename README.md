@@ -48,6 +48,7 @@ Common pain points modeled in this project:
 
 ## What This Project Demonstrates
 
+- An executable end-to-end case workflow with local persistence, stage gates, role tasks, approval decisions, and audit evidence
 - Evidence-grounded Credit Memo generation with source lineage and human approval
 - Responsible AI controls for confidence, unsupported evidence, masking, versioning, and fallback
 - Business rule registry, version comparison, maker-checker, impact analysis, and regression testing
@@ -73,6 +74,7 @@ Common pain points modeled in this project:
 
 | Module | Purpose |
 | --- | --- |
+| Unified Case Workflow | Creates and saves commercial credit cases, recalculates checklist and approval controls, manages role-based tasks, blocks invalid transitions, and records approval or return decisions. |
 | Smart Credit Memo Studio | Generates an eight-section commercial credit memorandum with source lineage, governed rules, confidence, missing-evidence blockers, human review, version comparison, approval gating, evidence export, and print-to-PDF. |
 | Business Rule Governance Center | Controls rule ownership, versions, maker-checker lifecycle, effective dates, impact scope, regression scenarios, traceability coverage, and activation evidence. |
 | Data Lineage and Quality Hub | Traces critical data from source system through transformation and rules into credit decisions, documents, and reporting, with data-quality issue impact and ownership. |
@@ -91,18 +93,18 @@ Common pain points modeled in this project:
 
 ## Suggested Demo Flow
 
-1. Open `/memo`, select `CASE-1007`, and show how unsupported EDD, exception, and route evidence block approval.
-2. Switch to `CASE-1006`, mark evidence-ready sections Reviewed, approve the memo, compare versions, and export the evidence map.
-3. Open `/rules`, run `RT-005`, and show how the proposed Land Search Report requirement produces a controlled design gap and blocks activation.
-4. Select a passing regression scenario and explain the requirement-to-rule-to-UAT activation gate.
-5. Open `/data-governance`, select `CDE-005`, and trace Collateral Value from source through transformation and rules into approval and memo outputs.
-6. Open `/value`, adjust annual volume, effort, cost, and implementation assumptions to show how payback and the investment recommendation change.
-7. Open `/release`, resolve or introduce gates and show how the recommendation changes between No-Go, Conditional Go, and Go.
-8. Review the cutover rollback triggers and hypercare thresholds.
-9. Open `/checklist` and demonstrate document readiness, waiver maker-checker, SLA aging, and package summary.
-10. Open `/approval-routing` and show how exposure, risk, collateral, and exception severity change delegated authority.
-11. Open `/case-360` to connect case lifecycle, exceptions, UAT evidence, and next actions.
-12. Open `/traceability` to show requirement-to-rule-to-test-to-change-request coverage.
+1. Open `/workflow`, create a case, change the risk and facility inputs, and show how checklist requirements, approval authority, blockers, and tasks recalculate.
+2. Complete mandatory evidence, move the case to Credit Review, add a recommendation, record an approval or return decision, and review the audit trail.
+3. Open `/memo`, select `CASE-1007`, and show how unsupported EDD, exception, and route evidence block approval.
+4. Switch to `CASE-1006`, mark evidence-ready sections Reviewed, approve the memo, compare versions, and export the evidence map.
+5. Open `/rules`, run `RT-005`, and show how the proposed Land Search Report requirement produces a controlled design gap and blocks activation.
+6. Select a passing regression scenario and explain the requirement-to-rule-to-UAT activation gate.
+7. Open `/data-governance`, select `CDE-005`, and trace Collateral Value from source through transformation and rules into approval and memo outputs.
+8. Open `/value`, adjust annual volume, effort, cost, and implementation assumptions to show how payback and the investment recommendation change.
+9. Open `/release`, resolve or introduce gates and show how the recommendation changes between No-Go, Conditional Go, and Go.
+10. Open `/checklist` and demonstrate document readiness, waiver maker-checker, SLA aging, and package summary.
+11. Open `/approval-routing` and show how exposure, risk, collateral, and exception severity change delegated authority.
+12. Open `/case-360` and `/traceability` to connect lifecycle evidence to requirements and tests.
 
 ## Business Analyst Artifacts
 
@@ -123,6 +125,7 @@ Common pain points modeled in this project:
 | `docs/13-information-architecture.md` | Navigation model, entity relationships, and screen-to-data mapping. |
 | `docs/14-github-portfolio-packaging.md` | GitHub About text, topics, screenshot plan, demo flow, LinkedIn summary, and publishing checklist. |
 | `docs/15-governance-and-value-operating-model.md` | Decision rights, rule and data governance, document controls, release gates, value ownership, and interview narrative. |
+| `docs/16-unified-case-workflow.md` | Workflow states, role ownership, transition controls, functional requirements, and acceptance scenarios. |
 
 ## Sample Portfolio Metrics
 
@@ -162,6 +165,7 @@ The application uses mock data only. Metrics are portfolio assumptions for demon
 | Route | Purpose |
 | --- | --- |
 | `/` | Portfolio overview and module entry points. |
+| `/workflow` | Persistent end-to-end case workflow, control gates, tasks, and credit decisions. |
 | `/memo` | Evidence-grounded Credit Memo Studio and responsible AI approval controls. |
 | `/rules` | Business rule registry, impact analysis, test lab, and activation lifecycle. |
 | `/data-governance` | Critical data lineage, quality controls, ownership, and issue register. |
@@ -237,7 +241,6 @@ Suggested highlights:
 - PostgreSQL / Supabase database
 - Prisma ORM
 - Native Excel and enterprise DOCX export
-- Workflow approval state machine
 - Server-side audit trail persistence
 - Server-side persistence for document status workflow
 - Reviewer comments and sign-off workflow
