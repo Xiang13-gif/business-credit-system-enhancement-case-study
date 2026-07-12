@@ -22,6 +22,10 @@ As a result:
 - Management cannot easily see where applications are stuck.
 - UAT evidence and change request impact may be disconnected from the requirements they validate.
 - Stakeholders may need to switch across multiple views to understand one case's lifecycle, blockers, evidence, and next owner.
+- Credit memorandum drafting may repeat data manually without exposing which source field or rule supports each conclusion.
+- Business rule changes may not consistently identify downstream document, role, data, procedure, and regression impact.
+- Critical data quality issues may be discovered only after affecting approval authority, document content, or management reporting.
+- Release and benefit decisions may rely on status updates rather than measurable exit criteria and outcome evidence.
 
 ## Business Impact
 
@@ -32,6 +36,9 @@ As a result:
 | Control | Exception approvals and checklist completion may be harder to evidence during review. |
 | User experience | RM and Credit teams spend time asking for status updates instead of progressing cases. |
 | Reporting | Pipeline and bottleneck reporting depends on offline trackers. |
+| Decision quality | Unsupported document narrative or poor source data can create false confidence in approval evidence. |
+| Change risk | Untested rules or incomplete cutover evidence can alter control outcomes or disrupt production. |
+| Investment value | Features may be delivered without proving operational benefit, adoption, or financial viability. |
 
 ## Target Outcome
 
@@ -48,6 +55,11 @@ Target outcomes:
 - UAT coverage aligned to real business scenarios
 - Traceable control evidence for waiver, override, exception, and release sign-off decisions
 - A case-level lifecycle view that explains readiness posture, blockers, owner actions, and linked evidence
+- Evidence-grounded credit memo generation with human review and independent approval
+- Versioned rule governance with impact analysis, regression evidence, and activation control
+- Critical data definitions, lineage, quality thresholds, accountable ownership, and downstream issue impact
+- Measurable benefits, financial viability, and outcome-led roadmap decisions
+- Evidence-led Go / No-Go, cutover validation, rollback triggers, and hypercare monitoring
 
 ## Success Measures
 
@@ -55,11 +67,12 @@ The figures below are portfolio assumptions, not production claims.
 
 | Metric | Baseline Assumption | Target |
 | --- | ---: | ---: |
-| Applications returned for missing mandatory documents | 28% | Below 15% |
-| Standard renewal cases requiring manual routing correction | 18% | Below 5% |
-| Cases without clear next owner after submission | 12% | Below 2% |
-| Average time spent in "Pending RM Action" for incomplete cases | 4.5 working days | Below 2.5 working days |
-| Monthly credit pipeline report preparation | 1 working day | Same-day dashboard refresh |
+| First-time-right submission | 61% | At least 88% |
+| Submission-to-decision TAT | 9.4 working days | 5.5 working days or below |
+| Manual document follow-up | 3.8 hours per case | 2.1 hours per case or below |
+| Uncontrolled waiver rate | 14% | 2% or below |
+| High-impact rule regression coverage | 35% | At least 95% |
+| Critical data lineage coverage | 42% | 100% |
 
 ## Non-Goals
 

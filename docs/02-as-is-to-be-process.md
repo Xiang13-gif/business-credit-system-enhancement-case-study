@@ -34,6 +34,10 @@ flowchart TD
 | Approval routing | Some routing decisions depend on manual interpretation. | Routing errors delay approval and weaken auditability. |
 | Exception handling | Policy exceptions may be described in free text. | Exceptions are harder to categorize, approve, and report. |
 | Case visibility | Users rely on messages or trackers for status updates. | Management cannot easily identify bottlenecks. |
+| Credit memo drafting | Analysts repeat source data and narrative manually. | Reviewers cannot easily distinguish evidence from unsupported text. |
+| Rule change | Rule updates are discussed across documents, code, and meetings. | Impact, effective version, and regression coverage may be unclear. |
+| Data quality | Data issues are handled close to the affected screen or report. | Root cause and downstream decision impact remain fragmented. |
+| Release and value | Go-live and benefit updates use separate status packs. | Open blockers and unrealized benefits may not drive explicit decisions. |
 
 ## To-Be Process
 
@@ -77,6 +81,27 @@ flowchart TD
 | Automate approval route recommendation | Reduce routing errors while keeping final approval ownership with authorized users. |
 | Create condition precedent tracking | Make post-approval readiness visible before downstream processing. |
 | Add status and ownership dashboard | Reduce manual status chasing and improve management oversight. |
+| Generate evidence-grounded Credit Memo | Reduce drafting effort while exposing source, rule, confidence, missing evidence, and accountable review. |
+| Introduce rule version governance and Test Lab | Prevent proposed logic from activating without impact analysis and required regression evidence. |
+| Maintain critical data lineage and DQ impact | Make source reliability and downstream decision consequences visible. |
+| Add benefits realization and outcome roadmap | Connect product scope to measurable operational and financial value. |
+| Derive release posture from readiness evidence | Make Go / No-Go, cutover, rollback, and hypercare decisions explicit and auditable. |
+
+## Transformation Governance Flow
+
+```mermaid
+flowchart LR
+    A[Source Evidence] --> B[Data Quality Gate]
+    B --> C[Active Rule Version]
+    C --> D[Checklist, Route, and Exception]
+    D --> E[Credit Memo Draft]
+    E --> F[Analyst Review]
+    F --> G[Independent Approval]
+    G --> H[Release Readiness]
+    H --> I[Cutover and Hypercare]
+    I --> J[Benefits and Roadmap Review]
+    J --> C
+```
 
 ## To-Be Status Model
 
@@ -91,4 +116,3 @@ flowchart TD
 | Ready for Facility Setup | Credit Admin | Documentation readiness confirmed. |
 | Rejected | RM | Customer notified and case closed. |
 | Withdrawn | RM | Customer request or business decision recorded. |
-

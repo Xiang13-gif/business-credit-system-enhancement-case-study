@@ -93,16 +93,20 @@ export function Button({
   onClick,
   href,
   variant = "primary",
-  type = "button"
+  type = "button",
+  disabled = false,
+  title
 }: {
   children: ReactNode;
   onClick?: () => void;
   href?: string;
   variant?: "primary" | "secondary" | "ghost";
   type?: "button" | "submit";
+  disabled?: boolean;
+  title?: string;
 }) {
   const className = cn(
-    "inline-flex h-10 items-center justify-center gap-2 rounded-md px-4 text-sm font-semibold transition",
+    "inline-flex h-10 items-center justify-center gap-2 rounded-md px-4 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50",
     variant === "primary" && "bg-primary text-primary-foreground hover:bg-primary/90",
     variant === "secondary" && "border bg-card text-foreground hover:bg-muted",
     variant === "ghost" && "text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -117,7 +121,7 @@ export function Button({
   }
 
   return (
-    <button className={className} onClick={onClick} type={type}>
+    <button className={className} disabled={disabled} onClick={onClick} title={title} type={type}>
       {children}
     </button>
   );

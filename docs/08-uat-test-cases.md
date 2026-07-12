@@ -40,6 +40,14 @@ These UAT cases focus on business outcomes and control points. They are written 
 | UAT-020 | Role access restriction | RM tries to open non-portfolio case. | Search and open case outside portfolio. | Access is denied or record is not visible. | High |
 | UAT-021 | Review Credit Case 360 | Case lifecycle data exists for selected case. | Open Case 360 and select a case. | Case profile, lifecycle steps, readiness gates, linked exceptions, UAT evidence, CRs, recommendation, and next actions are visible. | High |
 | UAT-022 | Calculate release posture from gates | Case has readiness gates with Pass, Watch, or Block. | Review selected case posture. | Any Block gate results in Not Ready, Watch-only gates result in Controlled Watch, and all Pass gates result in Ready. | High |
+| UAT-023 | Generate evidence-grounded credit memo | CASE-1006 has complete case, financial, routing, and control evidence. | Generate the controlled memo and inspect all sections. | Eight sections are generated with source fields, rules, confidence, evidence status, and version. | High |
+| UAT-024 | Block unsupported memo approval | CASE-1007 has EDD, exception, and route evidence gaps. | Generate memo, mark sections reviewed, and attempt approval. | Unsupported sections remain Needs Evidence and memo approval is blocked. | High |
+| UAT-025 | Detect proposed rule design gap | BR004 v2.3 proposes Land Search Report but active engine has no DOC046 mapping. | Run RT-005 in Rule Test Lab. | Test outcome is Design Gap and rule activation gate remains blocked. | High |
+| UAT-026 | Assess approval-rule change impact | BR013 v3.1 proposes aggregate group exposure. | Review version comparison and impact analysis. | Group Exposure Schedule, data, roles, controls, requirements, and UAT scope are visible. | High |
+| UAT-027 | Trace critical data to decision | CDE-005 has a valuation-date DQ issue. | Select CDE-005 and review lineage. | Source, transformation, rules, outputs, owner, quality checks, issue root cause, and downstream impact are visible. | High |
+| UAT-028 | Recalculate product value | Benefits assumptions are loaded. | Change annual volume, manual effort, target effort, cost, and implementation cost. | Benefit, capacity, payback, net benefit, ROI, and recommendation recalculate. | Medium |
+| UAT-029 | Derive release Go / No-Go posture | Release gates contain Pass, Watch, and Block. | Change gate statuses and review posture. | Any Block gives No-Go, Watch-only gives Conditional Go, and all Pass gives Go. | High |
+| UAT-030 | Validate cutover rollback evidence | Release R2.4 cutover plan is available. | Review all sequenced steps and hypercare indicators. | Every step has owner, validation, rollback trigger, and every hypercare indicator has target and owner. | High |
 
 ## UAT Exit Criteria
 
@@ -50,6 +58,10 @@ These UAT cases focus on business outcomes and control points. They are written 
 | Business sign-off | Product Owner, Credit, RM representative, and Credit Admin representative sign off. |
 | Reporting | Dashboard values reconcile to agreed test data sample. |
 | Access control | Role-based access tests passed for RM, Credit, Approver, and Admin roles. |
+| Credit memo controls | No generated section can be approved with unsupported evidence, disabled grounding, missing human review, or incomplete independent approval. |
+| Rule governance | No high-impact proposed rule can activate without maker-checker, impact scope, effective date, and passed required regression evidence. |
+| Data readiness | Critical data breaches have approved remediation or explicit residual-risk acceptance with downstream impact understood. |
+| Release readiness | No open blocking gate; cutover, rollback, training, support, and hypercare evidence are signed by accountable owners. |
 
 ## Defect Triage Fields
 

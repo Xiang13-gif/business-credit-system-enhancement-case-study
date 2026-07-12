@@ -6,13 +6,16 @@ The examples below show how change requests can be assessed during delivery. The
 
 | CR ID | Request | Raised By | Impact Area | BA Assessment | Decision |
 | --- | --- | --- | --- | --- | --- |
-| CR-001 | Add "Restructure" as application type. | Credit Risk | Intake, routing, reporting | Valid business need. Requires application type list update and extra reporting filter. | Approved |
-| CR-002 | Allow RM to submit case without latest financial statements if waiver is requested. | RM Team | Checklist, exception, approval | Acceptable only if waiver reason and approver are mandatory. Requires maker-checker control. | Approved with control |
-| CR-003 | Add SMS notification to customer after approval. | Business | Customer communication | Outside current system scope and requires customer communication approval. | Deferred |
-| CR-004 | Allow route override by Credit Analyst. | Credit Team | Approval routing | Control risk if too broad. Recommend restricted override permission with mandatory reason. | Partially approved |
-| CR-005 | Include existing facility exposure from core banking in approval route. | Credit Risk | Integration, routing | Strong business value but depends on interface readiness. Manual input retained for portfolio version. | Deferred to Phase 2 |
-| CR-006 | Add Credit Case 360 lifecycle view. | Credit Operations | Case lifecycle, controls, UAT evidence | Strong portfolio value because it consolidates case profile, lifecycle status, readiness gates, linked exceptions, UAT evidence, and next best actions. | Approved |
-| CR-007 | Add dashboard view by industry sector. | Product Owner | Reporting | Low implementation risk if industry sector is available in customer profile. | Approved |
+| CR001 | Allow controlled waiver for missing financial statement. | RM Team | Checklist, exception, approval | Acceptable only with alternative evidence, reason, expiry, independent approval, and audit trail. | Approved with control |
+| CR002 | Add Corporate Guarantee collateral type. | Credit Operations | Checklist, legal evidence, UAT | Requires guarantee agreement, authority evidence, signatory verification, and collateral regression. | Approved |
+| CR003 | Make EDD mandatory for High Risk customers. | Credit Risk | Compliance, checklist, submission gate | High control value; EDD must be a submission blocker with approver visibility. | Approved |
+| CR004 | Add failed UAT, defect, root cause, and retest tracking. | UAT Lead | Delivery assurance | Required so open high-priority failures cannot disappear from release reporting. | Approved |
+| CR005 | Introduce risk-based approval routing. | Credit Risk | Delegated authority, controls, reporting | Adopt transparent scoring, override controls, maker-checker, and route regression. | Approved with control |
+| CR006 | Add Credit Case 360 lifecycle view. | Credit Operations | Lifecycle, controls, UAT evidence | Consolidates readiness, blockers, linked evidence, recommendation, and next actions. | Approved |
+| CR007 | Introduce evidence-grounded Credit Memo Studio. | Credit Transformation | Document intelligence, controls | Require source lineage, confidence, missing-evidence blockers, human review, masking, versioning, and independent approval. | Approved with control |
+| CR008 | Establish business rule governance and impact testing. | Rule Product Owner | Rules, requirements, UAT, operations | Require controlled versions, maker-checker lifecycle, impact analysis, regression, and activation gate. | Approved |
+| CR009 | Add critical data lineage and benefits realization. | Data Owner / Product Owner | Data governance, product value | Link source data to decisions and govern outcomes through baseline, target, owner, evidence, and financial viability. | Approved |
+| CR010 | Add release, cutover, and hypercare controls. | Release Steering Committee | Release assurance | Derive Go / No-Go from evidence and require cutover validation, rollback triggers, and early-life monitoring. | Approved |
 
 ## Change Request Assessment Template
 
@@ -25,7 +28,7 @@ The examples below show how change requests can be assessed during delivery. The
 | Testing impact | Which UAT scenarios must be added or amended? |
 | Delivery impact | Does it affect timeline, dependencies, or release scope? |
 
-## Example CR Detail: CR-002
+## Example CR Detail: CR001
 
 ### Request
 

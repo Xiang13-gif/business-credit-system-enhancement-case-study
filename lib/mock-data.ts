@@ -259,6 +259,174 @@ export const uatTestCases: UatTestCase[] = [
     executionDate: "2026-02-14",
     retestStatus: "Not Required",
     remarks: "Readiness posture follows gate logic correctly."
+  },
+  {
+    id: "TC017",
+    module: "Business Rule Governance Center",
+    requirementId: "REQ028",
+    scenario: "Verify proposed property evidence rule identifies missing Land Search Report implementation.",
+    testSteps: "Select BR004 and run RT-005 for a renewal term loan with property collateral.",
+    expectedResult: "Test Lab reports a controlled design gap for DOC046 and prevents rule approval or activation.",
+    priority: "High",
+    status: "Blocked",
+    role: "Credit Admin",
+    assignedTester: "BA Tester 03",
+    executionDate: "2026-07-10",
+    defectId: "DEF-041",
+    defectSeverity: "High",
+    rootCause: "Proposed document mapping is approved for analysis but not implemented in the active checklist engine.",
+    retestStatus: "Pending Retest",
+    remarks: "Expected pre-activation gap is visible and blocks the lifecycle gate."
+  },
+  {
+    id: "TC018",
+    module: "Business Rule Governance Center",
+    requirementId: "REQ029",
+    scenario: "Verify aggregate group exposure is included in proposed approval routing impact analysis.",
+    testSteps: "Select BR013, review proposed v3.1, and confirm impacted data, roles, route controls, and test scope.",
+    expectedResult: "Impact analysis identifies Group Exposure Schedule, delegated authority, affected roles, and regression scope.",
+    priority: "High",
+    status: "In Progress",
+    role: "Approver",
+    assignedTester: "BA Tester 04",
+    executionDate: "2026-07-10",
+    retestStatus: "Not Required",
+    remarks: "Data source and reconciliation acceptance criteria remain under review."
+  },
+  {
+    id: "TC019",
+    module: "Smart Credit Memo Studio",
+    requirementId: "REQ030",
+    scenario: "Verify every generated credit memo section shows source lineage, governed rules, confidence, and evidence status.",
+    testSteps: "Generate CASE-1006 using Controlled Template and inspect all eight memo sections.",
+    expectedResult: "Every section shows source fields, business rule IDs, confidence, status, and no unsupported evidence blocker.",
+    priority: "High",
+    status: "Passed",
+    role: "Credit Analyst",
+    assignedTester: "BA Tester 01",
+    executionDate: "2026-07-10",
+    retestStatus: "Not Required",
+    remarks: "Evidence map is complete and exportable."
+  },
+  {
+    id: "TC020",
+    module: "Smart Credit Memo Studio",
+    requirementId: "REQ031",
+    scenario: "Verify unsupported evidence and disabled responsible AI controls block memo approval.",
+    testSteps: "Generate CASE-1007, attempt review and approval, then disable evidence grounding.",
+    expectedResult: "Unsupported sections remain Needs Evidence and memo posture remains Blocked.",
+    priority: "High",
+    status: "Passed",
+    role: "Approver",
+    assignedTester: "BA Tester 04",
+    executionDate: "2026-07-10",
+    retestStatus: "Not Required",
+    remarks: "Approval gate correctly enforces evidence, human review, and public masking controls."
+  },
+  {
+    id: "TC021",
+    module: "Data Lineage and Quality Hub",
+    requirementId: "REQ032",
+    scenario: "Verify a critical data element traces from system of record to credit decision output.",
+    testSteps: "Select CDE-005 Collateral Value and review source, transformation, rules, outputs, owner, and DQ issues.",
+    expectedResult: "Full lineage and the critical valuation-date issue are visible with downstream approval impact.",
+    priority: "High",
+    status: "Passed",
+    role: "System Admin",
+    assignedTester: "BA Tester 02",
+    executionDate: "2026-07-10",
+    retestStatus: "Not Required",
+    remarks: "Source-to-decision lineage is complete for the selected critical data element."
+  },
+  {
+    id: "TC022",
+    module: "Benefits Realization and Product Value",
+    requirementId: "REQ033",
+    scenario: "Verify the value case recalculates benefit, payback, and ROI when assumptions change.",
+    testSteps: "Change annual applications, target hours, hourly cost, and implementation cost.",
+    expectedResult: "Annual benefit, hours released, payback, net benefit, ROI, and recommendation refresh immediately.",
+    priority: "Medium",
+    status: "Passed",
+    role: "Credit Analyst",
+    assignedTester: "BA Tester 03",
+    executionDate: "2026-07-10",
+    retestStatus: "Not Required",
+    remarks: "Financial viability responds to all controlled assumptions."
+  },
+  {
+    id: "TC023",
+    module: "Release and Cutover Command Center",
+    requirementId: "REQ034",
+    scenario: "Verify any blocking release gate produces a No-Go recommendation.",
+    testSteps: "Set one gate to Block and confirm posture, score, decision checks, and recommendation.",
+    expectedResult: "Release posture becomes No-Go and the blocking gate is included in the exported decision pack.",
+    priority: "High",
+    status: "Passed",
+    role: "Approver",
+    assignedTester: "BA Tester 04",
+    executionDate: "2026-07-10",
+    retestStatus: "Not Required",
+    remarks: "No-Go decision follows gate evidence and is recorded in the audit trail."
+  },
+  {
+    id: "TC024",
+    module: "Release and Cutover Command Center",
+    requirementId: "REQ035",
+    scenario: "Verify every cutover step has owner, validation, and rollback trigger.",
+    testSteps: "Review all six sequenced cutover activities and hypercare thresholds.",
+    expectedResult: "Each step contains an accountable owner, completion validation, and explicit rollback condition.",
+    priority: "High",
+    status: "In Progress",
+    role: "Credit Admin",
+    assignedTester: "BA Tester 05",
+    executionDate: "2026-07-10",
+    retestStatus: "Not Required",
+    remarks: "Final business smoke-test participant list is pending confirmation."
+  },
+  {
+    id: "TC025",
+    module: "Document Checklist Generator",
+    requirementId: "REQ025",
+    scenario: "Verify a waiver maker cannot approve the same document waiver.",
+    testSteps: "Mark a required document Waived, enter a reason, select the same maker and approver role, and attempt approval.",
+    expectedResult: "Approval is blocked until maker and approver roles are separated.",
+    priority: "High",
+    status: "Passed",
+    role: "Approver",
+    assignedTester: "BA Tester 04",
+    executionDate: "2026-07-10",
+    retestStatus: "Not Required",
+    remarks: "Maker-checker segregation blocks self-approval."
+  },
+  {
+    id: "TC026",
+    module: "Document Checklist Generator",
+    requirementId: "REQ026",
+    scenario: "Verify document aging produces On Track, Watch, and Breach status.",
+    testSteps: "Change aging days on open required documents across configured thresholds.",
+    expectedResult: "SLA status and package posture update while document layout remains stable.",
+    priority: "Medium",
+    status: "Passed",
+    role: "Credit Admin",
+    assignedTester: "BA Tester 05",
+    executionDate: "2026-07-10",
+    retestStatus: "Not Required",
+    remarks: "Aging thresholds refresh SLA and package risk."
+  },
+  {
+    id: "TC027",
+    module: "Document Checklist Generator",
+    requirementId: "REQ027",
+    scenario: "Verify package summary includes readiness, waivers, SLA risk, blockers, and BA recommendation.",
+    testSteps: "Generate a checklist, create a pending waiver and SLA breach, then export package summary.",
+    expectedResult: "Summary posture and exported fields reflect the controlled document state.",
+    priority: "High",
+    status: "Passed",
+    role: "Credit Analyst",
+    assignedTester: "BA Tester 01",
+    executionDate: "2026-07-10",
+    retestStatus: "Not Required",
+    remarks: "Package summary remains consistent with submission gate logic."
   }
 ];
 
@@ -456,6 +624,133 @@ export const changeRequests: ChangeRequest[] = [
       "Readiness posture calculation",
       "Exception, UAT, and CR linkage",
       "CSV export and audit event"
+    ],
+    implementationPriority: "High"
+  },
+  {
+    id: "CR007",
+    title: "Introduce evidence-grounded Credit Memo Studio",
+    description:
+      "Generate a structured commercial credit memorandum from case, financial, exception, rule, and readiness evidence with controlled human approval.",
+    impactedRequirements: [
+      "REQ030 - Generate source-grounded credit memo sections",
+      "REQ031 - Block approval when evidence or responsible AI controls are incomplete"
+    ],
+    impactedUatCases: ["TC019", "TC020"],
+    impactedRoles: ["Credit Analyst", "Approver", "System Admin"],
+    impactedBusinessRules: ["BR016", "BR005", "BR013", "BR015"],
+    controlRisk: [
+      "Generated narrative may overstate evidence or hide missing information.",
+      "Automated content may be approved without independent review.",
+      "Public portfolio output may expose identifiers if masking is disabled."
+    ],
+    operationalRisk: [
+      "Analysts may trust generated text without validating source evidence.",
+      "Template or prompt changes may alter document content without version control."
+    ],
+    baRecommendation:
+      "Use evidence grounding, section-level confidence, explicit missing-evidence blockers, human review, independent approval, masking, version comparison, and audit evidence as mandatory controls.",
+    suggestedTestScope: [
+      "Complete evidence case",
+      "Unsupported evidence blocker",
+      "Human review prerequisite",
+      "Public data masking",
+      "Evidence map and print output"
+    ],
+    implementationPriority: "High"
+  },
+  {
+    id: "CR008",
+    title: "Establish business rule governance and impact testing",
+    description:
+      "Create a controlled lifecycle for high-impact credit rules with ownership, versions, effective dates, impact analysis, regression scenarios, and activation gates.",
+    impactedRequirements: [
+      "REQ028 - Govern rule lifecycle and property evidence change",
+      "REQ029 - Assess aggregate group exposure routing impact"
+    ],
+    impactedUatCases: ["TC017", "TC018"],
+    impactedRoles: ["Credit Analyst", "Approver", "Credit Admin", "System Admin"],
+    impactedBusinessRules: ["BR004", "BR013", "BR017"],
+    controlRisk: [
+      "An untested rule change may alter mandatory documents or approval authority.",
+      "Current and proposed rule versions may be confused without effective dating.",
+      "Rule author may activate their own high-impact change."
+    ],
+    operationalRisk: [
+      "Procedure, training, and UAT may fall out of sync with the active ruleset.",
+      "Regression scope may miss combined scenarios across risk, collateral, and facility types."
+    ],
+    baRecommendation:
+      "Require maker-checker lifecycle control, version comparison, linked impact scope, required regression scenario, and an explicit activation gate before any proposed rule becomes active.",
+    suggestedTestScope: [
+      "Draft to review workflow",
+      "Maker-checker segregation",
+      "Proposed property evidence gap",
+      "Approval routing impact analysis",
+      "Activation blocker"
+    ],
+    implementationPriority: "High"
+  },
+  {
+    id: "CR009",
+    title: "Add risk data lineage and benefits realization",
+    description:
+      "Link critical credit data from source to decision output and connect product delivery to measurable operational and financial outcomes.",
+    impactedRequirements: [
+      "REQ032 - Maintain critical data lineage and quality issues",
+      "REQ033 - Measure benefits and financial viability"
+    ],
+    impactedUatCases: ["TC021", "TC022"],
+    impactedRoles: ["Credit Analyst", "Credit Admin", "System Admin"],
+    impactedBusinessRules: ["BR018", "BR019"],
+    controlRisk: [
+      "Poor source data may produce incorrect approval or memo outputs.",
+      "Benefits may be claimed without an agreed baseline, owner, or evidence source."
+    ],
+    operationalRisk: [
+      "Data remediation may lack accountable ownership.",
+      "Roadmap investment may prioritize visible features over measurable outcomes."
+    ],
+    baRecommendation:
+      "Maintain a critical data inventory with quality thresholds and downstream impact, and govern each product benefit through baseline, target, current result, owner, evidence source, and risk-adjusted business case.",
+    suggestedTestScope: [
+      "Source-to-output lineage",
+      "Critical DQ breach",
+      "Benefit assumption recalculation",
+      "Payback threshold",
+      "Outcome-led roadmap filtering"
+    ],
+    implementationPriority: "High"
+  },
+  {
+    id: "CR010",
+    title: "Add release, cutover, and hypercare decision controls",
+    description:
+      "Create an evidence-led release decision covering business, UAT, data, technology, controls, operations, people, cutover, rollback, and hypercare.",
+    impactedRequirements: [
+      "REQ034 - Derive Go / No-Go posture from readiness gates",
+      "REQ035 - Maintain cutover validation and rollback evidence"
+    ],
+    impactedUatCases: ["TC023", "TC024"],
+    impactedRoles: ["Credit Analyst", "Approver", "Credit Admin", "System Admin"],
+    impactedBusinessRules: ["BR020", "BR015"],
+    controlRisk: [
+      "Release may proceed with open high-impact defects or data reconciliation breaks.",
+      "Residual risk may be accepted without accountable authority.",
+      "Rollback criteria may be unclear during the production window."
+    ],
+    operationalRisk: [
+      "Procedures, training, support, or service ownership may not be ready.",
+      "Early-life incidents may not have thresholds or named owners."
+    ],
+    baRecommendation:
+      "Derive posture from evidence-weighted gates, block release when any critical gate is open, define sequenced cutover validation and rollback triggers, and monitor named hypercare indicators after activation.",
+    suggestedTestScope: [
+      "No-Go blocker logic",
+      "Conditional Go watch logic",
+      "Decision pack export",
+      "Cutover sequence and rollback",
+      "Hypercare thresholds"
     ],
     implementationPriority: "High"
   }
@@ -1133,5 +1428,109 @@ export const traceabilityMatrix: TraceabilityItem[] = [
     relatedTestCaseId: "TC016",
     relatedChangeRequest: "CR006",
     status: "Active"
+  },
+  {
+    requirementId: "REQ023",
+    requirementDescription: "Track document status and calculate required-document submission readiness.",
+    relatedBusinessRule: "BR001-BR012",
+    relatedTestCaseId: "TC001, TC010",
+    relatedChangeRequest: "CR001, CR002, CR003",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ024",
+    requirementDescription: "Block readiness when a waived required document has no justification.",
+    relatedBusinessRule: "BR005",
+    relatedTestCaseId: "TC010, TC025",
+    relatedChangeRequest: "CR001",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ025",
+    requirementDescription: "Route document waivers through maker-checker approval workflow.",
+    relatedBusinessRule: "BR005",
+    relatedTestCaseId: "TC025",
+    relatedChangeRequest: "CR001",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ026",
+    requirementDescription: "Track document aging and surface SLA watch or breach status.",
+    relatedBusinessRule: "BR015",
+    relatedTestCaseId: "TC026",
+    relatedChangeRequest: "CR001",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ027",
+    requirementDescription: "Generate a credit submission package summary with BA recommendation.",
+    relatedBusinessRule: "BR005, BR015",
+    relatedTestCaseId: "TC027",
+    relatedChangeRequest: "CR001",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ028",
+    requirementDescription: "Govern high-impact rule versions, impact scope, regression evidence, and activation lifecycle.",
+    relatedBusinessRule: "BR004, BR017",
+    relatedTestCaseId: "TC017",
+    relatedChangeRequest: "CR008",
+    status: "Updated"
+  },
+  {
+    requirementId: "REQ029",
+    requirementDescription: "Assess aggregate group exposure impact before approval-routing rule activation.",
+    relatedBusinessRule: "BR013, BR017",
+    relatedTestCaseId: "TC018",
+    relatedChangeRequest: "CR008",
+    status: "Pending Review"
+  },
+  {
+    requirementId: "REQ030",
+    requirementDescription: "Generate credit memo sections with source lineage, governed rules, confidence, and evidence status.",
+    relatedBusinessRule: "BR016",
+    relatedTestCaseId: "TC019",
+    relatedChangeRequest: "CR007",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ031",
+    requirementDescription: "Block memo approval when evidence, human review, or responsible AI controls are incomplete.",
+    relatedBusinessRule: "BR016",
+    relatedTestCaseId: "TC020",
+    relatedChangeRequest: "CR007",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ032",
+    requirementDescription: "Maintain critical data definitions, source-to-output lineage, quality controls, owners, and issue impact.",
+    relatedBusinessRule: "BR018",
+    relatedTestCaseId: "TC021",
+    relatedChangeRequest: "CR009",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ033",
+    requirementDescription: "Measure transformation outcomes and recalculate financial viability from controlled assumptions.",
+    relatedBusinessRule: "BR019",
+    relatedTestCaseId: "TC022",
+    relatedChangeRequest: "CR009",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ034",
+    requirementDescription: "Derive Go, Conditional Go, or No-Go posture from evidence-led release gates.",
+    relatedBusinessRule: "BR020",
+    relatedTestCaseId: "TC023",
+    relatedChangeRequest: "CR010",
+    status: "Active"
+  },
+  {
+    requirementId: "REQ035",
+    requirementDescription: "Maintain sequenced cutover validation, rollback triggers, and hypercare thresholds.",
+    relatedBusinessRule: "BR020",
+    relatedTestCaseId: "TC024",
+    relatedChangeRequest: "CR010",
+    status: "Updated"
   }
 ];

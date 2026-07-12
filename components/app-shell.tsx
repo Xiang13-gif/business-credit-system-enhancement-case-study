@@ -1,13 +1,19 @@
 import {
   BarChart3,
+  CircleDollarSign,
   ClipboardCheck,
+  Database,
   FileSearch,
   FileCheck2,
+  FilePenLine,
+  GitBranch,
   GitPullRequestArrow,
   History,
   Home,
   Info,
+  Menu,
   Network,
+  Rocket,
   Route,
   ShieldAlert,
   ShieldCheck,
@@ -17,20 +23,72 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
-const navItems = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/dashboard", label: "Executive Dashboard", icon: BarChart3 },
-  { href: "/case-360", label: "Case 360", icon: FileSearch },
-  { href: "/approval-routing", label: "Approval Routing", icon: Route },
-  { href: "/exceptions", label: "Exception Register", icon: ShieldAlert },
-  { href: "/checklist", label: "Document Checklist", icon: FileCheck2 },
-  { href: "/uat", label: "UAT Tracker", icon: ClipboardCheck },
-  { href: "/change-requests", label: "CR Impact", icon: GitPullRequestArrow },
-  { href: "/traceability", label: "Traceability", icon: Network },
-  { href: "/roles", label: "Role View", icon: Users },
-  { href: "/audit", label: "Audit Trail", icon: History },
-  { href: "/about", label: "About Project", icon: Info }
+const navGroups = [
+  {
+    label: "Workspace",
+    items: [
+      { href: "/", label: "Home", icon: Home },
+      { href: "/case-360", label: "Case 360", icon: FileSearch },
+      { href: "/memo", label: "Credit Memo Studio", icon: FilePenLine }
+    ]
+  },
+  {
+    label: "Decision Governance",
+    items: [
+      { href: "/checklist", label: "Document Checklist", icon: FileCheck2 },
+      { href: "/rules", label: "Rule Governance", icon: GitBranch },
+      { href: "/approval-routing", label: "Approval Routing", icon: Route },
+      { href: "/exceptions", label: "Exception Register", icon: ShieldAlert },
+      { href: "/data-governance", label: "Data Governance", icon: Database }
+    ]
+  },
+  {
+    label: "Delivery Assurance",
+    items: [
+      { href: "/uat", label: "UAT Tracker", icon: ClipboardCheck },
+      { href: "/change-requests", label: "CR Impact", icon: GitPullRequestArrow },
+      { href: "/release", label: "Release Readiness", icon: Rocket },
+      { href: "/traceability", label: "Traceability", icon: Network }
+    ]
+  },
+  {
+    label: "Insights",
+    items: [
+      { href: "/dashboard", label: "Executive Dashboard", icon: BarChart3 },
+      { href: "/value", label: "Value Realization", icon: CircleDollarSign },
+      { href: "/roles", label: "Role View", icon: Users },
+      { href: "/audit", label: "Audit Trail", icon: History },
+      { href: "/about", label: "About Project", icon: Info }
+    ]
+  }
 ];
+
+function NavigationGroups({ mobile = false }: { mobile?: boolean }) {
+  return (
+    <nav className={mobile ? "space-y-5" : "space-y-5 px-3 py-4"}>
+      {navGroups.map((group) => (
+        <div key={group.label}>
+          <p className="px-3 text-[11px] font-semibold uppercase tracking-normal text-muted-foreground">{group.label}</p>
+          <div className="mt-1 space-y-0.5">
+            {group.items.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
+                  href={item.href}
+                  key={item.href}
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </nav>
+  );
+}
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
@@ -43,26 +101,12 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-base font-semibold">Credit Modernization</p>
-                <p className="text-xs text-muted-foreground">Global Banking Portfolio</p>
+                <p className="text-base font-semibold">Credit Transformation</p>
+                <p className="text-xs text-muted-foreground">Decision &amp; Governance Case</p>
               </div>
             </div>
           </div>
-          <nav className="flex-1 space-y-1 px-3 py-4">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground"
-                  href={item.href}
-                  key={item.href}
-                >
-                  <Icon className="h-4 w-4" />
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
+          <div className="flex-1 overflow-y-auto"><NavigationGroups /></div>
           <div className="border-t p-4 text-xs leading-5 text-muted-foreground">
             Mock banking data only. No confidential bank information.
           </div>
@@ -70,11 +114,24 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
       <div className="lg:pl-72">
         <header className="sticky top-0 z-10 flex min-h-16 items-center justify-between border-b bg-card/95 px-4 backdrop-blur md:px-8">
-          <Link className="font-semibold lg:hidden" href="/">
-            Credit Modernization
-          </Link>
+          <div className="flex items-center gap-2 lg:hidden">
+            <details className="group relative">
+              <summary
+                aria-label="Open navigation"
+                className="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-md border text-muted-foreground transition hover:bg-muted hover:text-foreground [&::-webkit-details-marker]:hidden"
+              >
+                <Menu className="h-5 w-5" />
+              </summary>
+              <div className="absolute left-0 top-12 z-50 max-h-[calc(100vh-5rem)] w-[min(88vw,340px)] overflow-y-auto rounded-md border bg-card p-3 shadow-soft">
+                <NavigationGroups mobile />
+              </div>
+            </details>
+            <Link className="font-semibold" href="/">
+              Credit Transformation
+            </Link>
+          </div>
           <div className="hidden text-sm text-muted-foreground lg:block">
-            Commercial lending workflow, controls, UAT, and executive visibility
+            Documents, decisions, data, value, and release evidence
           </div>
           <ThemeToggle />
         </header>

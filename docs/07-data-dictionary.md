@@ -77,6 +77,76 @@ The data dictionary focuses on fields required for business workflow, reporting,
 | due_date | Date | Yes | 2026-01-20 | Used for aging and reminders. | Case Owner |
 | action_status | List | Yes | Open | Open, Closed, Cancelled. | Case Owner |
 
+## Entity: Credit Memo Section
+
+| Field | Type | Required | Example | Validation / Notes | Owner |
+| --- | --- | --- | --- | --- | --- |
+| memo_section_id | Text | Yes | MEMO-04 | Controlled section identifier. | System |
+| application_id | Text | Yes | CASE-1007 | Links generated narrative to source case. | System |
+| section_title | Text | Yes | Financial Analysis | Controlled template section. | Product Owner |
+| narrative | Long Text | Yes | FY2025 revenue is... | Generated from approved fields and rule context. | Credit Analyst |
+| source_fields | List | Yes | Financials.annual_revenue | At least one source field per section. | Data Owner |
+| business_rule_ids | List | Yes | BR002, BR005 | Active rule versions must be recoverable. | Rule Owner |
+| evidence_confidence | List | Yes | Medium | High, Medium, Low. | System |
+| missing_evidence | List | Conditional | Latest audited statement | Required when confidence is reduced by evidence gaps. | Credit Analyst |
+| review_status | List | Yes | Needs Evidence | Generated, Needs Evidence, Reviewed, Approved. | Credit Analyst / Approver |
+| document_version | Text | Yes | 1.2 | Incremented when controlled draft is regenerated. | System |
+
+## Entity: Governed Business Rule
+
+| Field | Type | Required | Example | Validation / Notes | Owner |
+| --- | --- | --- | --- | --- | --- |
+| rule_id | Text | Yes | BR004 | Stable identifier across versions. | Rule Product Owner |
+| current_version | Text | Yes | 2.2 | Version active in the decision engine. | System |
+| proposed_version | Text | Conditional | 2.3 | Required when a change is raised. | Rule Owner |
+| lifecycle_status | List | Yes | Under Review | Draft, Under Review, Approved, Active, Retired. | System |
+| owner_role | List | Yes | Credit Admin | Maker accountable for definition and impact. | Product Owner |
+| approver_role | List | Yes | Approver | Must be separate from maker for high-impact rules. | Control Owner |
+| effective_date | Date | Conditional | 2026-09-01 | Mandatory before activation. | Rule Owner |
+| risk_rating | List | Yes | High | Low, Medium, High, Critical. | Control Owner |
+| impacted_artifacts | List | Yes | REQ028, TC017, DOC046 | Covers requirements, data, documents, roles, controls, UAT, and procedures. | BA Lead |
+| regression_status | List | Yes | Design Gap | Not Run, Pass, Design Gap, Fail. | UAT Lead |
+
+## Entity: Critical Data Element
+
+| Field | Type | Required | Example | Validation / Notes | Owner |
+| --- | --- | --- | --- | --- | --- |
+| data_element_id | Text | Yes | CDE-005 | Controlled data inventory identifier. | Data Governance |
+| business_term | Text | Yes | Collateral Value | Uses approved business glossary language. | Data Owner |
+| source_system | Text | Yes | Collateral Management System | System of record. | Technology Owner |
+| source_field | Text | Yes | eligible_collateral_value | Physical source attribute. | Data Steward |
+| transformation | Long Text | Yes | Apply haircut and currency conversion | Explainable source-to-decision derivation. | Data Steward |
+| linked_rule | List | Yes | BR004, BR013 | Rules consuming the data element. | Rule Owner |
+| output_usage | List | Yes | Approval Routing, Credit Memo | Downstream decisions and reports. | Data Owner |
+| quality_score | Number | Yes | 76 | 0 to 100 based on agreed checks. | Data Steward |
+| lineage_coverage | Number | Yes | 72 | 0 to 100 source-to-output coverage. | Data Governance |
+| quality_status | List | Yes | Breach | Healthy, Watch, Breach. | System |
+
+## Entity: Benefit Metric
+
+| Field | Type | Required | Example | Validation / Notes | Owner |
+| --- | --- | --- | --- | --- | --- |
+| benefit_id | Text | Yes | BEN-002 | Unique outcome metric identifier. | Product Owner |
+| metric_name | Text | Yes | Submission-to-decision TAT | Business outcome, not delivery activity. | Product Owner |
+| baseline_value | Number | Yes | 9.4 | Agreed pre-change measurement. | Metric Owner |
+| target_value | Number | Yes | 5.5 | Time-bound target. | Sponsor |
+| current_value | Number | Yes | 6.8 | Latest evidenced result. | Metric Owner |
+| unit | Text | Yes | days | Consistent across baseline, target, and current. | Metric Owner |
+| measurement_definition | Long Text | Yes | Average working days... | Prevents metric interpretation changes. | BA Lead |
+| evidence_source | Text | Yes | Case lifecycle timestamps | Must be reproducible. | Data Owner |
+
+## Entity: Release Gate
+
+| Field | Type | Required | Example | Validation / Notes | Owner |
+| --- | --- | --- | --- | --- | --- |
+| release_gate_id | Text | Yes | REL-002 | Unique within release. | Release Manager |
+| domain | List | Yes | Controls | Business, Data, Technology, Controls, Operations, People. | Release Manager |
+| gate_status | List | Yes | Block | Pass, Watch, Block. | Gate Owner |
+| exit_criteria | Long Text | Yes | No open critical defect... | Defined before final decision. | BA Lead |
+| current_evidence | Long Text | Yes | TC010 remains failed... | Must cite linked evidence. | Gate Owner |
+| linked_items | List | Yes | TC010, DEF-027 | Requirements, tests, defects, data issues, or sign-offs. | Gate Owner |
+| sign_off | Text | Yes | Pending | Named or role-based accountable decision. | Decision Authority |
+
 ## Data Quality Rules
 
 | Rule | Description |
@@ -87,3 +157,8 @@ The data dictionary focuses on fields required for business workflow, reporting,
 | DQ-004 | Decision date cannot be earlier than submitted date. |
 | DQ-005 | Ready for Facility Setup requires all mandatory conditions to be completed or waived. |
 | DQ-006 | Route override requires authorized user, reason, and audit trail entry. |
+| DQ-007 | Every generated memo section requires source lineage and governed rule references. |
+| DQ-008 | A rule cannot become Active without owner, checker, effective date, impact scope, and required regression evidence. |
+| DQ-009 | Critical data quality score and lineage coverage must remain between 0 and 100 and have an accountable owner. |
+| DQ-010 | Benefit baseline, target, and current result must use the same measurement definition and unit. |
+| DQ-011 | Every cutover step requires owner, validation evidence, and rollback trigger before release decision. |

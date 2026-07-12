@@ -26,6 +26,11 @@ This dashboard is intended for business monitoring, not financial reporting. It 
 | Document readiness | Completed or waived mandatory documents divided by expected mandatory documents. | 84% |
 | Open high priority UAT | High-priority test cases not yet passed. | 6 |
 | Case release posture | Count of selected cases marked Ready, Controlled Watch, or Not Ready based on readiness gates. | 3 cases |
+| Credit memo evidence coverage | Evidence-weighted confidence across generated memo sections. | 82% |
+| Pending governed rule changes | Rules in Draft, Under Review, or Approved but not Active. | 4 |
+| Critical data quality breaches | Critical data elements below the agreed quality threshold. | 1 |
+| Benefits realization progress | Progress from baseline toward agreed product outcomes. | 78% |
+| Release blocking gates | Go-live gates with Block status. | 2 |
 
 ## Pipeline by Status
 
@@ -69,11 +74,15 @@ flowchart TD
     B --> E[Exception Severity]
     B --> G[UAT Health]
     B --> H[Case 360 Release Posture]
+    B --> I[Rule and Data Governance]
+    B --> J[Benefits and Release Readiness]
     C --> F[Case Drilldown]
     D --> F
     E --> F
     G --> F
     H --> F
+    I --> F
+    J --> F
 ```
 
 ## Drilldown Columns

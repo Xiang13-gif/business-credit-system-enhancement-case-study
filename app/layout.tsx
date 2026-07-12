@@ -3,9 +3,9 @@ import "./globals.css";
 import { AppShell } from "@/components/app-shell";
 
 export const metadata: Metadata = {
-  title: "Global Commercial Credit Modernization Platform",
+  title: "Business Document Generation Automation",
   description:
-    "A global banking portfolio case study for commercial credit workflow modernization, approval routing, policy exception governance, UAT, controls, and operational dashboards."
+    "A senior banking BA portfolio case for evidence-grounded credit memo generation, rule governance, data lineage, value realization, and release assurance."
 };
 
 export default function RootLayout({

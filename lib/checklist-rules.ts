@@ -105,6 +105,36 @@ export const businessRules: BusinessRule[] = [
     title: "Exception and pipeline visibility",
     description: "Policy exceptions and pipeline owner changes should refresh dashboards and remain linked to requirements and UAT evidence.",
     controlPoint: "Management reporting and traceability"
+  },
+  {
+    id: "BR016",
+    title: "Evidence-grounded document generation",
+    description: "Generated credit memo content must remain linked to source fields, governed rules, confidence, missing evidence, and independent human approval.",
+    controlPoint: "Document intelligence and human-in-the-loop control"
+  },
+  {
+    id: "BR017",
+    title: "Controlled rule lifecycle",
+    description: "High-impact rule changes require an owner, checker, version, effective date, impact assessment, regression evidence, and activation decision.",
+    controlPoint: "Business rule governance"
+  },
+  {
+    id: "BR018",
+    title: "Critical data lineage and quality",
+    description: "Critical credit decision data must have a business definition, accountable owner, source-to-output lineage, quality controls, and issue remediation.",
+    controlPoint: "Risk data governance"
+  },
+  {
+    id: "BR019",
+    title: "Benefits realization ownership",
+    description: "Transformation outcomes require baseline, target, current performance, metric owner, evidence source, and financial viability assessment.",
+    controlPoint: "Product value and solution evaluation"
+  },
+  {
+    id: "BR020",
+    title: "Evidence-led release decision",
+    description: "Go-live posture must be derived from business, UAT, data, technology, control, operations, people, cutover, and rollback evidence.",
+    controlPoint: "Release and operational readiness"
   }
 ];
 

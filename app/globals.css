@@ -59,6 +59,25 @@ textarea {
   font: inherit;
 }
 
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  .memo-print-area,
+  .memo-print-area * {
+    visibility: visible;
+  }
+
+  .memo-print-area {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
 @layer components {
   .panel {
     @apply rounded-lg border bg-card text-card-foreground shadow-soft;

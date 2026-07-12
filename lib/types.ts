@@ -47,6 +47,12 @@ export type FinancialStatementStatus = "Available" | "Not Available" | "Waiver R
 
 export type RequirementLevel = "Required" | "Conditional" | "Optional";
 
+export type DocumentStatus = "Not Uploaded" | "Uploaded" | "Verified" | "Waived" | "Not Applicable";
+
+export type WaiverApprovalStatus = "Not Requested" | "Draft" | "Pending Approval" | "Approved" | "Rejected";
+
+export type DocumentSlaStatus = "On Track" | "Watch" | "Breach";
+
 export type DocumentCategory =
   | "General"
   | "Financial"
@@ -228,6 +234,166 @@ export interface TraceabilityItem {
   relatedTestCaseId: string;
   relatedChangeRequest: string;
   status: "Active" | "Updated" | "Pending Review";
+}
+
+export type MemoSectionStatus = "Generated" | "Needs Evidence" | "Reviewed" | "Approved";
+export type EvidenceConfidence = "High" | "Medium" | "Low";
+export type MemoApprovalStatus = "Draft" | "In Review" | "Approved" | "Blocked";
+
+export interface CreditMemoProfile {
+  caseId: string;
+  industry: string;
+  yearsInBusiness: number;
+  facilityPurpose: string;
+  requestedTenor: string;
+  annualRevenue: number;
+  ebitda: number;
+  debtServiceCoverageRatio: number;
+  leverageRatio: number;
+  financialPeriod: string;
+  relationshipHistory: string;
+  primaryRepaymentSource: string;
+  keyRisks: string[];
+  mitigants: string[];
+  conditions: string[];
+  sourceRecordIds: string[];
+  missingEvidence: string[];
+  previousVersionNotes: string[];
+}
+
+export interface CreditMemoSection {
+  id: string;
+  title: string;
+  narrative: string;
+  sourceFields: string[];
+  businessRuleIds: string[];
+  confidence: EvidenceConfidence;
+  missingEvidence: string[];
+  status: MemoSectionStatus;
+}
+
+export type RuleLifecycleStatus = "Draft" | "Under Review" | "Approved" | "Active" | "Retired";
+export type ImpactRating = "Low" | "Medium" | "High" | "Critical";
+
+export interface GovernedRule {
+  id: string;
+  title: string;
+  currentVersion: string;
+  proposedVersion: string;
+  status: RuleLifecycleStatus;
+  ownerRole: UatRole;
+  approverRole: UatRole;
+  effectiveDate: string;
+  lastReviewed: string;
+  riskRating: ImpactRating;
+  currentLogic: string;
+  proposedLogic: string;
+  changeRationale: string;
+  linkedRequirements: string[];
+  linkedUatCases: string[];
+  impactedRoles: UatRole[];
+  impactedDocuments: string[];
+  impactedControls: string[];
+}
+
+export interface RuleTestScenario {
+  id: string;
+  name: string;
+  description: string;
+  linkedRuleId: string;
+  input: ChecklistInput;
+  expectedDocumentIds: string[];
+  expectedRuleIds: string[];
+  expectedOutcome: string;
+}
+
+export type DataQualityStatus = "Healthy" | "Watch" | "Breach";
+
+export interface CriticalDataElement {
+  id: string;
+  businessTerm: string;
+  definition: string;
+  sourceSystem: string;
+  sourceField: string;
+  transformation: string;
+  linkedRule: string;
+  outputUsage: string;
+  owner: string;
+  qualityScore: number;
+  lineageCoverage: number;
+  status: DataQualityStatus;
+  qualityChecks: string[];
+}
+
+export interface DataQualityIssue {
+  id: string;
+  dataElementId: string;
+  severity: ImpactRating;
+  issue: string;
+  rootCause: string;
+  downstreamImpact: string;
+  owner: string;
+  status: "Open" | "In Remediation" | "Accepted" | "Closed";
+  dueDate: string;
+}
+
+export interface BenefitMetric {
+  id: string;
+  label: string;
+  baseline: number;
+  target: number;
+  current: number;
+  unit: string;
+  direction: "Increase" | "Decrease";
+  owner: string;
+  measurement: string;
+  source: string;
+}
+
+export interface ProductRoadmapItem {
+  id: string;
+  feature: string;
+  horizon: "Now" | "Next" | "Later";
+  outcome: string;
+  valueScore: number;
+  riskReductionScore: number;
+  effortScore: number;
+  priorityScore: number;
+  status: "Discovery" | "Ready" | "In Delivery" | "Released";
+}
+
+export type ReleaseGateStatus = "Pass" | "Watch" | "Block";
+
+export interface ReleaseGate {
+  id: string;
+  domain: "Business" | "Data" | "Technology" | "Controls" | "Operations" | "People";
+  title: string;
+  status: ReleaseGateStatus;
+  owner: string;
+  exitCriteria: string;
+  evidence: string;
+  linkedItems: string[];
+  signOff: string;
+}
+
+export interface CutoverStep {
+  id: string;
+  sequence: number;
+  window: string;
+  title: string;
+  owner: string;
+  status: "Pending" | "Ready" | "Completed" | "Blocked";
+  validation: string;
+  rollbackTrigger: string;
+}
+
+export interface HypercareMetric {
+  id: string;
+  label: string;
+  target: string;
+  current: string;
+  status: "On Track" | "Watch" | "Breach";
+  owner: string;
 }
 
 export interface AuditEvent {
