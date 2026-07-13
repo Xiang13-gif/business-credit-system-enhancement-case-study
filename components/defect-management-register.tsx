@@ -16,6 +16,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Badge, Button, Card, StatCard } from "@/components/ui";
 import { recordAuditEvent } from "@/lib/audit-log";
 import {
+  assessDefectSla,
   assessDefectRelease,
   readDefects,
   resetDefects,
@@ -24,12 +25,20 @@ import {
 } from "@/lib/defect-management";
 import { uatTestCases } from "@/lib/mock-data";
 import type { DefectRecord, DefectSeverity, DefectStatus } from "@/lib/types";
-import { resetLinkedUatState, syncUatFromDefect } from "@/lib/uat-state";
+import { resetUatState, syncUatFromDefect } from "@/lib/uat-state";
 import { downloadCsv, toCsv } from "@/lib/utils";
 
 const severities: Array<DefectSeverity | "All"> = ["All", "Critical", "High", "Medium", "Low"];
 const statuses: Array<DefectStatus | "All"> = ["All", "Open", "In Fix", "Ready for Retest", "Retest Failed", "Closed", "Risk Accepted"];
 const lifecycle: DefectStatus[] = ["Open", "In Fix", "Ready for Retest", "Closed"];
+const riskAcceptanceFields: Array<keyof DefectRecord> = [
+  "riskAcceptanceReason",
+  "riskAcceptedBy",
+  "riskAcceptedByRole",
+  "riskAcceptanceExpiry",
+  "compensatingControl",
+  "monitoringOwner"
+];
 
 function severityTone(severity: DefectSeverity) {
   return severity === "Critical" || severity === "High" ? "danger" : severity === "Medium" ? "warning" : "default";
@@ -46,10 +55,6 @@ function defectStatusTone(status: DefectStatus) {
     return "danger";
   }
   return "info";
-}
-
-function releaseTone(status: "Pass" | "Watch" | "Block") {
-  return status === "Pass" ? "success" : status === "Watch" ? "warning" : "danger";
 }
 
 export function DefectManagementRegister() {
@@ -81,6 +86,7 @@ export function DefectManagementRegister() {
   }, [defects, search, severityFilter, statusFilter]);
   const closedCount = defects.filter((defect) => defect.status === "Closed").length;
   const closureRate = defects.length === 0 ? 100 : Math.round((closedCount / defects.length) * 100);
+  const slaBreaches = defects.filter((defect) => assessDefectSla(defect).status === "Breach").length;
 
   const persist = (updated: DefectRecord[]) => {
     setDefects(updated);
@@ -89,7 +95,16 @@ export function DefectManagementRegister() {
 
   const updateDefect = <K extends keyof DefectRecord>(key: K, value: DefectRecord[K]) => {
     const timestamp = new Date().toISOString();
-    persist(defects.map((defect) => defect.id === selectedDefect.id ? { ...defect, [key]: value, updatedAt: timestamp } : defect));
+    const invalidatesAcceptance = selectedDefect.riskAcceptanceStatus === "Approved" && riskAcceptanceFields.includes(key);
+    persist(defects.map((defect) => defect.id === selectedDefect.id ? {
+      ...defect,
+      [key]: value,
+      ...(invalidatesAcceptance ? { status: "Open" as const, riskAcceptanceStatus: "Pending" as const } : {}),
+      updatedAt: timestamp
+    } : defect));
+    if (invalidatesAcceptance) {
+      setNotice("Risk acceptance evidence changed. Previous approval was invalidated and independent re-approval is required.");
+    }
   };
 
   const transition = (nextStatus: DefectStatus) => {
@@ -97,8 +112,15 @@ export function DefectManagementRegister() {
       setNotice("Resolution details must contain at least 10 characters before retest handoff.");
       return;
     }
-    if (nextStatus === "Closed" && selectedDefect.retestEvidence.trim().length < 10) {
-      setNotice("Successful retest evidence must contain at least 10 characters before closure.");
+    if (nextStatus === "Closed" && (
+      selectedDefect.retestEvidence.trim().length < 10 ||
+      selectedDefect.retestTester.trim().length < 3 ||
+      !selectedDefect.retestDate ||
+      selectedDefect.retestBuild.trim().length < 3 ||
+      selectedDefect.retestEnvironment.trim().length < 2 ||
+      selectedDefect.retestEvidenceReference.trim().length < 3
+    )) {
+      setNotice("Closure requires tester, date, build, environment, evidence reference, and a clear retest outcome.");
       return;
     }
 
@@ -117,8 +139,20 @@ export function DefectManagementRegister() {
   };
 
   const approveRiskAcceptance = () => {
-    if (selectedDefect.riskAcceptanceReason.trim().length < 10 || selectedDefect.riskAcceptedBy.trim().length < 3) {
-      setNotice("Risk acceptance requires an accountable approver and a clear rationale.");
+    const acceptanceExpired = !selectedDefect.riskAcceptanceExpiry || selectedDefect.riskAcceptanceExpiry <= new Date().toISOString().slice(0, 10);
+    if (
+      selectedDefect.riskAcceptanceReason.trim().length < 10 ||
+      selectedDefect.riskAcceptedBy.trim().length < 3 ||
+      selectedDefect.riskAcceptedByRole.trim().length < 3 ||
+      selectedDefect.compensatingControl.trim().length < 10 ||
+      selectedDefect.monitoringOwner.trim().length < 3 ||
+      acceptanceExpired
+    ) {
+      setNotice("Risk acceptance requires an independent approver, future expiry, compensating control, monitoring owner, and clear rationale.");
+      return;
+    }
+    if (selectedDefect.riskAcceptedBy.trim().toLowerCase() === selectedDefect.owner.trim().toLowerCase()) {
+      setNotice("Maker-checker control failed: the defect owner cannot approve their own residual risk.");
       return;
     }
     const timestamp = new Date().toISOString();
@@ -142,7 +176,7 @@ export function DefectManagementRegister() {
 
   const restoreDemo = () => {
     const reset = resetDefects();
-    resetLinkedUatState(uatTestCases, reset.map((defect) => defect.linkedTestCaseId));
+    resetUatState(uatTestCases);
     setDefects(reset);
     setSelectedId(reset[0].id);
     setNotice("Defect demo data restored.");
@@ -163,8 +197,19 @@ export function DefectManagementRegister() {
       rootCause: defect.rootCause,
       resolution: defect.resolution,
       retestEvidence: defect.retestEvidence,
+      retestTester: defect.retestTester,
+      retestDate: defect.retestDate,
+      retestBuild: defect.retestBuild,
+      retestEnvironment: defect.retestEnvironment,
+      retestEvidenceReference: defect.retestEvidenceReference,
       riskAcceptance: defect.riskAcceptanceStatus,
-      riskAcceptedBy: defect.riskAcceptedBy
+      riskAcceptedBy: defect.riskAcceptedBy,
+      riskAcceptedByRole: defect.riskAcceptedByRole,
+      riskAcceptanceExpiry: defect.riskAcceptanceExpiry,
+      compensatingControl: defect.compensatingControl,
+      monitoringOwner: defect.monitoringOwner,
+      slaStatus: assessDefectSla(defect).status,
+      slaPosition: assessDefectSla(defect).label
     }))));
     recordAuditEvent({
       actor: "UAT Lead",
@@ -181,10 +226,10 @@ export function DefectManagementRegister() {
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
         <StatCard label="Total Defects" value={defects.length} />
         <StatCard label="Critical / High Open" value={assessment.criticalOpen.length + assessment.highOpen.length} tone={assessment.criticalOpen.length + assessment.highOpen.length > 0 ? "danger" : "success"} />
+        <StatCard label="SLA Breaches" value={slaBreaches} tone={slaBreaches > 0 ? "danger" : "success"} />
         <StatCard label="Pending Retest" value={assessment.pendingRetest.length} tone={assessment.pendingRetest.length > 0 ? "warning" : "success"} />
         <StatCard label="Risk Accepted" value={assessment.accepted.length} tone={assessment.accepted.length > 0 ? "warning" : "success"} />
-        <StatCard label="Closure Rate" value={`${closureRate}%`} tone={closureRate === 100 ? "success" : "warning"} />
-        <StatCard label="Release Gate" value={assessment.status} tone={releaseTone(assessment.status)} />
+        <StatCard label="Closure Rate" value={`${closureRate}%`} tone={closureRate === 100 ? "success" : "warning"} helper={`Release gate: ${assessment.status}`} />
       </div>
 
       <Card>
@@ -216,13 +261,16 @@ export function DefectManagementRegister() {
         <Card>
           <h2 className="text-lg font-semibold">Defect Queue</h2>
           <div className="mt-4 space-y-3">
-            {filteredDefects.length === 0 ? <p className="rounded-md border border-dashed p-5 text-sm text-muted-foreground">No defects match the filters.</p> : filteredDefects.map((defect) => (
-              <button className={`w-full rounded-md border p-4 text-left transition hover:border-primary/40 ${defect.id === selectedDefect.id ? "border-primary bg-primary/5" : "bg-card"}`} key={defect.id} onClick={() => setSelectedId(defect.id)} type="button">
-                <div className="flex flex-wrap items-center gap-2"><Badge tone={severityTone(defect.severity)}>{defect.severity}</Badge><Badge tone={defectStatusTone(defect.status)}>{defect.status}</Badge><span className="ml-auto text-xs font-semibold text-primary">{defect.id}</span></div>
-                <p className="mt-3 text-sm font-semibold">{defect.title}</p>
-                <p className="mt-2 text-xs text-muted-foreground">{defect.linkedTestCaseId} · {defect.owner}</p>
-              </button>
-            ))}
+            {filteredDefects.length === 0 ? <p className="rounded-md border border-dashed p-5 text-sm text-muted-foreground">No defects match the filters.</p> : filteredDefects.map((defect) => {
+              const sla = assessDefectSla(defect);
+              return (
+                <button className={`w-full rounded-md border p-4 text-left transition hover:border-primary/40 ${defect.id === selectedDefect.id ? "border-primary bg-primary/5" : "bg-card"}`} key={defect.id} onClick={() => setSelectedId(defect.id)} type="button">
+                  <div className="flex flex-wrap items-center gap-2"><Badge tone={severityTone(defect.severity)}>{defect.severity}</Badge><Badge tone={defectStatusTone(defect.status)}>{defect.status}</Badge><Badge tone={sla.status === "Breach" ? "danger" : sla.status === "Watch" ? "warning" : "success"}>{sla.label}</Badge><span className="ml-auto text-xs font-semibold text-primary">{defect.id}</span></div>
+                  <p className="mt-3 text-sm font-semibold">{defect.title}</p>
+                  <p className="mt-2 text-xs text-muted-foreground">{defect.linkedTestCaseId} · {defect.owner}</p>
+                </button>
+              );
+            })}
           </div>
         </Card>
 
@@ -230,7 +278,7 @@ export function DefectManagementRegister() {
           <div className="space-y-6">
             <Card>
               <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <div><div className="flex flex-wrap items-center gap-2"><Badge tone={severityTone(selectedDefect.severity)}>{selectedDefect.severity}</Badge><Badge tone={defectStatusTone(selectedDefect.status)}>{selectedDefect.status}</Badge><Badge tone="info">{selectedDefect.linkedTestCaseId}</Badge></div><h2 className="mt-4 text-xl font-semibold">{selectedDefect.id}: {selectedDefect.title}</h2><p className="mt-2 text-sm text-muted-foreground">{selectedDefect.module} · {selectedDefect.requirementId}</p></div>
+                <div><div className="flex flex-wrap items-center gap-2"><Badge tone={severityTone(selectedDefect.severity)}>{selectedDefect.severity}</Badge><Badge tone={defectStatusTone(selectedDefect.status)}>{selectedDefect.status}</Badge><Badge tone="info">{selectedDefect.linkedTestCaseId}</Badge><Badge tone={assessDefectSla(selectedDefect).status === "Breach" ? "danger" : assessDefectSla(selectedDefect).status === "Watch" ? "warning" : "success"}>{assessDefectSla(selectedDefect).label}</Badge></div><h2 className="mt-4 text-xl font-semibold">{selectedDefect.id}: {selectedDefect.title}</h2><p className="mt-2 text-sm text-muted-foreground">{selectedDefect.module} · {selectedDefect.requirementId}</p></div>
                 <ActionButtons defect={selectedDefect} onTransition={transition} />
               </div>
               <div className="mt-5 grid gap-3 sm:grid-cols-4">
@@ -251,7 +299,12 @@ export function DefectManagementRegister() {
                 <TextAreaField label="Business Impact" onChange={(value) => updateDefect("businessImpact", value)} value={selectedDefect.businessImpact} />
                 <TextAreaField label="Root Cause" onChange={(value) => updateDefect("rootCause", value)} value={selectedDefect.rootCause} />
                 <TextAreaField label="Resolution" onChange={(value) => updateDefect("resolution", value)} placeholder="Describe the implemented fix and build reference..." value={selectedDefect.resolution} />
-                <TextAreaField label="Retest Evidence" onChange={(value) => updateDefect("retestEvidence", value)} placeholder="Record retest build, tester, outcome, and evidence reference..." value={selectedDefect.retestEvidence} />
+                <label className="grid gap-2 text-sm font-medium">Retest Tester<input className="control" onChange={(event) => updateDefect("retestTester", event.target.value)} value={selectedDefect.retestTester} /></label>
+                <label className="grid gap-2 text-sm font-medium">Retest Date<input className="control" onChange={(event) => updateDefect("retestDate", event.target.value)} type="date" value={selectedDefect.retestDate} /></label>
+                <label className="grid gap-2 text-sm font-medium">Build / Version<input className="control" onChange={(event) => updateDefect("retestBuild", event.target.value)} placeholder="R2.4.7" value={selectedDefect.retestBuild} /></label>
+                <label className="grid gap-2 text-sm font-medium">Environment<select className="control" onChange={(event) => updateDefect("retestEnvironment", event.target.value)} value={selectedDefect.retestEnvironment}>{["SIT", "UAT", "Pre-Production"].map((environment) => <option key={environment}>{environment}</option>)}</select></label>
+                <label className="grid gap-2 text-sm font-medium md:col-span-2">Evidence Reference<input className="control" onChange={(event) => updateDefect("retestEvidenceReference", event.target.value)} placeholder="UAT-EVD-014-R1" value={selectedDefect.retestEvidenceReference} /></label>
+                <div className="md:col-span-2"><TextAreaField label="Retest Outcome and Evidence" onChange={(value) => updateDefect("retestEvidence", value)} placeholder="Describe the executed scenario, observed outcome, and supporting evidence..." value={selectedDefect.retestEvidence} /></div>
               </div>
             </Card>
 
@@ -260,7 +313,11 @@ export function DefectManagementRegister() {
                 <div className="flex items-start gap-3"><ShieldCheck className="mt-1 h-5 w-5 text-primary" /><div><h2 className="text-lg font-semibold">Residual Risk Acceptance</h2><p className="mt-1 text-sm text-muted-foreground">This does not close the defect. It changes the release position from Block to Watch only when formally approved.</p></div></div>
                 <div className="mt-5 grid gap-4 md:grid-cols-2">
                   <label className="grid gap-2 text-sm font-medium">Accepted By<input className="control" onChange={(event) => updateDefect("riskAcceptedBy", event.target.value)} placeholder="Accountable decision authority" value={selectedDefect.riskAcceptedBy} /></label>
+                  <label className="grid gap-2 text-sm font-medium">Approver Role<select className="control" onChange={(event) => updateDefect("riskAcceptedByRole", event.target.value)} value={selectedDefect.riskAcceptedByRole}><option value="">Select authority</option>{["Country Credit Committee", "Chief Credit Officer", "Release Steering Committee"].map((role) => <option key={role}>{role}</option>)}</select></label>
+                  <label className="grid gap-2 text-sm font-medium">Acceptance Expiry<input className="control" onChange={(event) => updateDefect("riskAcceptanceExpiry", event.target.value)} type="date" value={selectedDefect.riskAcceptanceExpiry} /></label>
                   <label className="grid gap-2 text-sm font-medium">Acceptance Status<input className="control" disabled value={selectedDefect.riskAcceptanceStatus} /></label>
+                  <label className="grid gap-2 text-sm font-medium md:col-span-2">Compensating Control<textarea className="min-h-24 rounded-md border bg-background p-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" onChange={(event) => updateDefect("compensatingControl", event.target.value)} placeholder="Describe the temporary preventive or detective control..." value={selectedDefect.compensatingControl} /></label>
+                  <label className="grid gap-2 text-sm font-medium md:col-span-2">Monitoring Owner<input className="control" onChange={(event) => updateDefect("monitoringOwner", event.target.value)} placeholder="Named control owner" value={selectedDefect.monitoringOwner} /></label>
                   <label className="grid gap-2 text-sm font-medium md:col-span-2">Risk Acceptance Rationale<textarea className="min-h-24 rounded-md border bg-background p-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" onChange={(event) => updateDefect("riskAcceptanceReason", event.target.value)} placeholder="State residual impact, compensating control, expiry, and monitoring owner..." value={selectedDefect.riskAcceptanceReason} /></label>
                 </div>
                 <div className="mt-4"><Button onClick={approveRiskAcceptance} variant="secondary"><ShieldCheck className="h-4 w-4" />Approve Risk Acceptance</Button></div>

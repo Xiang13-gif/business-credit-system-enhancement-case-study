@@ -14,7 +14,13 @@ import {
 import { useEffect, useState } from "react";
 import { Badge, Button, Card, ProgressBar, StatCard } from "@/components/ui";
 import { recordAuditEvent } from "@/lib/audit-log";
-import { assessDefectRelease, readDefects, seedDefects } from "@/lib/defect-management";
+import { assessUatSignOff, readDefects, seedDefects } from "@/lib/defect-management";
+import {
+  readReleaseDecisionState,
+  resetReleaseDecisionState,
+  type ReleaseDecisionSnapshot,
+  writeReleaseDecisionState
+} from "@/lib/release-state";
 import { cutoverSteps, hypercareMetrics, releaseGates } from "@/lib/transformation-data";
 import { uatTestCases } from "@/lib/mock-data";
 import type { DefectRecord, ReleaseGate, ReleaseGateStatus, UatStatus } from "@/lib/types";
@@ -33,7 +39,7 @@ function hypercareTone(status: string) {
 
 export function ReleaseReadinessCenter() {
   const [statusOverrides, setStatusOverrides] = useState<Record<string, ReleaseGateStatus>>({});
-  const [decisionRecorded, setDecisionRecorded] = useState(false);
+  const [decision, setDecision] = useState<ReleaseDecisionSnapshot | null>(null);
   const [defects, setDefects] = useState<DefectRecord[]>(seedDefects);
   const [uatStatusOverrides, setUatStatusOverrides] = useState<Record<string, UatStatus>>({});
 
@@ -41,16 +47,15 @@ export function ReleaseReadinessCenter() {
     const timer = window.setTimeout(() => {
       setDefects(readDefects());
       setUatStatusOverrides(readUatStatusMap());
+      const releaseState = readReleaseDecisionState();
+      setStatusOverrides(releaseState.statusOverrides);
+      setDecision(releaseState.decision);
     }, 0);
     return () => window.clearTimeout(timer);
   }, []);
 
-  const defectAssessment = assessDefectRelease(defects);
-  const highPriorityUatOpen = uatTestCases.filter((testCase) => {
-    const status = uatStatusOverrides[testCase.id] ?? testCase.status;
-    const linkedAcceptedDefect = defects.find((defect) => defect.linkedTestCaseId === testCase.id && defect.status === "Risk Accepted" && defect.riskAcceptanceStatus === "Approved");
-    return testCase.priority === "High" && status !== "Passed" && !linkedAcceptedDefect;
-  });
+  const uatAssessment = assessUatSignOff(uatTestCases, uatStatusOverrides, defects);
+  const { defectAssessment, highPriorityOpen: highPriorityUatOpen } = uatAssessment;
   const uatDefectGateStatus: ReleaseGateStatus = defectAssessment.status === "Block" || highPriorityUatOpen.length > 0
     ? "Block"
     : defectAssessment.status;
@@ -88,14 +93,24 @@ export function ReleaseReadinessCenter() {
   const readinessScore = Math.round(gates.reduce((sum, item) => sum + ({ Pass: 100, Watch: 55, Block: 0 }[item.status]), 0) / gates.length);
   const cutoverReady = cutoverSteps.filter((item) => ["Ready", "Completed"].includes(item.status)).length;
   const posture = blockCount > 0 ? "No-Go" : watchCount > 0 ? "Conditional Go" : "Go";
+  const decisionIsCurrent = Boolean(
+    decision &&
+    decision.posture === posture &&
+    decision.blockerCount === blockCount &&
+    decision.watchCount === watchCount
+  );
 
   const updateGate = (gateId: string, status: ReleaseGateStatus) => {
     if (gateId === "REL-002" || gateId === "REL-008") {
       return;
     }
     const gate = releaseGates.find((item) => item.id === gateId);
-    setStatusOverrides((current) => ({ ...current, [gateId]: status }));
-    setDecisionRecorded(false);
+    setStatusOverrides((current) => {
+      const next = { ...current, [gateId]: status };
+      writeReleaseDecisionState({ statusOverrides: next, decision: null });
+      return next;
+    });
+    setDecision(null);
     if (gate) {
       recordAuditEvent({
         actor: gate.owner,
@@ -109,12 +124,21 @@ export function ReleaseReadinessCenter() {
   };
 
   const resetGates = () => {
-    setStatusOverrides({});
-    setDecisionRecorded(false);
+    const reset = resetReleaseDecisionState();
+    setStatusOverrides(reset.statusOverrides);
+    setDecision(reset.decision);
   };
 
   const recordDecision = () => {
-    setDecisionRecorded(true);
+    const snapshot: ReleaseDecisionSnapshot = {
+      actor: "Release Steering Committee",
+      posture,
+      blockerCount: blockCount,
+      watchCount,
+      recordedAt: new Date().toISOString()
+    };
+    setDecision(snapshot);
+    writeReleaseDecisionState({ statusOverrides, decision: snapshot });
     recordAuditEvent({
       actor: "Release Steering Committee",
       action: "Go-live decision recorded",
@@ -143,7 +167,8 @@ export function ReleaseReadinessCenter() {
         openHighDefects: defectAssessment.highOpen.length,
         pendingRetest: defectAssessment.pendingRetest.length,
         riskAcceptedDefects: defectAssessment.accepted.length,
-        highPriorityUatOpen: highPriorityUatOpen.length
+        highPriorityUatOpen: highPriorityUatOpen.length,
+        decisionRecordedAt: decision?.recordedAt ?? "Not recorded"
       })))
     );
     recordAuditEvent({
@@ -268,10 +293,16 @@ export function ReleaseReadinessCenter() {
           <div className="mt-5">
             <Button onClick={recordDecision}>
               <Flag className="h-4 w-4" />
-              {decisionRecorded ? "Decision Recorded" : "Record Decision"}
+              {decisionIsCurrent ? "Decision Recorded" : decision ? "Re-record Decision" : "Record Decision"}
             </Button>
           </div>
-          {decisionRecorded ? <p className="mt-3 text-xs text-muted-foreground">Audit event captured for Release R2.4.</p> : null}
+          {decision ? (
+            <p className={`mt-3 text-xs ${decisionIsCurrent ? "text-muted-foreground" : "text-warning"}`}>
+              {decisionIsCurrent
+                ? `Recorded by ${decision.actor} on ${new Date(decision.recordedAt).toLocaleString("en-MY")}.`
+                : "The saved decision is outdated because the current gate position has changed. Re-recording is required."}
+            </p>
+          ) : null}
         </Card>
       </div>
 

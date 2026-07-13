@@ -43,8 +43,8 @@ function progressTone(progress: number) {
 }
 
 function compactCurrency(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    currency: "USD",
+  return new Intl.NumberFormat("en-MY", {
+    currency: "MYR",
     maximumFractionDigits: 0,
     notation: "compact",
     style: "currency"
@@ -95,13 +95,13 @@ export function ValueRealizationDashboard() {
       toCsv([
         { metric: "Annual case volume", value: annualCases, unit: "cases" },
         { metric: "Annual hours saved", value: Math.round(valueCase.annualHoursSaved), unit: "hours" },
-        { metric: "Productivity benefit", value: Math.round(valueCase.productivityBenefit), unit: "USD" },
-        { metric: "Rework avoidance benefit", value: Math.round(valueCase.reworkAvoidanceBenefit), unit: "USD" },
-        { metric: "Control risk benefit assumption", value: valueCase.controlRiskBenefit, unit: "USD" },
-        { metric: "Risk-adjusted annual benefit", value: Math.round(valueCase.riskAdjustedBenefit), unit: "USD" },
-        { metric: "Implementation cost", value: implementationCost, unit: "USD" },
+        { metric: "Productivity benefit", value: Math.round(valueCase.productivityBenefit), unit: "MYR" },
+        { metric: "Rework avoidance benefit", value: Math.round(valueCase.reworkAvoidanceBenefit), unit: "MYR" },
+        { metric: "Control risk benefit assumption", value: valueCase.controlRiskBenefit, unit: "MYR" },
+        { metric: "Risk-adjusted annual benefit", value: Math.round(valueCase.riskAdjustedBenefit), unit: "MYR" },
+        { metric: "Implementation cost", value: implementationCost, unit: "MYR" },
         { metric: "Payback", value: valueCase.paybackMonths.toFixed(1), unit: "months" },
-        { metric: "Three-year net benefit", value: Math.round(valueCase.threeYearNetBenefit), unit: "USD" }
+        { metric: "Three-year net benefit", value: Math.round(valueCase.threeYearNetBenefit), unit: "MYR" }
       ])
     );
     recordAuditEvent({
@@ -138,8 +138,8 @@ export function ValueRealizationDashboard() {
             <NumberField label="Annual applications" min={100} onChange={setAnnualCases} step={100} value={annualCases} />
             <NumberField label="Current manual hours / case" min={0} onChange={setManualHours} step={0.1} value={manualHours} />
             <NumberField label="Target hours / case" min={0} onChange={setFutureHours} step={0.1} value={futureHours} />
-            <NumberField label="Loaded hourly cost (USD)" min={1} onChange={setHourlyCost} step={1} value={hourlyCost} />
-            <NumberField label="Implementation cost (USD)" min={0} onChange={setImplementationCost} step={5000} value={implementationCost} />
+            <NumberField label="Loaded hourly cost (MYR)" min={1} onChange={setHourlyCost} step={1} value={hourlyCost} />
+            <NumberField label="Implementation cost (MYR)" min={0} onChange={setImplementationCost} step={5000} value={implementationCost} />
           </div>
 
           <div className="mt-5 rounded-md border bg-muted/30 p-4">

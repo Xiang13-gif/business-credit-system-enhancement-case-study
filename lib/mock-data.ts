@@ -172,7 +172,7 @@ export const uatTestCases: UatTestCase[] = [
     module: "Approval Routing Simulator",
     requirementId: "REQ017",
     scenario: "Verify approval route escalates when exposure, risk level, and exception severity increase.",
-    testSteps: "Enter USD 12,000,000 exposure, High risk, Unsecured collateral, and Critical exception.",
+    testSteps: "Enter MYR 12,000,000 exposure, High risk, Unsecured collateral, and Critical exception.",
     expectedResult: "System recommends Group Credit Committee with maker-checker controls and escalation triggers.",
     priority: "High",
     status: "Passed",

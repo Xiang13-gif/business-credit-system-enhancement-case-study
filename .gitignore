@@ -25,6 +25,8 @@ dist/
 build/
 out/
 coverage/
+playwright-report/
+test-results/
 *.tsbuildinfo
 
 # Local caches

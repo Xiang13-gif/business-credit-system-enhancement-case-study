@@ -18,7 +18,7 @@ This dashboard is intended for business monitoring, not financial reporting. It 
 | KPI | Definition | Sample Value |
 | --- | --- | ---: |
 | Applications submitted | Count of cases submitted during selected period. | 148 |
-| Total requested exposure | Sum of proposed facility amount. | USD 86.4m |
+| Total requested exposure | Sum of proposed facility amount. | MYR 86.4m |
 | Average submission-to-decision TAT | Average working days from submitted date to decision date. | 6.2 days |
 | Cases pending RM action | Open cases waiting for RM clarification or document upload. | 23 |
 | Cases beyond SLA | Cases pending beyond configured status-level threshold. | 17 |
@@ -34,7 +34,7 @@ This dashboard is intended for business monitoring, not financial reporting. It 
 
 ## Pipeline by Status
 
-| Status | Case Count | Requested Exposure USD | Aging Concern |
+| Status | Case Count | Requested Exposure MYR | Aging Concern |
 | --- | ---: | ---: | --- |
 | Draft | 31 | 12,800,000 | Low |
 | Pending RM Action | 23 | 9,600,000 | Medium |

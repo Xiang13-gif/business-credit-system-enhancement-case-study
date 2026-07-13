@@ -10,10 +10,10 @@ Connect failed UAT evidence to a governed defect lifecycle and ensure the releas
 | --- | --- | --- | --- |
 | Open | Start Fix | Owner assigned | In Fix |
 | In Fix | Submit for Retest | Resolution and fix detail recorded | Ready for Retest |
-| Ready for Retest | Pass and Close | Successful retest evidence recorded | Closed |
+| Ready for Retest | Pass and Close | Tester, date, build, environment, evidence reference, and successful outcome recorded | Closed |
 | Ready for Retest | Fail Retest | Failed outcome recorded | Retest Failed |
 | Retest Failed | Return to Fix | Defect returned to delivery owner | In Fix |
-| Open / In Fix / Retest Failed | Approve Risk Acceptance | Accountable approver and residual-risk rationale recorded | Risk Accepted |
+| Open / In Fix / Retest Failed | Approve Risk Acceptance | Independent approver, authority role, expiry, rationale, compensating control, and monitoring owner recorded | Risk Accepted |
 
 ## Release Derivation
 
@@ -32,11 +32,17 @@ Connect failed UAT evidence to a governed defect lifecycle and ensure the releas
 - `DEF-REQ-002`: Each defect records test case, requirement, severity, priority, owner, business impact, root cause, target date, resolution, and retest evidence.
 - `DEF-REQ-003`: A defect cannot move to Ready for Retest without resolution detail.
 - `DEF-REQ-004`: A defect cannot close without successful retest evidence.
+- `DEF-REQ-004B`: Retest evidence must identify the tester, execution date, build, environment, outcome, and evidence reference.
 - `DEF-REQ-004A`: Successful defect closure synchronizes the linked UAT case to Passed and Retest Passed.
 - `DEF-REQ-005`: Critical and High defects block the UAT release gate until closed or formally risk accepted.
-- `DEF-REQ-006`: Risk acceptance requires an accountable authority and documented rationale.
+- `DEF-REQ-006`: Risk acceptance requires an independent accountable authority, future expiry date, compensating control, monitoring owner, and documented rationale.
+- `DEF-REQ-006A`: A defect owner cannot approve their own residual risk.
+- `DEF-REQ-006B`: Editing approved acceptance evidence invalidates the prior approval and returns the defect to Open / Pending acceptance.
 - `DEF-REQ-007`: Risk acceptance results in Watch rather than Pass.
 - `DEF-REQ-008`: Defect and release decisions create audit events and persist after browser refresh.
+- `DEF-REQ-009`: Unresolved defects display target-date SLA position as On Track, Watch, Breach, or Not Set.
+- `DEF-REQ-010`: UAT and Release use the same sign-off assessment so approved risk acceptance results in Watch consistently.
+- `DEF-REQ-011`: Reset Demo restores the full UAT status and retest baseline, including cases previously linked to temporary defects.
 
 ## Acceptance Scenarios
 
@@ -46,6 +52,9 @@ Connect failed UAT evidence to a governed defect lifecycle and ensure the releas
 4. Given an unresolved Critical defect, when Release Readiness is opened, then `REL-002` is Block and the release posture is No-Go.
 5. Given only approved risk-accepted defects, when Release Readiness is opened, then the defect gate is Watch and the posture cannot be Go.
 6. Given all defects closed with retest evidence and all other gates passed, when Release Readiness is opened, then the posture is Go.
+7. Given a defect owner is also entered as the risk approver, when acceptance is submitted, then maker-checker validation blocks approval.
+8. Given a release decision is recorded, when the page is refreshed, then the decision snapshot remains available; if gate counts change, it is marked outdated.
+9. Given a temporary defect was raised from UAT, when Reset Demo is selected, then both the defect register and every UAT override return to seed state.
 
 ## MVP Boundary
 

@@ -4,14 +4,20 @@
   "description": "A senior banking BA portfolio case for evidence-grounded credit memo generation, rule governance, data lineage, value realization, and release assurance.",
   "private": false,
   "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=22"
+  },
   "type": "module",
   "scripts": {
     "build": "next build",
-    "check": "pnpm run check:security && pnpm run lint && pnpm run typecheck && pnpm run build",
+    "check": "pnpm run check:security && pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build",
     "check:security": "node scripts/check-security.mjs",
     "dev": "next dev --hostname 127.0.0.1",
     "lint": "eslint . --max-warnings=0",
     "start": "next start --hostname 127.0.0.1",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
@@ -40,24 +46,26 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "clsx": "latest",
-    "lucide-react": "latest",
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "recharts": "latest",
-    "tailwind-merge": "latest"
+    "clsx": "2.1.1",
+    "lucide-react": "1.23.0",
+    "next": "16.2.10",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "recharts": "3.9.1",
+    "tailwind-merge": "3.6.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "latest",
-    "@types/node": "latest",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
-    "autoprefixer": "latest",
-    "eslint": "^9.39.4",
-    "eslint-config-next": "latest",
-    "postcss": "latest",
+    "@eslint/eslintrc": "3.3.5",
+    "@playwright/test": "1.61.1",
+    "@types/node": "26.1.0",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "autoprefixer": "10.5.2",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.10",
+    "postcss": "8.5.16",
     "tailwindcss": "3.4.17",
-    "typescript": "latest"
+    "typescript": "6.0.3",
+    "vitest": "4.1.10"
   }
 }

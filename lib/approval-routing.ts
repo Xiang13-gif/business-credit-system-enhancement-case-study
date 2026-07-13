@@ -49,8 +49,8 @@ function slaFromTier(tier: ApprovalTier) {
 }
 
 export function formatCurrency(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    currency: "USD",
+  return new Intl.NumberFormat("en-MY", {
+    currency: "MYR",
     maximumFractionDigits: 0,
     style: "currency"
   }).format(value);

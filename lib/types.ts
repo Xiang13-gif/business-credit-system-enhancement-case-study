@@ -135,9 +135,18 @@ export interface DefectRecord {
   rootCause: string;
   resolution: string;
   retestEvidence: string;
+  retestTester: string;
+  retestDate: string;
+  retestBuild: string;
+  retestEnvironment: string;
+  retestEvidenceReference: string;
   riskAcceptanceStatus: RiskAcceptanceStatus;
   riskAcceptanceReason: string;
   riskAcceptedBy: string;
+  riskAcceptedByRole: string;
+  riskAcceptanceExpiry: string;
+  compensatingControl: string;
+  monitoringOwner: string;
   updatedAt: string;
 }
 

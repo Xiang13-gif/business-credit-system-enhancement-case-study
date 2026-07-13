@@ -162,6 +162,8 @@ The application uses mock data only. Metrics are portfolio assumptions for demon
 - shadcn-style reusable UI primitives
 - Lucide React icons
 - Recharts
+- Vitest
+- Playwright
 - Mock data and local browser state
 
 ## Main Routes
@@ -212,7 +214,17 @@ This runs:
 - sensitive file and token scan
 - ESLint
 - TypeScript typecheck
+- Vitest business-rule and workflow-control tests
 - production build
+
+Use Node.js 22 or later. The repository includes `.nvmrc`, pinned package versions, and a frozen pnpm lockfile for repeatable local and CI builds.
+
+Targeted test execution:
+
+```bash
+pnpm run test
+pnpm run test:e2e
+```
 
 ## Deploy to GitHub Pages
 

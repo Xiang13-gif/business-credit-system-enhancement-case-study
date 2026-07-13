@@ -50,10 +50,10 @@ The approval matrix below is simplified for portfolio use.
 
 | Total Exposure | Low Risk / Fully Secured | Medium Risk or Partial Security | High Risk, Unsecured, or Major Exception |
 | ---: | --- | --- | --- |
-| Up to USD 250,000 | Credit Analyst Review | Regional Credit Manager | Country Credit Committee |
-| USD 250,001 to USD 1,000,000 | Regional Credit Manager | Regional Credit Manager | Country Credit Committee |
-| USD 1,000,001 to USD 5,000,000 | Regional Credit Manager | Country Credit Committee | Group Credit Committee |
-| Above USD 5,000,000 | Country Credit Committee | Group Credit Committee | Group Credit Committee plus exception approval |
+| Up to MYR 250,000 | Credit Analyst Review | Regional Credit Manager | Country Credit Committee |
+| MYR 250,001 to MYR 1,000,000 | Regional Credit Manager | Regional Credit Manager | Country Credit Committee |
+| MYR 1,000,001 to MYR 5,000,000 | Regional Credit Manager | Country Credit Committee | Group Credit Committee |
+| Above MYR 5,000,000 | Country Credit Committee | Group Credit Committee | Group Credit Committee plus exception approval |
 
 ## Approval Routing Logic
 

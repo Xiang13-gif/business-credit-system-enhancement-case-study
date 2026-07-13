@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Badge, Button, Card, ProgressBar, StatCard } from "@/components/ui";
 import { recordAuditEvent } from "@/lib/audit-log";
 import {
-  assessDefectRelease,
+  assessUatSignOff,
   createDefectFromTestCase,
   readDefects,
   retestStatusFromDefect,
@@ -94,6 +94,10 @@ export function UatTracker() {
   const [priority, setPriority] = useState<UatPriority | "All">("All");
   const [role, setRole] = useState<UatRole | "All">("All");
   const [search, setSearch] = useState("");
+  const linkedDefectByCase = useMemo(
+    () => new Map(defects.map((defect) => [defect.linkedTestCaseId, defect])),
+    [defects]
+  );
 
   const persistStatus = (updated: UatTestCase[]) => {
     const storedStatuses = Object.fromEntries(updated.map((item) => [item.id, item.status]));
@@ -173,6 +177,7 @@ export function UatTracker() {
   const filteredCases = useMemo(() => {
     const term = search.trim().toLowerCase();
     return cases.filter((item) => {
+      const linkedDefect = linkedDefectByCase.get(item.id);
       const matchesStatus = status === "All" || item.status === status;
       const matchesPriority = priority === "All" || item.priority === priority;
       const matchesRole = role === "All" || item.role === role;
@@ -181,11 +186,13 @@ export function UatTracker() {
         item.id.toLowerCase().includes(term) ||
         item.requirementId.toLowerCase().includes(term) ||
         item.scenario.toLowerCase().includes(term) ||
-        item.defectId?.toLowerCase().includes(term);
+        item.defectId?.toLowerCase().includes(term) ||
+        linkedDefect?.id.toLowerCase().includes(term) ||
+        linkedDefect?.rootCause.toLowerCase().includes(term);
 
       return matchesStatus && matchesPriority && matchesRole && matchesSearch;
     });
-  }, [cases, priority, role, search, status]);
+  }, [cases, linkedDefectByCase, priority, role, search, status]);
 
   const total = cases.length;
   const passed = cases.filter((item) => item.status === "Passed").length;
@@ -193,17 +200,20 @@ export function UatTracker() {
   const blocked = cases.filter((item) => item.status === "Blocked").length;
   const notStarted = cases.filter((item) => item.status === "Not Started").length;
   const passRate = total === 0 ? 0 : Math.round((passed / total) * 100);
-  const highPriorityOpen = cases.filter((item) => item.priority === "High" && item.status !== "Passed").length;
-  const defectAssessment = assessDefectRelease(defects);
+  const uatAssessment = assessUatSignOff(cases, {}, defects);
+  const { defectAssessment } = uatAssessment;
+  const highPriorityOpen = uatAssessment.highPriorityOpen.length;
   const defectsLinked = defects.length;
   const pendingRetest = defectAssessment.pendingRetest.length;
-  const signOffReady = highPriorityOpen === 0 && pendingRetest === 0 && failed === 0 && blocked === 0 && defectAssessment.status === "Pass";
+  const signOffPosition = uatAssessment.position === "Pass" ? "Ready" : uatAssessment.position === "Watch" ? "Conditional" : "Not Ready";
 
   const exportReport = () => {
     downloadCsv(
       "gccm-uat-report.csv",
       toCsv(
-        filteredCases.map((item) => ({
+        filteredCases.map((item) => {
+          const linkedDefect = linkedDefectByCase.get(item.id);
+          return {
           id: item.id,
           module: item.module,
           requirementId: item.requirementId,
@@ -213,12 +223,14 @@ export function UatTracker() {
           role: item.role,
           assignedTester: item.assignedTester,
           executionDate: item.executionDate,
-          defectId: item.defectId,
-          defectSeverity: item.defectSeverity,
-          rootCause: item.rootCause,
-          retestStatus: item.retestStatus,
+          defectId: linkedDefect?.id ?? item.defectId,
+          defectSeverity: linkedDefect?.severity ?? item.defectSeverity,
+          rootCause: linkedDefect?.rootCause ?? item.rootCause,
+          retestStatus: linkedDefect ? retestStatusFromDefect(linkedDefect) : item.retestStatus,
+          riskAcceptanceStatus: linkedDefect?.riskAcceptanceStatus ?? "Not Required",
           remarks: item.remarks
-        }))
+          };
+        })
       )
     );
     recordAuditEvent({
@@ -238,7 +250,7 @@ export function UatTracker() {
         <StatCard label="Pass Rate" value={`${passRate}%`} tone={passRate >= 80 ? "success" : "warning"} helper={`${passed} passed`} />
         <StatCard label="Failed / Blocked" value={failed + blocked} tone={failed + blocked > 0 ? "danger" : "success"} helper={`${failed} failed, ${blocked} blocked`} />
         <StatCard label="Pending Retest" value={pendingRetest} tone={pendingRetest > 0 ? "warning" : "success"} helper={`${defectsLinked} defects managed`} />
-        <StatCard label="Sign-off Ready" value={signOffReady ? "Yes" : "No"} tone={signOffReady ? "success" : "danger"} helper={`${highPriorityOpen} high priority open`} />
+        <StatCard label="Sign-off Position" value={signOffPosition} tone={uatAssessment.position === "Pass" ? "success" : uatAssessment.position === "Watch" ? "warning" : "danger"} helper={`${highPriorityOpen} high priority blockers`} />
       </div>
 
       <Card>
@@ -246,7 +258,7 @@ export function UatTracker() {
           <div>
             <h2 className="text-lg font-semibold">UAT Progress</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              {passed} of {total} cases passed. {notStarted} not started. Release sign-off is {signOffReady ? "ready" : "not ready"}.
+              {passed} of {total} cases passed. {notStarted} not started. Release sign-off is {signOffPosition.toLowerCase()}.
             </p>
           </div>
           <div className="w-full lg:max-w-md">
@@ -310,7 +322,7 @@ export function UatTracker() {
             </thead>
             <tbody>
               {filteredCases.map((item) => {
-                const linkedDefect = defects.find((defect) => defect.linkedTestCaseId === item.id);
+                const linkedDefect = linkedDefectByCase.get(item.id);
                 const displayedRetestStatus = linkedDefect ? retestStatusFromDefect(linkedDefect) : item.retestStatus;
                 return (
                 <tr className={item.status === "Failed" ? "border-t bg-danger/5 align-top" : "border-t align-top"} key={item.id}>
@@ -362,8 +374,8 @@ export function UatTracker() {
                     </div>
                   </td>
                   <td className="max-w-sm px-4 py-3 text-muted-foreground">
-                    {item.rootCause ? <p className="font-medium text-foreground">{item.rootCause}</p> : null}
-                    <p className={item.rootCause ? "mt-2" : ""}>{item.remarks}</p>
+                    {linkedDefect?.rootCause || item.rootCause ? <p className="font-medium text-foreground">{linkedDefect?.rootCause ?? item.rootCause}</p> : null}
+                    <p className={linkedDefect?.rootCause || item.rootCause ? "mt-2" : ""}>{item.remarks}</p>
                   </td>
                 </tr>
                 );

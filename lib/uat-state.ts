@@ -57,13 +57,9 @@ export function syncUatFromDefect(testCaseId: string, defectStatus: DefectStatus
   writeUatRetestMap(retests);
 }
 
-export function resetLinkedUatState(testCases: UatTestCase[], linkedTestCaseIds: string[]) {
-  const statuses = readUatStatusMap();
-  const retests = readUatRetestMap();
-  testCases.filter((testCase) => linkedTestCaseIds.includes(testCase.id)).forEach((testCase) => {
-    statuses[testCase.id] = testCase.status;
-    retests[testCase.id] = testCase.retestStatus;
-  });
+export function resetUatState(testCases: UatTestCase[]) {
+  const statuses = Object.fromEntries(testCases.map((testCase) => [testCase.id, testCase.status]));
+  const retests = Object.fromEntries(testCases.map((testCase) => [testCase.id, testCase.retestStatus]));
   writeUatStatusMap(statuses);
   writeUatRetestMap(retests);
 }

@@ -47,7 +47,7 @@ export const creditMemoProfiles: CreditMemoProfile[] = [
       "Approved critical exception mitigation"
     ],
     previousVersionNotes: [
-      "Exposure updated from USD 16.0m to USD 18.5m.",
+      "Exposure updated from MYR 16.0m to MYR 18.5m.",
       "Approval route escalated from Country Credit Committee to Group Credit Committee.",
       "EDD completion added as a condition precedent."
     ]
@@ -117,7 +117,7 @@ export const creditMemoProfiles: CreditMemoProfile[] = [
     sourceRecordIds: ["CASE-1006", "TC003", "TC006", "TC008", "CR002"],
     missingEvidence: [],
     previousVersionNotes: [
-      "Trade line increased from USD 750k to USD 980k.",
+      "Trade line increased from MYR 750k to MYR 980k.",
       "Product document mapping confirmed through UAT.",
       "Case moved to Ready for Facility Setup."
     ]
