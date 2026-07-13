@@ -2,6 +2,7 @@ import {
   ArrowRight,
   BarChart3,
   Building2,
+  Bug,
   CircleDollarSign,
   ClipboardCheck,
   Database,
@@ -116,6 +117,13 @@ const modules = [
     href: "/uat",
     icon: ClipboardCheck,
     badge: "Delivery"
+  },
+  {
+    title: "Defect Management Register",
+    description: "Raise defects from failed UAT, manage triage, fix and retest evidence, control risk acceptance, and automatically feed release readiness.",
+    href: "/defects",
+    icon: Bug,
+    badge: "Test Assurance"
   },
   {
     title: "Change Request Impact Analyzer",

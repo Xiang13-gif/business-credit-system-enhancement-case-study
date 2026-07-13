@@ -11,11 +11,14 @@ import {
   Rocket,
   ShieldX
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Badge, Button, Card, ProgressBar, StatCard } from "@/components/ui";
 import { recordAuditEvent } from "@/lib/audit-log";
+import { assessDefectRelease, readDefects, seedDefects } from "@/lib/defect-management";
 import { cutoverSteps, hypercareMetrics, releaseGates } from "@/lib/transformation-data";
-import type { ReleaseGateStatus } from "@/lib/types";
+import { uatTestCases } from "@/lib/mock-data";
+import type { DefectRecord, ReleaseGate, ReleaseGateStatus, UatStatus } from "@/lib/types";
+import { readUatStatusMap } from "@/lib/uat-state";
 import { downloadCsv, toCsv } from "@/lib/utils";
 
 function hypercareTone(status: string) {
@@ -31,8 +34,54 @@ function hypercareTone(status: string) {
 export function ReleaseReadinessCenter() {
   const [statusOverrides, setStatusOverrides] = useState<Record<string, ReleaseGateStatus>>({});
   const [decisionRecorded, setDecisionRecorded] = useState(false);
+  const [defects, setDefects] = useState<DefectRecord[]>(seedDefects);
+  const [uatStatusOverrides, setUatStatusOverrides] = useState<Record<string, UatStatus>>({});
 
-  const gates = releaseGates.map((item) => ({ ...item, status: statusOverrides[item.id] ?? item.status }));
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setDefects(readDefects());
+      setUatStatusOverrides(readUatStatusMap());
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const defectAssessment = assessDefectRelease(defects);
+  const highPriorityUatOpen = uatTestCases.filter((testCase) => {
+    const status = uatStatusOverrides[testCase.id] ?? testCase.status;
+    const linkedAcceptedDefect = defects.find((defect) => defect.linkedTestCaseId === testCase.id && defect.status === "Risk Accepted" && defect.riskAcceptanceStatus === "Approved");
+    return testCase.priority === "High" && status !== "Passed" && !linkedAcceptedDefect;
+  });
+  const uatDefectGateStatus: ReleaseGateStatus = defectAssessment.status === "Block" || highPriorityUatOpen.length > 0
+    ? "Block"
+    : defectAssessment.status;
+  const uatDefectEvidence = `${defectAssessment.evidence} ${highPriorityUatOpen.length} high-priority UAT cases remain unpassed without approved risk acceptance.`;
+  const preliminaryGates: ReleaseGate[] = releaseGates.map((item) => {
+    if (item.id === "REL-002") {
+      return {
+        ...item,
+        status: uatDefectGateStatus,
+        evidence: uatDefectEvidence,
+        signOff: uatDefectGateStatus === "Pass" ? "Signed by UAT Lead" : uatDefectGateStatus === "Watch" ? "Conditional" : "Pending"
+      };
+    }
+    return { ...item, status: statusOverrides[item.id] ?? item.status };
+  });
+  const prerequisiteGates = preliminaryGates.filter((item) => item.id !== "REL-008");
+  const steeringGateStatus: ReleaseGateStatus = prerequisiteGates.some((item) => item.status === "Block")
+    ? "Block"
+    : prerequisiteGates.some((item) => item.status === "Watch")
+      ? "Watch"
+      : "Pass";
+  const gates = preliminaryGates.map((item) => item.id === "REL-008" ? {
+    ...item,
+    status: steeringGateStatus,
+    evidence: steeringGateStatus === "Block"
+      ? "Final decision remains blocked by one or more prerequisite release gates."
+      : steeringGateStatus === "Watch"
+        ? "No blocking prerequisite remains; residual watch items require named owners and formal acceptance."
+        : "All prerequisite release gates pass with accountable sign-off evidence.",
+    signOff: steeringGateStatus === "Pass" ? "Ready for Steering Sign-Off" : steeringGateStatus === "Watch" ? "Conditional" : "Pending"
+  } : item);
   const passCount = gates.filter((item) => item.status === "Pass").length;
   const watchCount = gates.filter((item) => item.status === "Watch").length;
   const blockCount = gates.filter((item) => item.status === "Block").length;
@@ -41,6 +90,9 @@ export function ReleaseReadinessCenter() {
   const posture = blockCount > 0 ? "No-Go" : watchCount > 0 ? "Conditional Go" : "Go";
 
   const updateGate = (gateId: string, status: ReleaseGateStatus) => {
+    if (gateId === "REL-002" || gateId === "REL-008") {
+      return;
+    }
     const gate = releaseGates.find((item) => item.id === gateId);
     setStatusOverrides((current) => ({ ...current, [gateId]: status }));
     setDecisionRecorded(false);
@@ -86,7 +138,12 @@ export function ReleaseReadinessCenter() {
         evidence: item.evidence,
         linkedItems: item.linkedItems.join("; "),
         signOff: item.signOff,
-        releasePosture: posture
+        releasePosture: posture,
+        openCriticalDefects: defectAssessment.criticalOpen.length,
+        openHighDefects: defectAssessment.highOpen.length,
+        pendingRetest: defectAssessment.pendingRetest.length,
+        riskAcceptedDefects: defectAssessment.accepted.length,
+        highPriorityUatOpen: highPriorityUatOpen.length
       })))
     );
     recordAuditEvent({
@@ -104,9 +161,9 @@ export function ReleaseReadinessCenter() {
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
         <StatCard label="Release Posture" value={posture} tone={posture === "Go" ? "success" : posture === "Conditional Go" ? "warning" : "danger"} />
         <StatCard label="Readiness Score" value={`${readinessScore}%`} tone={readinessScore >= 85 ? "success" : readinessScore >= 55 ? "warning" : "danger"} />
-        <StatCard label="Passed Gates" value={passCount} tone="success" />
-        <StatCard label="Watch Gates" value={watchCount} tone={watchCount > 0 ? "warning" : "success"} />
         <StatCard label="Blocking Gates" value={blockCount} tone={blockCount > 0 ? "danger" : "success"} />
+        <StatCard label="Critical / High Defects" value={defectAssessment.criticalOpen.length + defectAssessment.highOpen.length} tone={defectAssessment.status === "Block" ? "danger" : "success"} helper={`${passCount} gates passed`} />
+        <StatCard label="UAT Open / Retest" value={`${highPriorityUatOpen.length} / ${defectAssessment.pendingRetest.length}`} tone={highPriorityUatOpen.length + defectAssessment.pendingRetest.length > 0 ? "warning" : "success"} helper={`${watchCount} watch gates`} />
         <StatCard label="Cutover Ready" value={`${cutoverReady}/${cutoverSteps.length}`} tone={cutoverReady === cutoverSteps.length ? "success" : "warning"} />
       </div>
 
@@ -156,6 +213,7 @@ export function ReleaseReadinessCenter() {
                       <select
                         aria-label={`Status for ${item.title}`}
                         className="control h-9 min-w-28"
+                        disabled={item.id === "REL-002" || item.id === "REL-008"}
                         onChange={(event) => updateGate(item.id, event.target.value as ReleaseGateStatus)}
                         value={item.status}
                       >
@@ -190,6 +248,9 @@ export function ReleaseReadinessCenter() {
 
           <div className="mt-5 space-y-3">
             <DecisionCheck label="No open blocking gate" passed={blockCount === 0} />
+            <DecisionCheck label="No open critical or high defect" passed={defectAssessment.criticalOpen.length + defectAssessment.highOpen.length === 0} />
+            <DecisionCheck label="All high-priority UAT passed or accepted" passed={highPriorityUatOpen.length === 0} />
+            <DecisionCheck label="All defect retests resolved" passed={defectAssessment.pendingRetest.length === 0} />
             <DecisionCheck label="All watch gates accepted" passed={watchCount === 0} />
             <DecisionCheck label="Cutover runbook ready" passed={cutoverReady >= 3} />
             <DecisionCheck label="Training threshold achieved" passed />

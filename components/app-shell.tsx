@@ -1,5 +1,6 @@
 import {
   BarChart3,
+  Bug,
   CircleDollarSign,
   ClipboardCheck,
   Database,
@@ -48,6 +49,7 @@ const navGroups = [
     label: "Delivery Assurance",
     items: [
       { href: "/uat", label: "UAT Tracker", icon: ClipboardCheck },
+      { href: "/defects", label: "Defect Register", icon: Bug },
       { href: "/change-requests", label: "CR Impact", icon: GitPullRequestArrow },
       { href: "/release", label: "Release Readiness", icon: Rocket },
       { href: "/traceability", label: "Traceability", icon: Network }

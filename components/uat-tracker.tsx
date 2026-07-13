@@ -1,19 +1,30 @@
 "use client";
 
-import { Download, Search } from "lucide-react";
+import { Bug, Download, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Badge, Button, Card, ProgressBar, StatCard } from "@/components/ui";
 import { recordAuditEvent } from "@/lib/audit-log";
+import {
+  assessDefectRelease,
+  createDefectFromTestCase,
+  readDefects,
+  retestStatusFromDefect,
+  seedDefects
+} from "@/lib/defect-management";
 import { uatTestCases } from "@/lib/mock-data";
-import type { RetestStatus, UatPriority, UatRole, UatStatus, UatTestCase } from "@/lib/types";
+import type { DefectRecord, RetestStatus, UatPriority, UatRole, UatStatus, UatTestCase } from "@/lib/types";
+import {
+  readUatRetestMap,
+  readUatStatusMap,
+  writeUatRetestMap,
+  writeUatStatusMap
+} from "@/lib/uat-state";
 import { downloadCsv, toCsv } from "@/lib/utils";
 
 const statuses: Array<UatStatus | "All"> = ["All", "Not Started", "In Progress", "Passed", "Failed", "Blocked"];
 const priorities: Array<UatPriority | "All"> = ["All", "High", "Medium", "Low"];
 const roles: Array<UatRole | "All"> = ["All", "RM", "Credit Analyst", "Approver", "Credit Admin", "System Admin"];
 const retestStatuses: RetestStatus[] = ["Not Required", "Pending Retest", "Retest Passed", "Retest Failed"];
-const UAT_STATUS_STORAGE_KEY = "gccm-uat-status";
-const UAT_RETEST_STORAGE_KEY = "gccm-uat-retest";
 
 function statusTone(status: UatStatus) {
   if (status === "Passed") {
@@ -54,38 +65,27 @@ function retestTone(status: RetestStatus) {
   return "default";
 }
 
-function readStoredMap<T extends string>(key: string) {
-  if (typeof window === "undefined") {
-    return {};
-  }
-
-  const stored = window.localStorage.getItem(key);
-  if (!stored) {
-    return {};
-  }
-
-  try {
-    return JSON.parse(stored) as Record<string, T>;
-  } catch {
-    return {};
-  }
-}
-
 export function UatTracker() {
   const [cases, setCases] = useState<UatTestCase[]>(uatTestCases);
+  const [defects, setDefects] = useState<DefectRecord[]>(seedDefects);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      const storedStatuses = readStoredMap<UatStatus>(UAT_STATUS_STORAGE_KEY);
-      const storedRetests = readStoredMap<RetestStatus>(UAT_RETEST_STORAGE_KEY);
+      const storedStatuses = readUatStatusMap();
+      const storedRetests = readUatRetestMap();
+      const storedDefects = readDefects();
 
       setCases(
-        uatTestCases.map((item) => ({
-          ...item,
-          status: storedStatuses[item.id] ?? item.status,
-          retestStatus: storedRetests[item.id] ?? item.retestStatus
-        }))
+        uatTestCases.map((item) => {
+          const linkedDefect = storedDefects.find((defect) => defect.linkedTestCaseId === item.id);
+          return {
+            ...item,
+            status: storedStatuses[item.id] ?? item.status,
+            retestStatus: linkedDefect ? retestStatusFromDefect(linkedDefect) : storedRetests[item.id] ?? item.retestStatus
+          };
+        })
       );
+      setDefects(storedDefects);
     }, 0);
 
     return () => window.clearTimeout(timer);
@@ -97,12 +97,12 @@ export function UatTracker() {
 
   const persistStatus = (updated: UatTestCase[]) => {
     const storedStatuses = Object.fromEntries(updated.map((item) => [item.id, item.status]));
-    window.localStorage.setItem(UAT_STATUS_STORAGE_KEY, JSON.stringify(storedStatuses));
+    writeUatStatusMap(storedStatuses);
   };
 
   const persistRetest = (updated: UatTestCase[]) => {
     const storedRetests = Object.fromEntries(updated.map((item) => [item.id, item.retestStatus]));
-    window.localStorage.setItem(UAT_RETEST_STORAGE_KEY, JSON.stringify(storedRetests));
+    writeUatRetestMap(storedRetests);
   };
 
   const updateStatus = (id: string, nextStatus: UatStatus) => {
@@ -147,6 +147,29 @@ export function UatTracker() {
     });
   };
 
+  const raiseDefect = (testCase: UatTestCase) => {
+    const existing = defects.find((defect) => defect.linkedTestCaseId === testCase.id);
+    if (existing) {
+      return;
+    }
+    const { defect, updated } = createDefectFromTestCase(testCase, defects);
+    setDefects(updated);
+    setCases((current) => current.map((item) => item.id === testCase.id ? {
+      ...item,
+      defectId: defect.id,
+      defectSeverity: defect.severity,
+      retestStatus: "Pending Retest"
+    } : item));
+    recordAuditEvent({
+      actor: "UAT Coordinator",
+      action: "Defect raised from UAT",
+      module: "UAT Tracker",
+      referenceId: defect.id,
+      details: `${defect.id} raised from ${testCase.id} and linked to ${testCase.requirementId}.`,
+      controlImpact: defect.severity === "High" || defect.severity === "Critical" ? "High" : "Medium"
+    });
+  };
+
   const filteredCases = useMemo(() => {
     const term = search.trim().toLowerCase();
     return cases.filter((item) => {
@@ -171,9 +194,10 @@ export function UatTracker() {
   const notStarted = cases.filter((item) => item.status === "Not Started").length;
   const passRate = total === 0 ? 0 : Math.round((passed / total) * 100);
   const highPriorityOpen = cases.filter((item) => item.priority === "High" && item.status !== "Passed").length;
-  const defectsLinked = cases.filter((item) => Boolean(item.defectId)).length;
-  const pendingRetest = cases.filter((item) => item.retestStatus === "Pending Retest" || item.retestStatus === "Retest Failed").length;
-  const signOffReady = highPriorityOpen === 0 && pendingRetest === 0 && failed === 0 && blocked === 0;
+  const defectAssessment = assessDefectRelease(defects);
+  const defectsLinked = defects.length;
+  const pendingRetest = defectAssessment.pendingRetest.length;
+  const signOffReady = highPriorityOpen === 0 && pendingRetest === 0 && failed === 0 && blocked === 0 && defectAssessment.status === "Pass";
 
   const exportReport = () => {
     downloadCsv(
@@ -213,7 +237,7 @@ export function UatTracker() {
         <StatCard label="Total Test Cases" value={total} />
         <StatCard label="Pass Rate" value={`${passRate}%`} tone={passRate >= 80 ? "success" : "warning"} helper={`${passed} passed`} />
         <StatCard label="Failed / Blocked" value={failed + blocked} tone={failed + blocked > 0 ? "danger" : "success"} helper={`${failed} failed, ${blocked} blocked`} />
-        <StatCard label="Pending Retest" value={pendingRetest} tone={pendingRetest > 0 ? "warning" : "success"} helper={`${defectsLinked} defects linked`} />
+        <StatCard label="Pending Retest" value={pendingRetest} tone={pendingRetest > 0 ? "warning" : "success"} helper={`${defectsLinked} defects managed`} />
         <StatCard label="Sign-off Ready" value={signOffReady ? "Yes" : "No"} tone={signOffReady ? "success" : "danger"} helper={`${highPriorityOpen} high priority open`} />
       </div>
 
@@ -285,7 +309,10 @@ export function UatTracker() {
               </tr>
             </thead>
             <tbody>
-              {filteredCases.map((item) => (
+              {filteredCases.map((item) => {
+                const linkedDefect = defects.find((defect) => defect.linkedTestCaseId === item.id);
+                const displayedRetestStatus = linkedDefect ? retestStatusFromDefect(linkedDefect) : item.retestStatus;
+                return (
                 <tr className={item.status === "Failed" ? "border-t bg-danger/5 align-top" : "border-t align-top"} key={item.id}>
                   <td className="px-4 py-3 font-semibold">{item.id}</td>
                   <td className="px-4 py-3 text-muted-foreground">{item.requirementId}</td>
@@ -311,20 +338,27 @@ export function UatTracker() {
                   <td className="px-4 py-3 text-muted-foreground">{item.role}</td>
                   <td className="px-4 py-3">
                     <div className="flex flex-col gap-2">
-                      {item.defectId ? <Badge tone="danger">{item.defectId}</Badge> : <span className="text-muted-foreground">None</span>}
-                      {item.defectSeverity ? <Badge tone={item.defectSeverity === "Critical" || item.defectSeverity === "High" ? "danger" : "warning"}>{item.defectSeverity}</Badge> : null}
+                      {linkedDefect ? <Badge tone="danger">{linkedDefect.id}</Badge> : item.defectId ? <Badge tone="danger">{item.defectId}</Badge> : <span className="text-muted-foreground">None</span>}
+                      {linkedDefect ? <Badge tone={linkedDefect.severity === "Critical" || linkedDefect.severity === "High" ? "danger" : "warning"}>{linkedDefect.severity}</Badge> : item.defectSeverity ? <Badge tone={item.defectSeverity === "Critical" || item.defectSeverity === "High" ? "danger" : "warning"}>{item.defectSeverity}</Badge> : null}
+                      {!linkedDefect && (item.status === "Failed" || item.status === "Blocked") ? (
+                        <Button onClick={() => raiseDefect(item)} variant="secondary"><Bug className="h-4 w-4" />Raise Defect</Button>
+                      ) : null}
                     </div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-col gap-2">
-                      <Badge tone={retestTone(item.retestStatus)}>{item.retestStatus}</Badge>
-                      <select className="control h-9" value={item.retestStatus} onChange={(event) => updateRetestStatus(item.id, event.target.value as RetestStatus)}>
-                        {retestStatuses.map((retestStatus) => (
-                          <option key={retestStatus} value={retestStatus}>
-                            {retestStatus}
-                          </option>
-                        ))}
-                      </select>
+                      <Badge tone={retestTone(displayedRetestStatus)}>{displayedRetestStatus}</Badge>
+                      {linkedDefect ? (
+                        <Button href="/defects" variant="ghost">Manage Defect</Button>
+                      ) : (
+                        <select className="control h-9" value={item.retestStatus} onChange={(event) => updateRetestStatus(item.id, event.target.value as RetestStatus)}>
+                          {retestStatuses.map((retestStatus) => (
+                            <option key={retestStatus} value={retestStatus}>
+                              {retestStatus}
+                            </option>
+                          ))}
+                        </select>
+                      )}
                     </div>
                   </td>
                   <td className="max-w-sm px-4 py-3 text-muted-foreground">
@@ -332,7 +366,8 @@ export function UatTracker() {
                     <p className={item.rootCause ? "mt-2" : ""}>{item.remarks}</p>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>

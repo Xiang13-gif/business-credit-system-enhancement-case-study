@@ -66,6 +66,7 @@ Common pain points modeled in this project:
 - Policy exception capture and governance
 - Case lifecycle visibility through a Credit Case 360 view
 - UAT planning, defect tracking, retest status, and release readiness
+- Controlled defect lifecycle, retest evidence, residual risk acceptance, and automatic release gating
 - Requirement-to-rule-to-test-to-change-request traceability
 - Executive dashboard storytelling for credit operations
 - Frontend implementation with Next.js, TypeScript, Tailwind CSS, and Recharts
@@ -79,13 +80,14 @@ Common pain points modeled in this project:
 | Business Rule Governance Center | Controls rule ownership, versions, maker-checker lifecycle, effective dates, impact scope, regression scenarios, traceability coverage, and activation evidence. |
 | Data Lineage and Quality Hub | Traces critical data from source system through transformation and rules into credit decisions, documents, and reporting, with data-quality issue impact and ownership. |
 | Benefits Realization and Product Value | Recalculates operational benefit, payback, ROI, outcome progress, metric ownership, and value-led roadmap priority from controlled assumptions. |
-| Release and Cutover Command Center | Derives Go / Conditional Go / No-Go posture from readiness gates and shows cutover validation, rollback triggers, decision evidence, and hypercare thresholds. |
+| Release and Cutover Command Center | Derives Go / Conditional Go / No-Go posture from readiness gates and live defect evidence, then shows cutover validation, rollback triggers, decision evidence, and hypercare thresholds. |
 | Document Checklist Generator | Generates document requirements, tracks document status, captures waiver reasons, routes waiver approvals, evaluates required-document readiness, highlights SLA aging, and exports package summaries. |
 | Credit Case 360 | Links case profile, document readiness, lifecycle gates, approval route, exceptions, UAT evidence, audit controls, BA recommendation, and next actions. |
 | Approval Routing Simulator | Recommends delegated authority using exposure, risk level, collateral coverage, customer segment, facility type, and exception severity. |
 | Policy Exception Register | Tracks exception severity, mitigation, owner, aging, approval tier, control evidence, requirement linkage, and UAT coverage. |
 | Executive Dashboard | Shows pipeline exposure, aging, bottlenecks, owner role, exception severity, document readiness, UAT health, CR priority, and traceability status. |
 | UAT Test Case Tracker | Tracks UAT execution, defect linkage, retest status, pass rate, filters, and export. |
+| Defect Management Register | Raises defects from UAT, manages triage, fix, retest, closure and residual-risk acceptance, and automatically controls the UAT release gate. |
 | Change Request Impact Analyzer | Assesses CR impact across requirements, UAT scope, roles, business rules, controls, operational risk, and BA recommendation. |
 | Traceability Matrix | Links requirements, business rules, test cases, change requests, and delivery status. |
 | Role-Based Workflow View | Shows RM, Credit Analyst, Approver, Credit Admin, and System Admin perspectives. |
@@ -101,9 +103,9 @@ Common pain points modeled in this project:
 6. Select a passing regression scenario and explain the requirement-to-rule-to-UAT activation gate.
 7. Open `/data-governance`, select `CDE-005`, and trace Collateral Value from source through transformation and rules into approval and memo outputs.
 8. Open `/value`, adjust annual volume, effort, cost, and implementation assumptions to show how payback and the investment recommendation change.
-9. Open `/release`, resolve or introduce gates and show how the recommendation changes between No-Go, Conditional Go, and Go.
-10. Open `/checklist` and demonstrate document readiness, waiver maker-checker, SLA aging, and package summary.
-11. Open `/approval-routing` and show how exposure, risk, collateral, and exception severity change delegated authority.
+9. Open `/uat`, fail an unlinked test, raise a defect, and show the new defect in `/defects`.
+10. Move a defect through fix and retest, then open `/release` to show the automatically recalculated UAT gate and steering posture.
+11. Open `/checklist` and `/approval-routing` to demonstrate document readiness, waiver control, and delegated authority.
 12. Open `/case-360` and `/traceability` to connect lifecycle evidence to requirements and tests.
 
 ## Business Analyst Artifacts
@@ -126,6 +128,7 @@ Common pain points modeled in this project:
 | `docs/14-github-portfolio-packaging.md` | GitHub About text, topics, screenshot plan, demo flow, LinkedIn summary, and publishing checklist. |
 | `docs/15-governance-and-value-operating-model.md` | Decision rights, rule and data governance, document controls, release gates, value ownership, and interview narrative. |
 | `docs/16-unified-case-workflow.md` | Workflow states, role ownership, transition controls, functional requirements, and acceptance scenarios. |
+| `docs/17-defect-and-release-control.md` | Defect lifecycle, release gate derivation, risk acceptance, control rules, and acceptance scenarios. |
 
 ## Sample Portfolio Metrics
 
@@ -141,6 +144,7 @@ The application uses mock data only. Metrics are portfolio assumptions for demon
 - Package posture and BA recommendation
 - Policy exception severity and aging
 - UAT pass rate, failed cases, blocked cases, and pending retest
+- Open defects by severity, closure rate, risk acceptance, and defect-derived release gate
 - High-priority change request count
 - Requirement traceability coverage
 - Credit memo evidence coverage, confidence, review, and approval status
@@ -177,6 +181,7 @@ The application uses mock data only. Metrics are portfolio assumptions for demon
 | `/exceptions` | Policy exception register. |
 | `/dashboard` | Credit operations control room. |
 | `/uat` | UAT tracker with defect and retest workflow. |
+| `/defects` | Defect triage, fix, retest, closure, risk acceptance, and release impact. |
 | `/change-requests` | Change request impact analyzer. |
 | `/roles` | Role-based workflow and stakeholder view. |
 | `/traceability` | Requirement-to-test-to-CR matrix. |

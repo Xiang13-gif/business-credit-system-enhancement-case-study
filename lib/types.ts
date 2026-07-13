@@ -116,6 +116,30 @@ export type UatStatus = "Not Started" | "In Progress" | "Passed" | "Failed" | "B
 export type UatRole = "RM" | "Credit Analyst" | "Approver" | "Credit Admin" | "System Admin";
 export type DefectSeverity = "Critical" | "High" | "Medium" | "Low";
 export type RetestStatus = "Not Required" | "Pending Retest" | "Retest Passed" | "Retest Failed";
+export type DefectStatus = "Open" | "In Fix" | "Ready for Retest" | "Retest Failed" | "Closed" | "Risk Accepted";
+export type RiskAcceptanceStatus = "Not Required" | "Pending" | "Approved" | "Rejected";
+
+export interface DefectRecord {
+  id: string;
+  title: string;
+  linkedTestCaseId: string;
+  requirementId: string;
+  module: string;
+  severity: DefectSeverity;
+  priority: UatPriority;
+  status: DefectStatus;
+  owner: string;
+  raisedDate: string;
+  targetFixDate: string;
+  businessImpact: string;
+  rootCause: string;
+  resolution: string;
+  retestEvidence: string;
+  riskAcceptanceStatus: RiskAcceptanceStatus;
+  riskAcceptanceReason: string;
+  riskAcceptedBy: string;
+  updatedAt: string;
+}
 
 export interface UatTestCase {
   id: string;
