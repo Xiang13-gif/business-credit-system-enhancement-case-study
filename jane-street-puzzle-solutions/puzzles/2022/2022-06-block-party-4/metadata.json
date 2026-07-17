@@ -1,0 +1,18 @@
+{
+  "title": "Block Party 4",
+  "date": "2022-06-01",
+  "year": 2022,
+  "month": "June",
+  "month_number": 6,
+  "slug": "block-party-4",
+  "official_url": "https://www.janestreet.com/puzzles/block-party-4-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/block-party-4-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

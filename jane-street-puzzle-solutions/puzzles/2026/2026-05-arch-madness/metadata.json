@@ -1,0 +1,18 @@
+{
+  "title": "Arch Madness",
+  "date": "2026-05-01",
+  "year": 2026,
+  "month": "May",
+  "month_number": 5,
+  "slug": "arch-madness",
+  "official_url": "https://www.janestreet.com/puzzles/arch-madness-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/arch-madness-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

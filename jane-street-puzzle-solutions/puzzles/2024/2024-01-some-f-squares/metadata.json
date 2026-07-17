@@ -1,0 +1,18 @@
+{
+  "title": "Some F Squares",
+  "date": "2024-01-01",
+  "year": 2024,
+  "month": "January",
+  "month_number": 1,
+  "slug": "some-f-squares",
+  "official_url": "https://www.janestreet.com/puzzles/some-f-squares-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/some-f-squares-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

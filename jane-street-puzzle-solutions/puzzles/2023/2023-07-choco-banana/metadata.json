@@ -1,0 +1,18 @@
+{
+  "title": "Choco Banana",
+  "date": "2023-07-01",
+  "year": 2023,
+  "month": "July",
+  "month_number": 7,
+  "slug": "choco-banana",
+  "official_url": "https://www.janestreet.com/puzzles/choco-banana-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/choco-banana-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

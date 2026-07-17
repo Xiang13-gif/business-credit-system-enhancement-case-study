@@ -1,0 +1,18 @@
+{
+  "title": "Some Ones, Somewhere",
+  "date": "2025-06-01",
+  "year": 2025,
+  "month": "June",
+  "month_number": 6,
+  "slug": "some-ones-somewhere",
+  "official_url": "https://www.janestreet.com/puzzles/some-ones-somewhere-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/some-ones-somewhere-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

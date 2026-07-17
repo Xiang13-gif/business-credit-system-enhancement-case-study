@@ -1,0 +1,18 @@
+{
+  "title": "Timely Journey",
+  "date": "2026-01-01",
+  "year": 2026,
+  "month": "January",
+  "month_number": 1,
+  "slug": "timely-journey",
+  "official_url": "https://www.janestreet.com/puzzles/timely-journey-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/timely-journey-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

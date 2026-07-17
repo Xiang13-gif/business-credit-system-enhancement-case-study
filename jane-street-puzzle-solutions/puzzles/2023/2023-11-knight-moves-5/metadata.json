@@ -1,0 +1,18 @@
+{
+  "title": "Knight Moves 5",
+  "date": "2023-11-01",
+  "year": 2023,
+  "month": "November",
+  "month_number": 11,
+  "slug": "knight-moves-5",
+  "official_url": "https://www.janestreet.com/puzzles/knight-moves-5-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/knight-moves-5-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

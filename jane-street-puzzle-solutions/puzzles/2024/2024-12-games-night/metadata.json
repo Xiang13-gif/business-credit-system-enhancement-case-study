@@ -1,0 +1,18 @@
+{
+  "title": "Games Night!",
+  "date": "2024-12-01",
+  "year": 2024,
+  "month": "December",
+  "month_number": 12,
+  "slug": "games-night",
+  "official_url": "https://www.janestreet.com/puzzles/games-night-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/games-night-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

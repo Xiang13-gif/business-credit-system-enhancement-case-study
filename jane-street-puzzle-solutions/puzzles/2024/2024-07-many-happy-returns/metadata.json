@@ -1,0 +1,18 @@
+{
+  "title": "Many Happy Returns",
+  "date": "2024-07-01",
+  "year": 2024,
+  "month": "July",
+  "month_number": 7,
+  "slug": "many-happy-returns",
+  "official_url": "https://www.janestreet.com/puzzles/many-happy-returns-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/many-happy-returns-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

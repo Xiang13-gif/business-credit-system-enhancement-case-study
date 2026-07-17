@@ -1,0 +1,18 @@
+{
+  "title": "Pair Dance 2",
+  "date": "2022-09-01",
+  "year": 2022,
+  "month": "September",
+  "month_number": 9,
+  "slug": "pair-dance-2",
+  "official_url": "https://www.janestreet.com/puzzles/pair-dance-2-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/pair-dance-2-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

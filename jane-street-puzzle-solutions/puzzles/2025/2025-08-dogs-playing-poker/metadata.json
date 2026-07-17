@@ -1,0 +1,18 @@
+{
+  "title": "Dogs Playing Poker",
+  "date": "2025-08-01",
+  "year": 2025,
+  "month": "August",
+  "month_number": 8,
+  "slug": "dogs-playing-poker",
+  "official_url": "https://www.janestreet.com/puzzles/dogs-playing-poker-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/dogs-playing-poker-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

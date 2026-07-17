@@ -1,0 +1,18 @@
+{
+  "title": "Top Score (Give or Take)",
+  "date": "2025-02-01",
+  "year": 2025,
+  "month": "February",
+  "month_number": 2,
+  "slug": "top-score-give-or-take",
+  "official_url": "https://www.janestreet.com/puzzles/top-score-give-or-take-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/top-score-give-or-take-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}

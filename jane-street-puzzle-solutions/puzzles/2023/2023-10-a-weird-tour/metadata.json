@@ -1,0 +1,18 @@
+{
+  "title": "A Weird Tour",
+  "date": "2023-10-01",
+  "year": 2023,
+  "month": "October",
+  "month_number": 10,
+  "slug": "a-weird-tour",
+  "official_url": "https://www.janestreet.com/puzzles/a-weird-tour-index/",
+  "canonical_url": "https://www.janestreet.com/puzzles/a-weird-tour-index/",
+  "topics": [],
+  "difficulty": "",
+  "status": "not_started",
+  "verified": false,
+  "verification_method": "",
+  "language": "python",
+  "english_solution": "README.en.md",
+  "chinese_solution": "README.zh-CN.md"
+}
